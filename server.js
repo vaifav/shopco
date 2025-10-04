@@ -1,0 +1,20 @@
+import dotenv from "dotenv";
+import express from "express";
+import user from "./routes/userRoutes.js";
+import connectDB from "./config/db.js";
+import sessions from "./middleware/sessionMiddleware.js";
+
+dotenv.config();
+const app = express();
+
+await connectDB();
+
+app.use(express.json());
+app.use(express.static("./public"));
+app.use(express.urlencoded({ extended: true }));
+
+app.set("view engine", "ejs");
+app.use(sessions);
+app.use(user);
+
+app.listen(process.env.PORT);

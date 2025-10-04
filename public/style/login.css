@@ -1,0 +1,132 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	color: black;
+	list-style: none;
+	font-weight: 400;
+	text-decoration: none;
+	box-sizing: border-box;
+	background: transparent;
+	font-family: "Montserrat", sans-serif;
+}
+
+.login-container {
+	width: 100%;
+	height: 100dvh;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	gap: 2rem;
+}
+
+.login-container figure {
+	width: 50%;
+	height: inherit;
+	position: relative;
+
+	& img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 0 -70px;
+	}
+}
+
+.login-container figure h1 {
+	font-weight: 900;
+	position: absolute;
+	top: 0;
+	padding: 1rem;
+}
+
+.login-container section {
+	width: 50%;
+	display: flex;
+	height: inherit;
+	justify-content: start;
+	align-items: center;
+}
+
+.login-container section form {
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+	padding-inline: 3rem;
+	gap: 1.2rem;
+}
+
+.login-container form h1 {
+	font-weight: 700;
+}
+
+.login-container form input,
+article {
+	display: block;
+	border: 1px solid;
+	border-radius: 10px;
+	padding-block: 1rem;
+	width: 100%;
+	margin-top: 0.2rem;
+	padding-inline-start: 1rem;
+}
+
+.login-container form .submit,
+article {
+	padding-inline: 0;
+	background: #000;
+	color: #ffff;
+	margin: 0;
+}
+
+.login-container form label {
+	font-size: 0.7rem;
+	font-weight: 500;
+}
+
+.login-container form a {
+	font-size: 0.8rem;
+	text-align: right;
+	font-weight: 600;
+}
+
+u {
+	text-decoration: underline;
+}
+
+.extra-details {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.submit {
+		margin-top: 1.3rem !important;
+}
+
+article {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	padding-block: 0;
+	margin: 0;
+
+	& input.submit {
+		width: fit-content;
+		height: fit-content;
+		border: 0;
+		margin: 0 !important;
+	}
+}
+
+/* article {
+	position: relative;
+}
+
+.googleicon {
+	position: absolute;
+	left: 0;
+	top: 0;
+} */

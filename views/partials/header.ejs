@@ -1,0 +1,100 @@
+<section class="wrapper header">
+    <header>
+        <a href="/">
+            <h1>SHOP.CO</h1>
+        </a>
+        <nav>
+            <ul>
+                <a href="">
+                    <li>Shop</li>
+                </a>
+                <a href="">
+                    <li>On Sale</li>
+                </a>
+                <a href="">
+                    <li>Brands</li>
+                </a>
+                <a href="">
+                    <li>New Arraivals</li>
+                </a>
+            </ul>
+            <form action="">
+                <label for="search"><img src="images/icons/search.svg" alt=""></label>
+                <input type="text" name="search" id="search" placeholder="search">
+            </form>
+        </nav>
+        <nav class="icons">
+            <a href=""> <img src="images/icons/cart.svg" alt="cart"> </a>
+            <img class="account" src="images/icons/account.svg" alt="account">
+
+            <div class="account-dropdown deactive">
+                <figure>
+                    <h4 class="welcome">Welcome, <%= username %>
+                    </h4>
+                </figure>
+                <figure>
+                    <a href="#" class="create-account">
+                        <img src="images/icons/user.svg" alt="create account">
+                        <span>Create an Account</span>
+                    </a>
+                </figure>
+                <figure>
+                    <a href="">
+                        <img src="images/icons/Icon-account.svg" alt="my account">
+                        <span>Account</span>
+                    </a>
+                </figure>
+                <figure>
+                    <a href="/logout">
+                        <img src="images/icons/Icon-logout.svg" alt="create account">
+                        <span>Logout</span>
+                    </a>
+                </figure>
+            </div>
+        </nav>
+    </header>
+    <script type="module">
+        import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm'
+
+        const account = document.querySelector(".header .icons .account");
+        const dropdown = document.querySelector(".header .account-dropdown");
+        const createaccount = document.querySelector(".header .account-dropdown .create-account")
+
+        account.addEventListener('click', () => {
+            if (dropdown.classList.contains('deactive')) {
+                dropdown.classList.remove('deactive')
+                dropdown.classList.add('active')
+            } else {
+                dropdown.classList.remove('active')
+                dropdown.classList.add('deactive')
+            }
+        })
+
+        createaccount.addEventListener('click', (e) => {
+            e.preventDefault();
+            let timerInterval;
+            Swal.fire({
+                title: "<h5 style='font-size: 1.1rem; font-weight: 600;'> To Create a New Account, Please Logout first </h5>",
+                html: "Close in <b></b> second.",
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${parseInt(Swal.getTimerLeft() / 1000)}`;
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log("I was closed by the timer");
+                }
+            });
+        })
+
+    </script>
+</section>
