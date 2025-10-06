@@ -9,7 +9,6 @@ const postSignup = async (req, res) => {
 		const user = await createUser(req.body);
 		req.session.user = {
 			userId: user._id,
-			username: `${user.fname} ${user.lname}`,
 			email: user.email,
 			role: user.role,
 		};
@@ -20,4 +19,14 @@ const postSignup = async (req, res) => {
 	}
 };
 
-export { getSignup, postSignup };
+const signupWithGoogle = async (req, res) => {
+	req.session.user = {
+		userId: req.user._id,
+		email: req.user.email,
+		role: req.user.role,
+	};
+
+	return res.redirect("/");
+};
+
+export { getSignup, postSignup,signupWithGoogle };

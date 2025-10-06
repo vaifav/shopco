@@ -10,7 +10,6 @@ const postLogin = async (req, res) => {
 		if (!user) return res.render("user/login", { error: "Invalid Credentials" });
 		req.session.user = {
 			userId: user._id,
-			username: `${user.fname} ${user.lname}`,
 			email: user.email,
 			role: user.role,
 		};

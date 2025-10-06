@@ -102,7 +102,7 @@ u {
 }
 
 .submit {
-		margin-top: 1.3rem !important;
+	margin-top: 1.3rem !important;
 }
 
 article {
@@ -110,14 +110,20 @@ article {
 	justify-content: center;
 	align-items: center;
 	gap: 1rem;
-	padding-block: 0;
+	padding-block: 1rem;
 	margin: 0;
 
-	& input.submit {
+	& a.submit {
 		width: fit-content;
 		height: fit-content;
 		border: 0;
 		margin: 0 !important;
+		font-weight: normal;
+	}
+
+	& img {
+		height: 15px;
+		width: auto;
 	}
 }
 
