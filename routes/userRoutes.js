@@ -4,14 +4,17 @@ import { getLogin, logout, postLogin } from "../controllers/user/loginController
 import { getSignup, postSignup, signupWithGoogle } from "../controllers/user/signupContoller.js";
 import { noCache, toHome, toLogin } from "../middleware/loginMiddleware.js";
 import passport from "passport";
+import account from "../controllers/user/accountContoller.js";
 const user = Router();
 
-user.get("/", noCache, toLogin, home);
-user.get("/login", noCache, toHome, getLogin);
-user.post("/login", noCache, toHome, postLogin);
-user.get("/logout", noCache, logout);
-user.get("/signup", noCache, toHome, getSignup);
-user.post("/signup", noCache, postSignup);
+user.use(noCache);
+user.get("/", toLogin, home);
+user.get("/logout", logout);
+user.get("/login", toHome, getLogin);
+user.post("/login", toHome, postLogin);
+user.get("/signup", toHome, getSignup);
+user.post("/signup", postSignup);
+user.get("/account", toLogin, account);
 user.get(
 	"/google/signup",
 	noCache,

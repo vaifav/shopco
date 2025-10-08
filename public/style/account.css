@@ -1,0 +1,216 @@
+.account.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	padding-block: 2rem;
+}
+
+div.container {
+	display: flex;
+	gap: 5rem;
+	justify-content: space-between;
+}
+
+.container nav,
+.container ul {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	flex-shrink: 0;
+}
+
+.container ul {
+	gap: 10px;
+	flex-shrink: initial;
+}
+
+.container ul li {
+	transition: background 0.2s;
+	padding: 1rem 1rem;
+	border-radius: 10px;
+
+	& a {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+}
+
+.container ul li:hover {
+	background: #000;
+}
+
+b {
+	transition: color 0.2s;
+}
+
+a svg {
+	width: 24px;
+	height: 24px;
+	stroke-width: 1.5;
+	stroke: #000;
+	transition: stroke 0.2s;
+}
+
+li:hover svg {
+	stroke: #fff;
+}
+
+li:hover b {
+	color: #fff;
+}
+
+.container div.image-container {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+
+	& div.avatar {
+		background: #edebeb;
+		height: 40px;
+		width: 40px;
+		border-radius: 50px;
+	}
+
+	& div.avatar img {
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+	}
+
+	h5 {
+		font-weight: 500;
+		font-size: 1rem;
+	}
+}
+
+div.sections {
+	flex-grow: 1;
+}
+
+.sections section {
+	/* background: #00000041; */
+	display: none;
+}
+
+.sections section:target {
+	display: block;
+}
+
+body:not(:has(:target)) .sections section:first-child {
+	display: block;
+}
+
+.container ul li.active {
+	background: #000;
+}
+
+.container ul li.active b {
+	transition: color 0.2s;
+}
+
+.container ul li.active svg {
+	stroke: #fff;
+}
+
+.container ul li.active b {
+	color: #fff;
+}
+
+#personal-information form {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.form-input-container {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.form-input-container input,
+select {
+	box-sizing: content-box;
+	background: #f4f2f2;
+	padding-block: 1rem;
+	min-width: 320px;
+	width: 25rem;
+	border-radius: 10px;
+	padding-inline: 0.5rem;
+	margin-block: 0.6rem;
+}
+
+.form-input-container label {
+	display: block;
+}
+
+.form-input-container .radio-gender {
+	display: inline-block;
+}
+
+.form-input-container .radio-gender {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	margin-right: 1rem;
+}
+
+.form-input-container .radio-gender input {
+	padding: 0;
+	min-width: 0;
+	width: 22px;
+	height: 22px;
+	accent-color: #000;
+	cursor: pointer;
+}
+
+.form-input-container a.change-password {
+	background: #dcdada;
+	width: fit-content;
+	height: fit-content;
+	font-size: 0.8rem;
+	font-weight: 500;
+	padding: 0.6rem;
+	border-radius: 10px;
+}
+
+form .form-input-container:first-child {
+	margin-bottom: 1rem;
+}
+
+form .form-input-container:first-child figure {
+	height: 60px;
+	width: 60px;
+	border-radius: 60px;
+
+	& img {
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+	}
+}
+form .form-input-container:first-child button {
+	background: #000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	height: fit-content;
+	width: fit-content;
+	padding: 0.7rem;
+	border-radius: 10px;
+	color: #fff;
+	font-weight: 500;
+}
+
+.form-input-container input[type="submit"] {
+	background: #000;
+	color: #fff;
+}
+
+.form-input-container input[type="submit"]:disabled {
+	background: #000000df;
+	color: #ffffffa8;
+}
