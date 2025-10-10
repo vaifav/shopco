@@ -84,11 +84,11 @@
                 <select name="address" id="address">
                   <option value="" selected disabled hidden>Add an address
                     in Manage Address option</option>
-                    <% if (address && address.length !== 0) { %>
-                     <% address.forEach((a) => { %>
-                      <option value="<%= a._id %>"><%= `${a.houseName} ${a.street} ${a.city}` %></option>
-                     <% }) %>
-                    <% } %>
+                  <% if (address && address.length !== 0) { %>
+                  <% address.forEach((a) => { %>
+                  <option value="<%= a._id %>"><%= `${a.houseName} ${a.street} ${a.city}` %></option>
+                  <% }) %>
+                  <% } %>
                 </select>
               </div>
             </div>
@@ -201,13 +201,23 @@
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
+    const listItems = document.querySelectorAll(".container nav ul li");
     window.accountData = {
       states: <%- JSON.stringify(state) %>,
       cities: <%- JSON.stringify(city) %>,
       addresses: <%- JSON.stringify(address) %>,
     };
+    listItems.forEach((li) => {
+      li.addEventListener("click", () => {
+        listItems.forEach((active) => {
+          active.classList.remove("active");
+        });
+        li.classList.add("active");
+      });
+    });
+    lucide.createIcons();
   </script>
-  <script src="script/account.js" type="module"></script>
+  <script src="script/address.js" type="module"></script>
   <%- include('../partials/footer.ejs') %>
 </body>
 
