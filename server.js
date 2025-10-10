@@ -20,5 +20,6 @@ app.use(sessions);
 app.use(passport.initialize());
 
 app.use("/", user);
+app.get("/pagenotfound/", (req, res) => res.render("user/pagenotfound"));
 
 app.listen(process.env.PORT);

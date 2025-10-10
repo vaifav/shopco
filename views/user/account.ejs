@@ -2,135 +2,213 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="style/partials.css">
-    <link rel="stylesheet" href="style/account.css">
-    <title>Account</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/partials.css">
+  <link rel="stylesheet" href="style/account.css">
+  <title>Account</title>
 </head>
 
 <body>
-    <%- include('../partials/header.ejs') %>
+  <%- include('../partials/header.ejs') %>
 
-        <section class="account wrapper">
-            <h1 class="main-heading">My Profile</h1>
-            <div class="container">
-                <nav>
-                    <div class="image-container">
-                        <div class="avatar">
-                            <img src="images/icons/account.svg" alt="avatar">
-                        </div>
-                        <h5>Hello👋 Robert Fox</h5>
-                    </div>
-                    <ul>
-                        <li class="active"><a href="#personal-information"><i data-lucide="user"></i> <b>Personal
-                                    Information</b></a>
-                        </li>
-                        <li><a href="#my-orders"><i data-lucide="shopping-bag"></i> <b>My Orders</b></a></li>
-                        <li><a href="#my-reviews"><i data-lucide="star"></i> <b>My Reviews</b></a></li>
-                        <li><a href="#my-wishlist"><i data-lucide="heart"></i> <b>My Wishlist</b></a></li>
-                        <li><a href="#manage-address"><i data-lucide="map-pin"></i> <b>Manage Address</b></a></li>
-                        <li><a href="#saved-cards"><i data-lucide="credit-card"></i> <b>Saved Cards</b></a></li>
-                        <li><a href="#my-wallet"><i data-lucide="wallet"></i> <b>My Wallet</b></a></li>
-                        <li><a href="#notification"><i data-lucide="bell"></i> <b>Notification</b></a></li>
-                        <li><a href="#settings"><i data-lucide="settings"></i> <b>Settings</b></a></li>
-                    </ul>
+  <section class="account wrapper">
+    <h1 class="main-heading">My Profile</h1>
+    <div class="container">
+      <nav>
+        <div class="image-container">
+          <div class="avatar">
+            <img src="images/icons/account.svg" alt="avatar">
+          </div>
+          <h5>Hello👋 Robert Fox</h5>
+        </div>
+        <ul>
+          <li class="active"><a href="#personal-information"><i data-lucide="user"></i> <b>Personal
+                Information</b></a>
+          </li>
+          <li><a href="#my-orders"><i data-lucide="shopping-bag"></i> <b>My Orders</b></a></li>
+          <li><a href="#my-reviews"><i data-lucide="star"></i> <b>My Reviews</b></a></li>
+          <li><a href="#my-wishlist"><i data-lucide="heart"></i> <b>My Wishlist</b></a></li>
+          <li><a href="#manage-address"><i data-lucide="map-pin"></i> <b>Manage Address</b></a></li>
+          <li><a href="#saved-cards"><i data-lucide="credit-card"></i> <b>Saved Cards</b></a></li>
+          <li><a href="#my-wallet"><i data-lucide="wallet"></i> <b>My Wallet</b></a></li>
+          <li><a href="#notification"><i data-lucide="bell"></i> <b>Notification</b></a></li>
+          <li><a href="#settings"><i data-lucide="settings"></i> <b>Settings</b></a></li>
+        </ul>
 
-                </nav>
-                <div class="sections">
-                    <section id="personal-information">
-                        <form>
-                            <div class="form-input-container">
-                                <figure>
-                                    <img src="images/icons/account.svg" alt="avatar">
-                                </figure>
-                                <button type="button" ><img src="images/icons/edit.svg" alt="edit">Edit Profile</button>
-                            </div>
-                            <div class="form-input-container">
-                                <div>
-                                    <label for="fname">First Name</label>
-                                    <input type="text" name="fname" id="fname" placeholder="First Name">
-                                </div>
-                                <div>
-                                    <label for="lname">Last Name</label>
-                                    <input type="text" name="lname" id="lname" placeholder="Last Name">
-                                </div>
-                            </div>
-                            <div class="form-input-container">
-                                <div>
-                                    <label for="phone">Phone</label>
-                                    <input type="text" name="phone" id="phone" placeholder="Phone">
-                                </div>
-                                <div>
-                                    <label for="email">Email</label>
-                                    <input type="email" name="email" id="email" placeholder="Email">
-                                </div>
-                            </div>
-                            <div class="form-input-container">
-                                <div>
-                                    <label for="gender">Gender</label>
-                                    <div class="radio-gender">
-                                        <input type="radio" name="gender" value="male" checked><b>Male</b>
-                                    </div>
-                                    <div class="radio-gender">
-                                        <input type="radio" name="gender" value="female"><b>Female</b>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="address">Address</label>
-                                    <select name="address" id="address">
-                                        <option style="color: #909090;" value="" selected disabled hidden>Add an address
-                                            in Manage Address option</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-input-container">
-                                <a href="" class="change-password">Need to change your password? click here</a>
-                                <input type="submit" disabled value="Save">
-                            </div>
-                        </form>
-                    </section>
-                    <section id="my-orders">My Orders Content</section>
-                    <section id="my-reviews">My Reviews Content</section>
-                    <section id="my-wishlist">My Wishlist Content</section>
-                    <section id="manage-address">Manage Address</section>
-                    <section id="saved-cards">Saved Cards</section>
-                    <section id="my-wallet">My Wallet</section>
-                    <section id="notification">Notification</section>
-                    <section id="settings">Settings</section>
-                </div>
-
+      </nav>
+      <div class="sections">
+        <section id="personal-information">
+          <form class="overlay-form" action="">
+            <div class="form-input-container">
+              <figure>
+                <img src="images/icons/account.svg" alt="avatar">
+              </figure>
+              <button type="button"><img src="images/icons/edit.svg" alt="edit">Edit Profile</button>
             </div>
+            <div class="form-input-container">
+              <div>
+                <label for="fname">First Name</label>
+                <input type="text" name="fname" id="fname" placeholder="First Name">
+              </div>
+              <div>
+                <label for="lname">Last Name</label>
+                <input type="text" name="lname" id="lname" placeholder="Last Name">
+              </div>
+            </div>
+            <div class="form-input-container">
+              <div>
+                <label for="phone">Phone</label>
+                <input type="text" name="phone" id="phone" placeholder="Phone">
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Email">
+              </div>
+            </div>
+            <div class="form-input-container">
+              <div>
+                <label for="gender">Gender</label>
+                <div class="radio-gender">
+                  <input type="radio" name="gender" value="male" checked><b>Male</b>
+                </div>
+                <div class="radio-gender">
+                  <input type="radio" name="gender" value="female"><b>Female</b>
+                </div>
+              </div>
+              <div>
+                <label for="address">Address</label>
+                <select name="address" id="address">
+                  <option value="" selected disabled hidden>Add an address
+                    in Manage Address option</option>
+                    <% if (address && address.length !== 0) { %>
+                     <% address.forEach((a) => { %>
+                      <option value="<%= a._id %>"><%= `${a.houseName} ${a.street} ${a.city}` %></option>
+                     <% }) %>
+                    <% } %>
+                </select>
+              </div>
+            </div>
+            <div class="form-input-container">
+              <a href="" class="change-password">Need to change your password? click here</a>
+              <input type="submit" disabled value="Save">
+            </div>
+          </form>
         </section>
-        <script src="https://unpkg.com/lucide@latest"></script>
-        <script>
-            const submit = document.querySelector(".form-input-container input[type='submit']")
-            const edit = document.querySelector('.form-input-container:first-child button')
+        <section id="my-orders">My Orders Content</section>
+        <section id="my-reviews">My Reviews Content</section>
+        <section id="my-wishlist">My Wishlist Content</section>
+        <section id="manage-address">
+          <div class="container">
+            <% if (!address || address.length === 0) { %>
+            <h3>No Addresses Yet...</h3>
+            <% } %>
+            <% if (address) { %>
+            <% address.forEach(a => { %>
+            <article>
+              <div class="content">
+                <h5>
+                  <%= a.fullName %>
+                </h5>
+                <p>
+                  <%= `${a.houseName} ${a.street} ${a.city}` %>
+                </p>
+                <p><i data-lucide="phone-call"></i>
+                  <b>
+                    <%= a.phone %>
+                  </b>
+                </p>
+              </div>
+              <div class="buttons">
+                <button type="button" data-addressid="<%= a._id %>" class="edit">
+                  <img src="images/icons/edit-black.svg" alt="edit">
+                  <b>Edit</b>
+                </button>
+                <button type="button" class="delete" data-addressid=" <%=a._id%> "> <img src="images/icons/delete.svg" alt="delete"> <b>Delete</b> </button>
+              </div>
+            </article>
+            <% }) %>
+            <% }  %>
 
-            lucide.createIcons();
+          </div>
+          <button type="button" class="add-new-address-btn">Add Address</button>
+          <div class="overlay">
+            <form id="add-or-edit-address">
+              <div>
+                <h3>Address</h3>
+              </div>
+              <div>
+                <label for="fullName">Full Name</label>
+                <input type="text" name="fullName" id="fullName" placeholder="Full Name">
+              </div>
+              <div>
+                <label for="address-phone">Phone</label>
+                <input type="text" name="phone" id="address-phone" placeholder="Phone">
+              </div>
+              <div>
+                <label for="country">Country</label>
+                <select name="country" id="country">
+                  <option value="" disabled selected>Country</option>
+                  <% countries.forEach(c=> { %>
+                  <option value="<%= c.isoCode %>" data-phonecode="<%= c.phonecode %>">
+                    <%= c.name %>
+                  </option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label for="state">state</label>
+                <select name="state" id="state">
+                  <option value="" disabled selected>State</option>
+                </select>
+              </div>
+              <div>
+                <label for="city">city</label>
+                <select name="city" id="city">
+                  <option value="" disabled selected>City</option>
+                </select>
+              </div>
+              <div>
+                <label for="street">Area, colony, street</label>
+                <input type="text" name="street" id="street" placeholder="Area, colony, street">
+              </div>
+              <div>
+                <label for="houseName">Flat, House n.o, Company, House name</label>
+                <input type="text" name="houseName" id="houseName" placeholder="Flat, House n.o, Company, House name">
+              </div>
+              <div>
+                <label for="pin">Pin</label>
+                <input type="text" name="pin" id="pin" placeholder="Pin no">
+              </div>
+              <div class="form-buttons">
+                <button type="button" class="cancel">Cancel</button>
+                <button type="submit">Save</button>
+              </div>
+            </form>
+          </div>
+        </section>
+        <section id="saved-cards">Saved Cards</section>
+        <section id="my-wallet">My Wallet</section>
+        <section id="notification">Notification</section>
+        <section id="settings">Settings</section>
+      </div>
 
-            const listItems = document.querySelectorAll(".container nav ul li")
-            listItems.forEach((li) => {
-                li.addEventListener('click', () => {
-                    listItems.forEach((active) => {
-                        active.classList.remove("active")
-                    })
-                    li.classList.add("active")
-                })
-            })
+    </div>
+  </section>
 
-            edit.addEventListener('click', () => {
-                if (submit.disabled) { submit.disabled = false }
-
-            })
-
-        </script>
-
-        <%- include('../partials/footer.ejs') %>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    window.accountData = {
+      states: <%- JSON.stringify(state) %>,
+      cities: <%- JSON.stringify(city) %>,
+      addresses: <%- JSON.stringify(address) %>,
+    };
+  </script>
+  <script src="script/account.js" type="module"></script>
+  <%- include('../partials/footer.ejs') %>
 </body>
 
 </html>

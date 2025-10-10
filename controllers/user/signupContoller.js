@@ -26,7 +26,7 @@ const signupWithGoogle = async (req, res) => {
 		role: req.user.role,
 	};
 
-	return res.redirect("/");
+	return res.redirect("/account");
 };
 
-export { getSignup, postSignup,signupWithGoogle };
+export { getSignup, postSignup, signupWithGoogle };
