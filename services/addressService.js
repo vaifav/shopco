@@ -7,7 +7,7 @@ const getAddress = async (userId) => {
 		return addresses;
 	} catch (error) {
 		console.error("Error fetching addresses:", error.message);
-		throw new Error("Failed to fetch addresses");
+		throw new Error(error.message);
 	}
 };
 
@@ -19,7 +19,7 @@ const getSingleAddress = async (id, userId) => {
 		return address;
 	} catch (error) {
 		console.error("Error fetching single address:", error.message);
-		throw new Error("Failed to fetch address");
+		throw new Error(error.message);
 	}
 };
 
@@ -35,7 +35,7 @@ const createAddress = async (data) => {
 		return address;
 	} catch (error) {
 		console.error("Error creating address:", error.message);
-		throw new Error("Failed to create address");
+		throw new Error(error.message);
 	}
 };
 
@@ -46,8 +46,8 @@ const updateAddress = async (id, userId, updateObj) => {
 		if (!address) throw new Error("Address not found or unauthorized");
 		return address;
 	} catch (error) {
-		console.error("Error updating address:", error.message);
-		throw new Error("Failed to update address");
+		console.error("Error updating address:", error);
+		throw new Error(error.message);
 	}
 };
 
@@ -59,7 +59,7 @@ const deleteAddress = async (id, userId) => {
 		return deleted;
 	} catch (error) {
 		console.error("Error deleting address:", error.message);
-		throw new Error("Failed to delete address");
+		throw new Error(error.message);
 	}
 };
 

@@ -1,0 +1,34 @@
+/* ❌ ERROR (#ff7262 + #fff1ef) */
+.swal2-icon.swal2-error {
+    border-color: #ff7262 !important;
+    color: #ff7262 !important;
+    background-color: #fff1ef !important;
+}
+
+.swal2-actions {
+    gap: 2rem !important;
+}
+
+/* 🎨 Buttons - colors only, keep default size & spacing */
+.custom-confirm-btn {
+    background-color: #fff1ef !important;
+    color: #ff7262 !important;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 1rem 2rem !important;
+}
+
+.custom-confirm-btn:hover {
+    background-color: #fcdfda !important;
+}
+
+.custom-cancel-btn {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-radius: 10px;
+    padding: 1rem 2rem !important;
+}
+
+.custom-cancel-btn:hover {
+    background-color: #0e0d0d !important;
+}

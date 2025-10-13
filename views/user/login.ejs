@@ -2,52 +2,52 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="style/login.css">
-    <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/swal.css">
+  <link rel="stylesheet" href="style/login.css">
+  <title>Login</title>
 </head>
 
 <body>
-    <section class="login-container">
-        <figure>
-            <img src="images/images/rectangle_3463273_eae506.jpg" alt="loginimage">
-            <a href="/">
-                <h1>SHOP.CO</h1>
-            </a>
-        </figure>
-        <section>
-            <form action="/login" method="post">
-                <div>
-                    <h1>Welcome 👋</h1>
-                    <% if(error) { %>
-                        <small style="color: red;">
-                            <%= error %>
-                        </small>
-                        <% } else { %>
-                            <small>please login here.</small>
-                            <% } %>
-                </div>
-                <div>
-                    <label for="email">Email Address</label>
-                    <input type="email" name="email" id="email" placeholder="Your Email">
-                </div>
-                <div>
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Password">
-                </div>
-                <input type="submit" value="Login" class="submit">
-                <div class="extra-details">
-                    <a href="/signup">Don't have an account? <u>signup</u></a>
-                    <a href="" style="position: relative; top: 2px;">Forgot Password ?</a>
-                </div>
-            </form>
-        </section>
+  <section class="login-container">
+    <figure>
+      <img src="images/images/rectangle_3463273_eae506.jpg" alt="loginimage">
+      <a href="/">
+        <h1>SHOP.CO</h1>
+      </a>
+    </figure>
+    <section>
+      <form action="/login" method="post">
+        <div>
+          <h1>Welcome 👋</h1>
+          <% if(error) { %>
+          <small style="color: red;">
+            <%= error %>
+          </small>
+          <% } else { %>
+          <small>please login here.</small>
+          <% } %>
+        </div>
+        <div>
+          <label for="email">Email Address</label>
+          <input type="email" name="email" id="email" placeholder="Your Email">
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" placeholder="Password">
+        </div>
+        <input type="submit" value="Login" class="submit">
+        <div class="extra-details">
+          <a href="/signup">Don't have an account? <u>signup</u></a>
+          <a href="" style="position: relative; top: 2px;">Forgot Password ?</a>
+        </div>
+      </form>
     </section>
+  </section>
 </body>
 
 </html>

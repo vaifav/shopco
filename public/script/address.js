@@ -6,12 +6,10 @@ const formAddress = document.querySelector("#add-or-edit-address");
 const formOverlay = document.querySelector("#manage-address .overlay");
 const countrySelect = document.querySelector("#manage-address #country");
 const addNewAddress = document.querySelector("#manage-address .add-new-address-btn");
+const editAddress = document.querySelectorAll("#manage-address article button.edit");
+const deleteAddress = document.querySelectorAll("#manage-address article button.delete");
 
 const { states, cities, addresses } = window.accountData;
-
-document.querySelector("#manage-address form .cancel").addEventListener("click", () => {
-	formOverlay.classList.remove("active");
-});
 
 function populateStates(countryCode, statesArray, stateSelectElement) {
 	stateSelectElement.innerHTML = '<option value="" disabled selected>Select State</option>';
@@ -42,14 +40,14 @@ function handleAddressSubmit(form, url, method, overlay) {
 		e.preventDefault();
 
 		const data = {
-			fullName: document.getElementById("fullName").value,
-			phone: document.getElementById("address-phone").value,
-			street: document.getElementById("street").value,
-			city: document.getElementById("city").value,
-			state: document.getElementById("state").value,
-			pin: document.getElementById("pin").value,
-			houseName: document.getElementById("houseName").value,
-			country: document.getElementById("country").value,
+			fullName: document.getElementById("fullName").value.trim(),
+			phone: document.getElementById("address-phone").value.trim(),
+			street: document.getElementById("street").value.trim(),
+			city: document.getElementById("city").value.trim(),
+			state: document.getElementById("state").value.trim(),
+			pin: document.getElementById("pin").value.trim(),
+			houseName: document.getElementById("houseName").value.trim(),
+			country: document.getElementById("country").value.trim(),
 		};
 
 		try {
@@ -67,6 +65,7 @@ function handleAddressSubmit(form, url, method, overlay) {
 					text: result.message || "Something went wrong. Please try again.",
 					confirmButtonColor: "#d33",
 				});
+				window.location.href = "/account#manage-address";
 				return;
 			}
 
@@ -77,6 +76,7 @@ function handleAddressSubmit(form, url, method, overlay) {
 				showConfirmButton: false,
 				timer: 1500,
 			});
+			window.location.href = "/account";
 		} catch (err) {
 			console.error("Error submitting form:", err);
 			await Swal.fire({
@@ -88,7 +88,6 @@ function handleAddressSubmit(form, url, method, overlay) {
 		} finally {
 			form.reset();
 			overlay.classList.remove("active");
-			window.location.reload();
 		}
 	};
 }
@@ -105,7 +104,11 @@ stateSelect.addEventListener("change", (e) => {
 	populateCities(countryCode, stateCode, cities, citySelect);
 });
 
-document.querySelectorAll("#manage-address article button.edit").forEach((btn) => {
+document.querySelector("#manage-address form .cancel").addEventListener("click", () => {
+	formOverlay.classList.remove("active");
+});
+
+editAddress.forEach((btn) => {
 	btn.addEventListener("click", () => {
 		formOverlay.classList.add("active");
 
@@ -136,7 +139,7 @@ document.querySelectorAll("#manage-address article button.edit").forEach((btn) =
 	});
 });
 
-document.querySelectorAll("#manage-address article button.delete").forEach((btn) => {
+deleteAddress.forEach((btn) => {
 	btn.addEventListener("click", async () => {
 		const id = btn.getAttribute("data-addressid").trim();
 		const address = addresses.find((a) => a._id === id);
@@ -152,7 +155,6 @@ document.querySelectorAll("#manage-address article button.delete").forEach((btn)
 			confirmButtonText: "Yes, delete it!",
 			cancelButtonText: "Cancel",
 		});
-
 
 		if (!confirmResult.isConfirmed) return;
 
@@ -181,8 +183,7 @@ document.querySelectorAll("#manage-address article button.delete").forEach((btn)
 				timer: 1500,
 			});
 
-			window.location.reload();
-
+			window.location.href = "/account";
 		} catch (err) {
 			console.error("Error submitting form:", err);
 			await Swal.fire({

@@ -23,7 +23,7 @@
 	width: 100%;
 	height: fit-content;
 	padding-block: 1.5rem;
-	
+
 }
 
 .header nav,
@@ -103,6 +103,7 @@
 
 .footer .left nav a {
 	font-size: 0.9rem;
+
 	& li {
 		margin-bottom: 0.8rem !important;
 		color: #606060;
