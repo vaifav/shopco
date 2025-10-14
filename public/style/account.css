@@ -76,6 +76,7 @@ li:hover b {
 		height: 100%;
 		width: 100%;
 		object-fit: cover;
+		border-radius: inherit;
 	}
 
 	h5 {
@@ -89,7 +90,6 @@ div.sections {
 }
 
 .sections section {
-	/* background: #00000041; */
 	display: none;
 }
 
@@ -128,6 +128,33 @@ body:not(:has(:target)) .sections section:first-child {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+#personal-information .form-input-container .figure {
+	position: relative;
+}
+
+#personal-information .form-input-container .figure input,
+#personal-information .form-input-container .figure label {
+	height: 60px;
+	width: 60px;
+	min-width: 0;
+	border-radius: 50px;
+	padding: 0;
+}
+
+#personal-information .form-input-container .figure label {
+	background-color: #edebeb;
+	position: absolute;
+	top: 8px;
+	left: 0;
+
+	& img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		border-radius: inherit;
+	}
 }
 
 #personal-information .form-input-container input,

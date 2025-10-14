@@ -7,6 +7,7 @@ import passport from "passport";
 import { account } from "../controllers/user/accountContoller.js";
 import { addAddress, editAddress, removeAddress } from "../controllers/user/addressController.js";
 import { addPersonalInfo, editPersonlInfo } from "../controllers/user/personalInfoController.js";
+import upload from "../middleware/multerMiddleware.js";
 const user = Router();
 
 user.use(noCache);
@@ -25,8 +26,8 @@ user.post("/account/manageaddress/add/", addAddress);
 user.patch("/account/manageaddress/edit/:id", editAddress);
 user.delete("/account/manageaddress/delete/:id", removeAddress);
 
-user.post("/account/personalinfo/add", addPersonalInfo);
-user.patch("/account/personalinfo/edit", editPersonlInfo);
+user.post("/account/personalinfo/add", upload.single("profile"), addPersonalInfo);
+user.patch("/account/personalinfo/edit", upload.single("profile"), editPersonlInfo);
 
 export default user;
 
