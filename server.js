@@ -4,6 +4,7 @@ import user from "./routes/userRoutes.js";
 import connectDB from "./config/db.js";
 import passport from "./config/passportGoogle.js";
 import sessions from "./middleware/sessionMiddleware.js";
+import credential from "./routes/loginRoute.js";
 
 dotenv.config();
 const app = express();
@@ -14,12 +15,17 @@ app.use(express.json());
 app.use(express.static("./public"));
 app.use(express.urlencoded({ extended: true }));
 
-app.set("view engine", "ejs");
+app.set("view engine", "ejs"); 
 app.use(sessions);
 
 app.use(passport.initialize());
 
+app.use(credential);
 app.use("/", user);
-app.get("/pagenotfound/", (req, res) => res.render("user/pagenotfound"));
+
+app.get('/admin',(req,res)=>res.render("admin/adminDashboard"))
+
+app.get("/pagenotfound/", (req, res) => res.status(404).render("user/pagenotfound"));
+app.use("/", (req, res) => res.redirect("/pagenotfound/"));
 
 app.listen(process.env.PORT);
