@@ -4,8 +4,9 @@ import user from "./routes/userRoutes.js";
 import connectDB from "./config/db.js";
 import passport from "./config/passportGoogle.js";
 import sessions from "./middleware/sessionMiddleware.js";
-import credential from "./routes/loginRoute.js";
+import authenticate from "./routes/loginRoute.js";
 import admin from "./routes/adminRoute.js";
+import { noCache, requireAuth } from "./middleware/loginMiddleware.js";
 
 dotenv.config();
 const app = express();
@@ -16,16 +17,23 @@ app.use(express.json());
 app.use(express.static("./public"));
 app.use(express.urlencoded({ extended: true }));
 
-app.set("view engine", "ejs"); 
+app.set("view engine", "ejs");
 app.use(sessions);
 
+app.use(noCache);
 app.use(passport.initialize());
 
-app.use(credential);
-app.use("/", user);
-app.use('/admin',admin)
+app.use(authenticate); // login , signup
+app.use("/admin", requireAuth, admin);
+app.use("/", requireAuth, user);
 
-// app.get("/pagenotfound/", (req, res) => res.status(404).render("user/pagenotfound"));
-// app.use("/", (req, res) => res.redirect("/pagenotfound/"));
+app.use("/pagenotfound", (req, res) => res.status(404).render("user/pagenotfound"));
+app.use((req, res) => res.status(404).render("user/pagenotfound"));
 
-app.listen(process.env.PORT);
+app.use((err, req, res, next) => {
+	console.error("Server Error:", err.stack);
+	res.status(500).send({ message: "Internal Server Error" });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));

@@ -1,0 +1,156 @@
+#products * {
+    color: black;
+}
+
+#products header * {
+    font-weight: 500;
+}
+
+#products header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5rem;
+}
+
+#products header button {
+    border: 1px solid dodgerblue;
+    color: dodgerblue;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0.6rem 2rem;
+}
+
+
+#products section.customer-number {
+    margin-top: 3rem;
+}
+
+#products section.customer-number,
+#products section.customer-number article div {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+#products form {
+    display: flex;
+    justify-content: start;
+    gap: 5rem;
+}
+
+#products form section {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+#products form section:last-child {
+    background: #002aff25;
+    position: relative;
+}
+#products form section #variantsContainer .variant label{
+margin-top: 1rem;
+}
+
+
+
+#products form section input,
+#products form section textarea , #products form section button,
+#products .product-image-lable {
+    border-radius: 10px;
+    width: 100%;
+    background: #f3f4f4;
+    padding: 1rem;
+    width: 400px;
+    max-width: 100%;
+    resize: none;
+}
+
+#products form button {
+    width: 100%;
+    color: #fff;
+    background: #0a102b !important;
+}
+
+#products #variantsContainer label {
+    display: block;
+}
+
+#products #variantsContainer .product-image-lable {
+    position: relative;
+    top: 65px;
+}
+
+
+
+/* Variant container */
+#variantsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem; /* space between variants */
+    margin-top: 1rem;
+}
+
+/* Each variant box */
+#variantsContainer .variant {
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-bottom: 1px solid #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Variant header */
+#variantsContainer .variant h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e40af;
+}
+
+/* Labels */
+#variantsContainer .variant label {
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+    display: block;
+}
+
+#variantsContainer .variant div.field {
+    margin-top: 1rem;
+}
+
+/* Inputs */
+#variantsContainer .variant input,
+#variantsContainer .variant textarea {
+    border-radius: 8px;
+    width: 100%;
+    max-width: 100%;
+    background: #fff;
+    padding: 0.8rem;
+    border: 1px solid #cbd5e1;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+#variantsContainer .product-image-lable {
+    margin-top: 0;
+}
+#variantsContainer .variant button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #f87171;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: 0.2s;
+}
+
+#variantsContainer .variant button:hover {
+    background: #ef4444;
+}

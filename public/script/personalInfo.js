@@ -27,7 +27,7 @@ form.addEventListener("submit", async (e) => {
 
   const formData = new FormData(form);
   const method = isEditing ? "PATCH" : "POST";
-  const url = isEditing ? "/account/personalinfo/edit" : "/account/personalinfo/add";
+  const url = isEditing ? "/personalinfo/" : "/personalinfo/";
 
   try {
     let proceed = true;

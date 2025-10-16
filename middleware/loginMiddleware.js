@@ -1,9 +1,9 @@
-function toLogin(req, res, next) {
+function requireAuth(req, res, next) {
 	if (!req.session?.user) return res.redirect("/login");
 	next();
 }
 
-function toHome(req, res, next) {
+function redirectIfAuthenticated (req, res, next) {
 	if (req.session?.user) return res.redirect("/");
 	next();
 }
@@ -13,4 +13,4 @@ function noCache(req, res, next) {
 	next();
 }
 
-export { toHome, toLogin, noCache };
+export { redirectIfAuthenticated , requireAuth, noCache };

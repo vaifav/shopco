@@ -135,7 +135,7 @@ editAddress.forEach((btn) => {
 		document.getElementById("houseName").value = address.houseName;
 		document.getElementById("street").value = address.street;
 
-		handleAddressSubmit(formAddress, `/account/manageaddress/edit/${id}`, "PATCH", formOverlay);
+		handleAddressSubmit(formAddress, `/address/${id}`, "PATCH", formOverlay);
 	});
 });
 
@@ -159,7 +159,7 @@ deleteAddress.forEach((btn) => {
 		if (!confirmResult.isConfirmed) return;
 
 		try {
-			const res = await fetch(`/account/manageaddress/delete/${id}`, {
+			const res = await fetch(`/address/${id}`, {
 				method: "DELETE",
 				headers: { "Content-Type": "application/json" },
 			});
@@ -198,5 +198,5 @@ deleteAddress.forEach((btn) => {
 
 addNewAddress.addEventListener("click", async () => {
 	formOverlay.classList.add("active");
-	handleAddressSubmit(formAddress, `/account/manageaddress/add`, "POST", formOverlay);
+	handleAddressSubmit(formAddress, `/address/`, "POST", formOverlay);
 });

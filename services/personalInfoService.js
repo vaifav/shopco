@@ -57,3 +57,4 @@ const updatePersonalInfo = async (data, userId, file = "") => {
 };
 
 export { getPersonalInfo, createPersonalInfo, updatePersonalInfo };
+// zod 
