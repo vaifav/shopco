@@ -1,0 +1,163 @@
+#customers * {
+    color: black;
+}
+
+#customers header * {
+    font-weight: 500;
+}
+
+#customers header {
+    display: flex;
+    justify-content: space-between;
+}
+
+#customers header button {
+    border: 1px solid dodgerblue;
+    color: dodgerblue;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0.6rem 2rem;
+}
+
+#customers section.customer-number {
+    margin-top: 3rem;
+}
+
+#customers section.customer-number,
+#customers section.customer-number article div {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+#customers section.customer-number article {
+    padding: 1rem;
+    border-radius: 10px;
+    min-width: 200px;
+    max-width: 400px;
+    box-shadow: -1px 2px 6px 2px #00000017;
+}
+
+#customers section.customer-number article div {
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    gap: 0;
+
+    * {
+        font-weight: 600;
+    }
+
+    & svg {
+        height: 1rem;
+    }
+}
+
+#customers section.customer-number article h3 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+#customers section.customer-number article p {
+    font-size: 0.7rem;
+    color: #6A717F;
+}
+
+#customers .customer-list {
+    margin-top: 2rem;
+}
+
+#customers .customer-list table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+#customers .customer-list thead {
+    background: #f1f5f9;
+}
+
+#customers .customer-list th,
+#customers .customer-list td {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 14px;
+
+}
+
+#customers .customer-list th {
+    font-weight: 600;
+    color: #475569;
+}
+
+#customers .customer-list tbody tr {
+    border-bottom: 1px solid #e2e8f0;
+    width: 100%;
+}
+
+#customers .customer-list tbody tr:hover {
+    background-color: #f9fafb;
+    cursor: pointer;
+}
+
+#customers .customer-list .status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+#customers .customer-list .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+#customers .customer-list .active .dot {
+    background-color: #22c55e;
+}
+
+#customers .customer-list .inactive .dot {
+    background-color: #ef4444;
+}
+
+#customers .customer-list .vip .dot {
+    background-color: #facc15;
+}
+
+#customers .customer-list .actions svg {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #475569;
+    font-size: 16px;
+    position: relative;
+    left: 1rem;
+}
+
+#customers .customer-list svg {
+    stroke: #475569;
+    height: 20px;
+}
+
+#customers .pagination {
+    display: flex;
+    justify-content: space-between;
+}
+
+#customers .pagination a,span.btn {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    gap: 1rem;
+    border: 1px solid #D1D5DB;
+    margin-top: 2rem;
+}
+
+#customers .pagination .btn {
+    display: inline-block;
+}

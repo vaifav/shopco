@@ -2,13 +2,19 @@ import { verifyPassword } from "../auth/passwordAuth.js";
 import userModel from "../models/signupModel.js";
 
 const checkUser = async ({ email, password }) => {
-	const user = await userModel.findOne({ email });
-	if (!user) return false;
+	try {
+		const user = await userModel.findOne({ email }).select('+password');
+console.log("user.password:", user);
+		if (!user) return false;
 
-	const isCorrectPassword = await verifyPassword(user.password, password);
-	if (!isCorrectPassword) return false;
+		const isCorrectPassword = await verifyPassword(user.password, password);
+		if (!isCorrectPassword) return false;
 
-	return user;
+		return user;
+	} catch (error) {
+		console.log(error);
+		throw new Error(error.message);
+	}
 };
 
 export default checkUser;

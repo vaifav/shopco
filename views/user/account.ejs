@@ -45,7 +45,7 @@
           <form class="overlay-form" enctype="multipart/form-data">
             <div class="form-input-container">
               <div class="figure">
-                <label for="profile"><img src="<%= personalInfo ? `${personalInfo.avatar}`: 'images/icons/account.svg' %>" alt="avatar"></label>
+                <label for="profile" class="profile-label"><img src="<%= personalInfo ? `${personalInfo.avatar}`: 'images/icons/account.svg' %>" alt="avatar"></label>
                 <input type="file" name="profile" id="profile">
               </div>
               <button type="button"><img src="images/icons/edit.svg" alt="edit">Edit Profile</button>

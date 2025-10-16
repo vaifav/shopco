@@ -6,6 +6,8 @@ const getLogin = async (req, res) => {
 
 const postLogin = async (req, res) => {
 	try {
+		console.log(req.body);
+		
 		const user = await checkUser(req.body);
 		if (!user) return res.render("user/login", { error: "Invalid Credentials" });
 		req.session.user = {

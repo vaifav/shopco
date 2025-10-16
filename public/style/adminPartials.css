@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    color: white;
+    list-style: none;
+    font-weight: 400;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: transparent;
+    font-family: "Montserrat", sans-serif;
+}
+
+.wrapper {
+    padding: 0rem 2rem;
+}
+
+.wrapper.header {
+    position: relative;
+    background: #070B1D;
+}
+
+.header header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: fit-content;
+    padding-block: 1.5rem;
+}
+
+.header nav,
+.header nav ul {
+    display: flex;
+    align-items: center;
+    width: 60%;
+    gap: 1rem;
+}
+
+.header nav.icons {
+    width: fit-content;
+    justify-content: center;
+    gap: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.header nav form {
+    width: 60%;
+    background: #0a102b;
+    padding-block: 0.5rem;
+    padding-inline-start: 1rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header nav label {
+    position: relative;
+    top: 2px;
+}
+
+.header h1 {
+    font-weight: 900;
+}
+
+.header ::placeholder {
+    color: #909090;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.header .profile {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    height: inherit;
+    margin-left: 1rem;
+}
+
+.header .profile figure {
+    height: 30px;
+    width: 30px;
+    background: #e5e5e5;
+    border-radius: 40px;
+}
+
+button:hover,
+input[type="submit"] {
+    cursor: pointer;
+}

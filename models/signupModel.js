@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
+		isVisitors: {
+			type: Boolean,
+			default: true,
+		},
 		role: {
 			type: String,
 			enum: ["user", "admin"],

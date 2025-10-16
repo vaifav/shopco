@@ -25,6 +25,7 @@ const createPersonalInfo = async (data, userId, file = "") => {
 		if (exists) throw new Error("Personal info already exists for this user");
 
 		const personalInfo = await personalInfoModel.create({ ...data, userId });
+		await userModel.findByIdAndUpdate(userId, { isVisitors: false });
 		return personalInfo;
 	} catch (error) {
 		console.error("Error creating personal Info:", error.message);

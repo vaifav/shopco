@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import passport from "./config/passportGoogle.js";
 import sessions from "./middleware/sessionMiddleware.js";
 import credential from "./routes/loginRoute.js";
+import admin from "./routes/adminRoute.js";
 
 dotenv.config();
 const app = express();
@@ -22,10 +23,9 @@ app.use(passport.initialize());
 
 app.use(credential);
 app.use("/", user);
+app.use('/admin',admin)
 
-app.get('/admin',(req,res)=>res.render("admin/adminDashboard"))
-
-app.get("/pagenotfound/", (req, res) => res.status(404).render("user/pagenotfound"));
-app.use("/", (req, res) => res.redirect("/pagenotfound/"));
+// app.get("/pagenotfound/", (req, res) => res.status(404).render("user/pagenotfound"));
+// app.use("/", (req, res) => res.redirect("/pagenotfound/"));
 
 app.listen(process.env.PORT);

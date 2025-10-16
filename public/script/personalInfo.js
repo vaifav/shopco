@@ -3,7 +3,7 @@ import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
 const edit = document.querySelector("#personal-information .form-input-container:first-child button");
 const submit = document.querySelector("#personal-information .form-input-container input[type='submit']");
 const form = document.querySelector("#personal-information form");
-const profileInput = document.getElementById("#personal-information profile");
+const profileInput = document.querySelector("#personal-information #profile");
 const profileImg = document.querySelector("#personal-information .figure label img");
 
 let isEditing = false;

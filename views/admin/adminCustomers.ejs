@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <title>Admin</title>
+  <style>
+    @import url("/style/adminPartials.css");
+    @import url("/style/admin.css");
+    @import url("/style/adminCustomers.css");
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <section class="nav wrapper">
+    <div class="container">
+      <nav>
+        <ul>
+          <li data-url="/admin" onclick="goToendPoint(this)"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> <b>Dashboard</b></a></li>
+          <li data-url="/admin/orders" onclick="goToendPoint(this)"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
+          <li data-url="/admin/products" onclick="goToendPoint(this)"><a href="#products"><i data-lucide="package"></i> <b>Products</b></a></li>
+          <li data-url="/admin/categories" onclick="goToendPoint(this)"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
+          <li class="active" data-url="/admin/customers" onclick="goToendPoint(this)"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li data-url="/admin/reports" onclick="goToendPoint(this)"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
+          <li data-url="/admin/coupons" onclick="goToendPoint(this)"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
+          <li data-url="/admin/inbox" onclick="goToendPoint(this)"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
+          <li data-url="/admin/transactions" onclick="goToendPoint(this)"><a href="#transactions"><i data-lucide="credit-card"></i> <b>Transactions</b></a></li>
+          <li data-url="/admin/adminrole" onclick="goToendPoint(this)"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
+        </ul>
+      </nav>
+      <div class="sections">
+        <section id="customers" class="show">
+          <header>
+            <h1>Customers</h1>
+            <button type="button">Export</button>
+          </header>
+          <section class="customer-number">
+            <article>
+              <div>
+                <h5>Total Customers</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3><%= totalCustomers %></h3>
+              <!-- <p>Last 7 days</p> -->
+            </article>
+            <article>
+              <div>
+                <h5>New Customers</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3><%= newCustomers %></h3>
+              <!-- <p>Last 7 days</p> -->
+            </article>
+            <article>
+              <div>
+                <h5>Visitors</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3><%= visitors %></h3>
+              <!-- <p>Last 7 days</p> -->
+            </article>
+          </section>
+          <section class="customer-list">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer Id</th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% customers.forEach(cust => { %>
+                <tr data-userid="<%= cust.id %>">
+                  <td class="<%= cust.id %>-td"><%= `${cust.id.toString().slice(0,3).toUpperCase()}...${cust.id.toString().slice(-4).toUpperCase()}` %></td>
+                  <td class="<%= cust.id %>-td"><%= cust.name %></td>
+                  <td class="<%= cust.id %>-td"><%= cust.phone %></td>
+                  <td class="<%= cust.id %>-td" class="status <%= cust.isBlocked ? 'block' : 'active' %>"><span class="dot"></span> <%= cust.isBlocked ? "Blocked" : "Active" %> </td>
+                  <td class="actions"> <i data-lucide="trash-2"></i> </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+
+            <div class="pagination">
+              <% if (page > 1) { %>
+              <a href="?page=<%= page - 1 %>&limit=<%= limit %>"><i data-lucide="arrow-left"></i>Previous</a>
+              <% } else {%>
+              <a href="?page=<%= page - 1 %>&limit=<%= limit %>" style="visibility: hidden;"><i data-lucide="arrow-left"></i>Previous</a>
+              <% } %>
+
+              <span>
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                <% if (i === page) { %>
+                <span class="btn"><%= i %></span>
+                <% } else { %>
+                <a class="btn" href="?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
+                <% } %>
+                <% } %>
+              </span>
+
+              <% if (page < totalPages) { %>
+              <a href="?page=<%= page + 1 %>&limit=<%= limit %>">Next<i data-lucide="arrow-right"></i></a>
+              <% } else {%>
+              <a href="?page=<%= page + 1 %>&limit=<%= limit %>" style="visibility: hidden;">Next<i data-lucide="arrow-right"></i></a>
+              <% } %>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    const navItems = document.querySelectorAll(".container nav ul li");
+    const sections = document.querySelectorAll(".sections section");
+    const custTr = document.querySelectorAll(`#customers table tbody tr`)
+
+    navItems.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        navItems.forEach((i) => i.classList.remove("active"));
+        item.classList.add("active");
+
+        const link = item.querySelector("a");
+        const targetId = link.getAttribute("href").substring(1);
+      });
+    });
+
+    function goToendPoint(e) {
+      window.location.href = `${e.dataset.url}`;
+    }
+
+    custTr.forEach((tr) => {
+      tr.addEventListener("click", (e) => {
+        const tds = tr.querySelectorAll("td");
+        const lastTd = tds[tds.length - 1];
+        if (lastTd.contains(e.target)) return;
+        window.location.href = `/admin/customers/${tr.dataset.userid}`;
+      });
+    });
+
+    lucide.createIcons();
+  </script>
+</body>
+
+</html>
+
+<!--  <tbody>
+                <tr>
+                  <td>#CUST003</td>
+                  <td>Emily Davis</td>
+                  <td>+1234567890</td>
+                  <td>30</td>
+                  <td>4,600.00</td>
+                  <td class="status vip"><span class="dot"></span> VIP</td>
+                  <td class="actions"> <i data-lucide="trash-2"></i> </td>
+                </tr>
+              </tbody> -->

@@ -1,0 +1,114 @@
+.nav.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-inline: 0;
+}
+
+div.container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.container nav,
+.container ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.container ul {
+    gap: 10px;
+    flex-shrink: initial;
+}
+
+.container nav {
+    background: #0a102b;
+    padding: 1rem;
+    padding-block: 2rem;
+}
+
+.container ul li {
+    transition: background 0.2s;
+    padding: 1rem 1rem;
+    border-radius: 10px;
+
+    & a {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+}
+
+.container ul li:hover {
+    background: #ffffff;
+}
+
+.container ul b {
+    transition: color 0.2s;
+    margin-right: 3rem;
+}
+
+.container ul a svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 1.5;
+    stroke: #fff;
+    transition: stroke 0.2s;
+}
+
+.container ul li:hover svg {
+    stroke: #5A607F;
+}
+
+.container ul li:hover b {
+    color: #5A607F;
+}
+
+.container div.image-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    & div.avatar {
+        background: #edebeb;
+        height: 40px;
+        width: 40px;
+        border-radius: 50px;
+    }
+
+    & div.avatar img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: inherit;
+    }
+
+    h5 {
+        font-weight: 500;
+        font-size: 1rem;
+    }
+}
+
+div.sections {
+    flex-grow: 1;
+    padding: 2rem 3rem;
+}
+
+.container ul li.active {
+    background: #ffffff;
+}
+
+.container ul li.active b {
+    transition: color 0.2s;
+}
+
+.container ul li.active svg {
+    stroke: #5A607F;
+}
+
+.container ul li.active b {
+    color: #5A607F;
+}
