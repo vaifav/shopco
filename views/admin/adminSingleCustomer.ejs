@@ -66,13 +66,16 @@
                 </p>
                 <p>
                 <h5>Email Address</h5>
-                <p>randhirppl@gmail.com</p>
+                <p><%= data.email %></p>
 
                 <h5>Phone</h5>
-                <p>+91 8804789764</p>
+                <p><%= data.phone %></p>
 
                 <h5>Status</h5>
-                <p class="status <%= data.isBlocked ? 'block' : 'active' %>"><span class="dot"></span> <%= data.isBlocked ? "Blocked" : "Active" %> </p>
+                <p class="status <%= data.isBlocked ? 'inactive' : 'active' %>">
+                  <span class="dot"></span>
+                  <%= data.isBlocked ? "Blocked" : "Active" %>
+                </p>
               </section>
 
             </div>
@@ -117,9 +120,7 @@
       window.location.href = `${e.dataset.url}`;
     }
 
-
     lucide.createIcons();
   </script>
-</body>
 
 </html>

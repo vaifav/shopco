@@ -89,7 +89,7 @@
     font-weight: bold;
 }
 
-#customers .customer-details-container .status.blocked {
+#customers .customer-details-container .status.inactive {
     color: red;
     font-weight: bold;
 }

@@ -115,16 +115,35 @@
     border-radius: 50%;
 }
 
-#customers .customer-list .active .dot {
-    background-color: #22c55e;
+#customers .customer-list .active {
+    color: #22c55e;
+
+    & .dot {
+        background-color: #22c55e;
+    }
+
 }
 
-#customers .customer-list .inactive .dot {
-    background-color: #ef4444;
+#customers .customer-list .inactive  {
+    color: #ff7262;
+     & .dot {
+        background-color: #ff7262;
+    }
 }
 
-#customers .customer-list .vip .dot {
-    background-color: #facc15;
+#customers .customer-list .vip  {
+    color: #facc15;
+    & .dot {
+        background-color: #facc15;
+    }
+}
+
+#customers .customer-list .actions .block-svg {
+    stroke: #ff7262;
+}
+
+#customers .customer-list .actions .active-svg {
+    stroke: #22c55e;
 }
 
 #customers .customer-list .actions svg {
@@ -147,7 +166,8 @@
     justify-content: space-between;
 }
 
-#customers .pagination a,span.btn {
+#customers .pagination a,
+span.btn {
     display: flex;
     align-items: center;
     padding: 0.5rem 1rem;

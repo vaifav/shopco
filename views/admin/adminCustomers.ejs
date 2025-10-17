@@ -78,12 +78,21 @@
               </thead>
               <tbody>
                 <% customers.forEach(cust => { %>
-                <tr data-userid="<%= cust.id %>">
+                <tr data-id="<%= cust.id %>">
                   <td class="<%= cust.id %>-td"><%= `${cust.id.toString().slice(0,3).toUpperCase()}...${cust.id.toString().slice(-4).toUpperCase()}` %></td>
                   <td class="<%= cust.id %>-td"><%= cust.name %></td>
                   <td class="<%= cust.id %>-td"><%= cust.phone %></td>
-                  <td class="<%= cust.id %>-td" class="status <%= cust.isBlocked ? 'block' : 'active' %>"><span class="dot"></span> <%= cust.isBlocked ? "Blocked" : "Active" %> </td>
-                  <td class="actions"> <i data-lucide="trash-2"></i> </td>
+                  <td class="<%= cust.id %>-td status <%= cust.isBlocked ? 'inactive' : 'active' %>">
+                    <span class="dot"></span>
+                    <%= cust.isBlocked ? "Blocked" : "Active" %>
+                  </td>
+                  <td class="actions">
+                    <% if (!cust.isBlocked) { %>
+                    <i data-lucide="trash-2" data-toggle-block-id="<%= cust.id %>" data-isblocked="<%= cust.isBlocked %>" class="block-svg"></i>
+                    <% } else {%>
+                    <i data-lucide="shield-check" data-toggle-block-id="<%= cust.id %>" data-isblocked="<%= cust.isBlocked %>" class="active-svg"></i>
+                    <% } %>
+                  </td>
                 </tr>
                 <% }) %>
               </tbody>
@@ -118,10 +127,10 @@
     </div>
   </section>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module" src="/script/admin/adminCustomers.js"></script>
   <script>
     const navItems = document.querySelectorAll(".container nav ul li");
     const sections = document.querySelectorAll(".sections section");
-    const custTr = document.querySelectorAll(`#customers table tbody tr`)
 
     navItems.forEach((item) => {
       item.addEventListener("click", (e) => {
@@ -138,30 +147,7 @@
     function goToendPoint(e) {
       window.location.href = `${e.dataset.url}`;
     }
-
-    custTr.forEach((tr) => {
-      tr.addEventListener("click", (e) => {
-        const tds = tr.querySelectorAll("td");
-        const lastTd = tds[tds.length - 1];
-        if (lastTd.contains(e.target)) return;
-        window.location.href = `/admin/customers/${tr.dataset.userid}`;
-      });
-    });
-
-    lucide.createIcons();
   </script>
 </body>
 
 </html>
-
-<!--  <tbody>
-                <tr>
-                  <td>#CUST003</td>
-                  <td>Emily Davis</td>
-                  <td>+1234567890</td>
-                  <td>30</td>
-                  <td>4,600.00</td>
-                  <td class="status vip"><span class="dot"></span> VIP</td>
-                  <td class="actions"> <i data-lucide="trash-2"></i> </td>
-                </tr>
-              </tbody> -->

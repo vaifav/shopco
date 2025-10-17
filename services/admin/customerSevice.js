@@ -29,7 +29,6 @@ async function customerDetails(page = 1, limit = 10) {
 		const personalInfos = await personalInfoModel
 			.find()
 			.populate({ path: "userId", select: "isBlocked role email -_id", match: { role: "user" } })
-			// .populate({ path: "address", select: "state city country houseName pin street -_id" })
 			.skip(skip)
 			.limit(limit)
 			.lean();
@@ -91,7 +90,6 @@ const singleCustomer = async (userId) => {
 				pin: personalInfo.address.pin,
 				street: personalInfo.address.street,
 			},
-			
 		};
 
 		return data;
@@ -101,4 +99,21 @@ const singleCustomer = async (userId) => {
 	}
 };
 
-export { customerDetails, singleCustomer };
+const blockOrUnblockCustomer = async (id, { isBlocked }) => {
+	try {
+		if (typeof isBlocked !== "boolean") throw new Error("Only Boolean is allowed");
+
+		const personalInfo = await personalInfoModel.findOne({ _id: id });
+		const userId = personalInfo.userId;
+		const update = await userModel.findOneAndUpdate({ _id: userId }, { $set: { isBlocked } });
+
+		if (!update) throw new Error("Customer not found or update failed");
+		const user = await userModel.findOne({ _id: userId });
+		return { isBlocked: user.isBlocked, personalInfo };
+	} catch (error) {
+		console.error("Error ", error);
+		return { error: "Failed to update" };
+	}
+};
+
+export { customerDetails, singleCustomer, blockOrUnblockCustomer };
