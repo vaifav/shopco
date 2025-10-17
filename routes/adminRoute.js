@@ -8,8 +8,4 @@ admin.get("/", dashboard);
 admin.get("/customers", getCustomers);
 admin.get("/customers/:userId", getSingleCustomer);
 
-admin.get("/product/add", (req, res) => {
-	res.render("admin/adminAddProducts");
-});
-
 export default admin;
