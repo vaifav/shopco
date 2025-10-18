@@ -1,0 +1,20 @@
+ .pagination {
+     display: flex;
+     justify-content: space-between;
+ }
+
+ .pagination a,
+ span.btn {
+     display: flex;
+     align-items: center;
+     padding: 0.5rem 1rem;
+     border-radius: 5px;
+     font-size: 0.8rem;
+     gap: 1rem;
+     border: 1px solid #D1D5DB;
+     margin-top: 2rem;
+ }
+
+ .pagination .btn {
+     display: inline-block;
+ }

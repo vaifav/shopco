@@ -124,15 +124,17 @@
 
 }
 
-#customers .customer-list .inactive  {
+#customers .customer-list .inactive {
     color: #ff7262;
-     & .dot {
+
+    & .dot {
         background-color: #ff7262;
     }
 }
 
-#customers .customer-list .vip  {
+#customers .customer-list .vip {
     color: #facc15;
+
     & .dot {
         background-color: #facc15;
     }
@@ -159,25 +161,4 @@
 #customers .customer-list svg {
     stroke: #475569;
     height: 20px;
-}
-
-#customers .pagination {
-    display: flex;
-    justify-content: space-between;
-}
-
-#customers .pagination a,
-span.btn {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-size: 0.8rem;
-    gap: 1rem;
-    border: 1px solid #D1D5DB;
-    margin-top: 2rem;
-}
-
-#customers .pagination .btn {
-    display: inline-block;
 }
