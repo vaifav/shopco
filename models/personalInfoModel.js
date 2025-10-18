@@ -54,6 +54,10 @@ const personalInfoSchema = new mongoose.Schema(
 			ref: "address",
 			required: true,
 		},
+		isBlocked: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{
 		timestamps: true,

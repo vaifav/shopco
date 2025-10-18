@@ -2,11 +2,20 @@ import mongoose from "mongoose";
 import personalInfoModel from "../../models/personalInfoModel.js";
 import userModel from "../../models/signupModel.js";
 
-async function customerDetails(page = 1, limit = 10) {
+async function customerDetails(page = 1, limit = 5, createdAt = -1, search = "", isBlocked = "") {
 	const data = {};
+	const query = {};
+
+	if (search && search.trim() !== "") {
+		const regex = new RegExp("^" + search, "i");
+		query.$or = [{ fname: { $regex: regex } }, { phone: { $regex: regex } }];
+	}
+	if (isBlocked === true || isBlocked === false) {
+		query.isBlocked = isBlocked;
+	}
 
 	try {
-		const total = await personalInfoModel.countDocuments();
+		const total = await personalInfoModel.countDocuments(query);
 		const totalPages = Math.ceil(total / limit);
 		if (page < 1) page = 1;
 		if (page > totalPages) page = totalPages || 1;
@@ -27,8 +36,9 @@ async function customerDetails(page = 1, limit = 10) {
 		}
 
 		const personalInfos = await personalInfoModel
-			.find()
+			.find(query)
 			.populate({ path: "userId", select: "isBlocked role email -_id", match: { role: "user" } })
+			.sort({ createdAt })
 			.skip(skip)
 			.limit(limit)
 			.lean();
@@ -41,6 +51,8 @@ async function customerDetails(page = 1, limit = 10) {
 		data.totalPages = totalPages;
 		data.totalCustomers = await personalInfoModel.countDocuments();
 		data.visitors = await userModel.countDocuments({ isVisitor: true });
+		data.blockedUser = await userModel.countDocuments({ isBlocked: true, role: "user" });
+		data.activeUser = await userModel.countDocuments({ isBlocked: false, role: "user" });
 		data.newCustomers = await countUsersBetweenDates("2025-10-16", "2025-10-16");
 		data.data = filteredInfos.map((info) => ({
 			id: info._id,
@@ -105,9 +117,16 @@ const blockOrUnblockCustomer = async (id, { isBlocked }) => {
 
 		const personalInfo = await personalInfoModel.findOne({ _id: id });
 		const userId = personalInfo.userId;
-		const update = await userModel.findOneAndUpdate({ _id: userId }, { $set: { isBlocked } });
+		const updateUserModel = await userModel.findOneAndUpdate(
+			{ _id: userId },
+			{ $set: { isBlocked } }
+		);
+		const updateInfoModel = await personalInfoModel.findOneAndUpdate(
+			{ _id: id },
+			{ $set: { isBlocked } }
+		);
 
-		if (!update) throw new Error("Customer not found or update failed");
+		if (!updateUserModel || !updateInfoModel) throw new Error("Customer not found or update failed");
 		const user = await userModel.findOne({ _id: userId });
 		return { isBlocked: user.isBlocked, personalInfo };
 	} catch (error) {

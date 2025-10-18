@@ -3,7 +3,6 @@ lucide.createIcons();
 const custTr = document.querySelectorAll(`#customers table tbody tr`);
 const block = document.querySelectorAll("#customers table tbody tr td.actions svg");
 
-
 custTr.forEach((tr) => {
 	tr.addEventListener("click", (e) => {
 		const tds = tr.querySelectorAll("td");
@@ -64,7 +63,7 @@ block.forEach((btn) => {
 				showConfirmButton: false,
 				timer: 1500,
 			});
-			window.location.href = `/admin/customers`;
+			window.location.pathname = `/admin/customers`;
 		} catch (error) {
 			console.error("Error", error.stack);
 			await Swal.fire({
@@ -77,3 +76,75 @@ block.forEach((btn) => {
 	});
 });
 
+function addOrUpdateQueryParams(params) {
+	const url = new URL(window.location.href);
+	for (const key in params) {
+		if (params.hasOwnProperty(key)) {
+			url.searchParams.set(key, params[key]);
+		}
+	}
+	window.history.pushState({}, "", url.toString());
+	window.location.reload();
+}
+
+document.querySelectorAll(".pagination .pagination-btn").forEach((btn) => {
+	btn.addEventListener("click", (e) => {
+		e.preventDefault();
+		const page = btn.getAttribute("data-page");
+		const limit = btn.getAttribute("data-limit");
+		addOrUpdateQueryParams({
+			page,
+			limit,
+		});
+	});
+});
+
+const createdAtFilterToggle = () => {
+	let val = -1;
+	const arrow = document.querySelector("#customers .customer-search .up-down");
+
+	arrow.addEventListener("click", () => {
+		const url = new URL(window.location.href);
+		let val = parseInt(url.searchParams.get("createdAt")) || -1;
+
+		val = val === -1 ? 1 : -1;
+		url.searchParams.set("createdAt", val);
+
+		window.location.href = url.toString();
+	});
+};
+
+createdAtFilterToggle();
+const searchForm = document.querySelector("#customers .customer-search form");
+const activeCustomerFilter = document.querySelector(
+	"#customers .customer-search .search-container .active-block-filter ul li.active"
+);
+const blockedCustomerFilter = document.querySelector(
+	"#customers .customer-search .search-container .active-block-filter ul li.blocked"
+);
+const totalCustomerFilter = document.querySelector(
+	"#customers .customer-search .search-container .active-block-filter ul li.total"
+);
+
+activeCustomerFilter.addEventListener("click", () => {
+	addOrUpdateQueryParams({ isBlocked: false });
+});
+
+blockedCustomerFilter.addEventListener("click", () => {
+	addOrUpdateQueryParams({ isBlocked: true });
+});
+
+totalCustomerFilter.addEventListener("click", () => {
+	const url = new URL(window.location.href);
+	const isBlocked = url.searchParams.get("isBlocked");
+	if (isBlocked) {
+		url.searchParams.delete("isBlocked");
+		window.location.href = url.toString();
+	}
+});
+
+searchForm.addEventListener("submit", (e) => {
+	e.preventDefault();
+	let search = searchForm.querySelector("input#adn-search").value;
+	addOrUpdateQueryParams({ search: search });
+});

@@ -9,14 +9,22 @@ const countries = Country.getAllCountries();
 
 async function getCustomers(req, res) {
 	let page = parseInt(req.query.page) || 1;
-	let limit = parseInt(req.query.limit) || 10;
+	let limit = parseInt(req.query.limit) || 5;
+	let createdAt = parseInt(req.query.createdAt) || -1;
+	let search = req.query.search;
+	let isBlocked = "";
+	if (req.query.isBlocked) {
+		isBlocked = req.query.isBlocked === "true" ? true : false;
+	}
 
-	const data = await customerDetails(page, limit);
+	const data = await customerDetails(page, limit, createdAt, search, isBlocked);
 	res.render("admin/adminCustomers", {
 		customers: data.data,
 		totalCustomers: data.totalCustomers,
 		visitors: data.visitors,
 		newCustomers: data.newCustomers,
+		blockedUser: data.blockedUser,
+		activeUser: data.activeUser,
 		page: data.page,
 		totalPages: data.totalPages,
 		limit: data.limit,
@@ -39,7 +47,7 @@ const updateCustomerBlockStatus = async (req, res) => {
 		const { isBlocked } = await blockOrUnblockCustomer(req.params.id, req.body);
 		return res.status(201).json({
 			success: true,
-			message: isBlocked ? "Block customer": "Unblock customer",
+			message: isBlocked ? "Block customer" : "Unblock customer",
 		});
 	} catch (error) {
 		console.log(error);

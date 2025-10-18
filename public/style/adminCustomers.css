@@ -63,7 +63,7 @@
 }
 
 #customers .customer-list {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 #customers .customer-list table {
@@ -161,4 +161,69 @@
 #customers .customer-list svg {
     stroke: #475569;
     height: 20px;
+}
+
+#customers .customer-search .search-container button.active-block-details,
+#customers .customer-search .search-container button.active-block-filter {
+    position: relative;
+}
+
+#customers .customer-search .search-container ul {
+    background-color: #F9FAFB;
+    padding-block: 1rem;
+    border-radius: 5px;
+    border: 1px solid #D1D5DB;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+#customers .customer-search .search-container ul li {
+    border-radius: 0;
+    font-weight: 300;
+    cursor: pointer;
+    background: transparent;
+    text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+}
+
+#customers .customer-search .search-container button.active-block-filter ul li{
+    padding-block: 0;
+    margin-bottom: 0.5rem;
+}
+#customers .customer-search .search-container button.active-block-filter ul li:first-child {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#customers .customer-search .search-container ul li.active {
+    color: #22c55e;
+
+    & svg {
+        stroke: #1fa851;
+    }
+}
+
+#customers .customer-search .search-container ul li.blocked {
+    color: #ff7262;
+
+    & svg {
+        stroke: #f8604f
+    }
+}
+
+#customers .customer-search .search-container button.active-block-details:hover ul {
+    display: flex;
+}
+
+#customers .customer-search .search-container button.active-block-filter:hover ul {
+    display: flex;
 }

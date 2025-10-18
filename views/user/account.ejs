@@ -22,7 +22,7 @@
       <nav>
         <div class="image-container">
           <div class="avatar">
-            <img src="<%= personalInfo ? `${personalInfo.avatar}`: 'images/icons/account.svg' %>" alt="avatar">
+            <img src="<%= personalInfo?.avatar ? `${personalInfo.avatar}`: 'images/icons/account.svg' %>" alt="avatar">
           </div>
           <h5>Hello👋 <%=  personalInfo ?  personalInfo.fname: ''  %></h5>
         </div>
@@ -45,7 +45,7 @@
           <form class="overlay-form" enctype="multipart/form-data">
             <div class="form-input-container">
               <div class="figure">
-                <label for="profile" class="profile-label"><img src="<%= personalInfo ? `${personalInfo.avatar}`: 'images/icons/account.svg' %>" alt="avatar"></label>
+                <label for="profile" class="profile-label"><img src="<%= personalInfo?.avatar ? `${personalInfo.avatar}`: 'images/icons/account.svg' %>" alt="avatar"></label>
                 <input type="file" name="profile" id="profile">
               </div>
               <button type="button"><img src="images/icons/edit.svg" alt="edit">Edit Profile</button>

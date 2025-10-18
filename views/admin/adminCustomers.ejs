@@ -13,6 +13,7 @@
     @import url("/style/admin.css");
     @import url("/style/adminCustomers.css");
     @import url("/style/pagination.css");
+    @import url("/style/search.css");
   </style>
 </head>
 
@@ -66,6 +67,31 @@
               <!-- <p>Last 7 days</p> -->
             </article>
           </section>
+          <section class="admin-search customer-search">
+            <form>
+              <input type="text" name="adn-search" id="adn-search" placeholder="search">
+              <label for="adn-search"><i data-lucide="search"></i></label>
+            </form>
+            <div class="search-container">
+              <button class="up-down"><i data-lucide="arrow-down-up"></i></button>
+              <button class="active-block-filter"><i data-lucide="list-filter"></i>
+                <ul>
+                  <li>Filter By</li>
+                  <li class="total"><i data-lucide="chevrons-right"></i> Total Customers</li>
+                  <li class="active"><i data-lucide="chevrons-right"></i> Active Customers</li>
+                  <li class="blocked"><i data-lucide="chevrons-right"></i> Blocked Customers</li>
+                </ul>
+              </button>
+              <button class="active-block-details"><i data-lucide="chart-no-axes-column"></i>
+                <ul>
+                  <li> <i data-lucide="users"></i>Total Customers <i data-lucide="arrow-big-right-dash"></i><%= totalCustomers  %></li>
+                  <li class="active"> <i data-lucide="user-round-check"></i> Active Customers <i data-lucide="arrow-big-right-dash"></i><%= activeUser %></li>
+                  <li class="blocked"> <i data-lucide="user-round-x"></i> Blocked Customers <i data-lucide="arrow-big-right-dash"></i><%= blockedUser  %></li>
+                </ul>
+              </button>
+
+            </div>
+          </section>
           <section class="customer-list">
             <table>
               <thead>
@@ -101,9 +127,9 @@
 
             <div class="pagination">
               <% if (page > 1) { %>
-              <a href="?page=<%= page - 1 %>&limit=<%= limit %>"><i data-lucide="arrow-left"></i>Previous</a>
+              <a href="" class="pagination-btn" data-page="<%= page - 1 %>" data-limit="<%= limit %>"><i data-lucide="arrow-left"></i>Previous</a>
               <% } else {%>
-              <a href="?page=<%= page - 1 %>&limit=<%= limit %>" style="visibility: hidden;"><i data-lucide="arrow-left"></i>Previous</a>
+              <a href="" style="visibility: hidden;"><i data-lucide="arrow-left"></i>Previous</a>
               <% } %>
 
               <span>
@@ -111,15 +137,15 @@
                 <% if (i === page) { %>
                 <span class="btn"><%= i %></span>
                 <% } else { %>
-                <a class="btn" href="?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
+                <a class="btn pagination-btn" href="" data-page="<%= i %>" data-limit="<%= limit %>"><%= i %></a>
                 <% } %>
                 <% } %>
               </span>
 
               <% if (page < totalPages) { %>
-              <a href="?page=<%= page + 1 %>&limit=<%= limit %>">Next<i data-lucide="arrow-right"></i></a>
+              <a href="" class="pagination-btn" data-page="<%= page + 1 %>" data-limit="<%= limit %>">Next<i data-lucide="arrow-right"></i></a>
               <% } else {%>
-              <a href="?page=<%= page + 1 %>&limit=<%= limit %>" style="visibility: hidden;">Next<i data-lucide="arrow-right"></i></a>
+              <a href="" style="visibility: hidden;">Next<i data-lucide="arrow-right"></i></a>
               <% } %>
             </div>
           </section>

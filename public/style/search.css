@@ -1,0 +1,55 @@
+
+.admin-search {
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-search form {
+    width: 25%;
+    position: relative;
+
+    & input {
+        background-color: #F9FAFB;
+        width: 100%;
+        padding-block: 1rem;
+        padding-inline: 0.8rem;
+        border-radius: 5px;
+        border: 1px solid #D1D5DB;
+    }
+
+    & label {
+        display: block;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+
+}
+
+.admin-search ::placeholder {
+    color: #6A717F;
+    font-size: 1rem;
+}
+
+.admin-search div {
+    display: flex;
+    gap: 1rem;
+}
+
+.admin-search div button {
+    background-color: #F9FAFB;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #D1D5DB;
+}
+
+.admin-search svg {
+    stroke: #4B5563;
+}
