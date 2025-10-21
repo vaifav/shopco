@@ -1,0 +1,150 @@
+#category.add-or-edit-category-section * {
+    color: black;
+}
+
+#category.add-or-edit-category-section header * {
+    font-weight: 500;
+}
+
+#category.add-or-edit-category-section header {
+    display: flex;
+    padding-bottom: 2rem;
+}
+
+#category.add-or-edit-category-section form {
+    max-width: 1000px;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px -1px 11px 5px rgba(0, 0, 0, 0.1);
+}
+
+#category.add-or-edit-category-section form .form-input-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 5rem;
+}
+
+#category.add-or-edit-category-section form .form-input-container>div {
+    flex: 1;
+    min-width: 0;
+}
+
+#category.add-or-edit-category-section form .form-input-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+#category.add-or-edit-category-section form .form-input-container input,
+#category.add-or-edit-category-section form .form-input-container select {
+    box-sizing: border-box;
+    background: #f9fafb;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    height: 45px;
+}
+
+#category.add-or-edit-category-section form .form-input-container input:focus,
+#category.add-or-edit-category-section form .form-input-container select:focus {
+    box-shadow: 0 0 10px 1px rgba(7, 11, 29, 0.1);
+    ;
+    outline: none;
+}
+
+#category.add-or-edit-category-section form .form-input-container.image-upload {
+    align-items: flex-end;
+    margin-top: 1.5rem;
+}
+
+#category.add-or-edit-category-section form .form-input-container.image-upload div {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+#category.add-or-edit-category-section form .form-input-container.image-upload input#category-image {
+    visibility: hidden;
+    position: absolute;
+}
+
+#category.add-or-edit-category-section form .form-input-container label.add-image-label {
+    width: 100%;
+    height: 150px;
+    position: relative;
+    margin-top: 0.5rem;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    overflow: visible; 
+}
+
+#category.add-or-edit-category-section form .form-input-container label.add-image-label img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    border-radius: inherit;
+    transition: all 0.2s ease-in-out;
+    z-index: 1; 
+}
+
+#category.add-or-edit-category-section form .form-input-container label.add-image-label img:hover {
+    width: auto; 
+    max-width: 500px; 
+    height: auto;
+    max-height: 500px; 
+    object-fit: contain; 
+    position: absolute; 
+    z-index: 10; 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    border: 1px solid #ffffff;
+}
+
+#category.add-or-edit-category-section form .form-input-container label.add-image-label:hover {
+    border-color: #070b1d;
+    background: #f4f5f6;
+}
+
+#category.add-or-edit-category-section form .form-input-container label.add-image-label svg {
+    stroke: #6b7280;
+    stroke-width: 2px;
+    width: 30px;
+    height: 30px;
+    transition: stroke 0.2s;
+}
+
+#category.add-or-edit-category-section form .form-input-container label.add-image-label:hover svg {
+    stroke: #070b1d;
+}
+
+#category.add-or-edit-category-section form .form-input-container input[type="submit"] {
+    flex-grow: 0;
+    width: 200px;
+    background: #070b1d;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    align-self: flex-start;
+    height: auto;
+}
+
+#category.add-or-edit-category-section form .form-input-container input[type="submit"]:hover {
+    background: #0a102b;
+}

@@ -1,12 +1,26 @@
 import cloudinary from "../config/cloudinary.js";
 import streamifier from "streamifier";
 
-function uploadProfilePic(buffer, userId) {
+function uploadSingleImage(buffer, id, folder, gravity = null) {
+	const transformation = [
+		{
+			width: 500,
+			height: 500,
+			crop: "limit",
+			quality: "auto:best",
+		},
+	];
+
+	if (gravity !== null) {
+		transformation[0].crop = "fill";
+		transformation[0].gravity = gravity;
+	}
+
 	const options = {
-		folder: "profiles",
-		public_id: userId,
+		folder,
+		public_id: id,
 		overwrite: true,
-		transformation: [{ width: 500, height: 500, crop: "fill", gravity: "face" }],
+		transformation: transformation,
 	};
 	return new Promise((resolve, reject) => {
 		const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
@@ -17,4 +31,4 @@ function uploadProfilePic(buffer, userId) {
 	});
 }
 
-export { uploadProfilePic };
+export { uploadSingleImage };

@@ -1,5 +1,5 @@
 import { createPersonalInfo, updatePersonalInfo } from "../../services/personalInfoService.js";
-import { uploadProfilePic } from "../../services/cloudinaryService.js";
+import { uploadSingleImage } from "../../services/cloudinaryService.js";
 
 const addPersonalInfo = async (req, res) => {
 	try {
@@ -42,7 +42,7 @@ const editPersonlInfo = async (req, res) => {
 
 		if (file) {
 			try {
-				const result = await uploadProfilePic(file.buffer, userId);
+				const result = await uploadSingleImage(file.buffer, userId, "profiles", "face");
 				await updatePersonalInfo({ avatar: result.secure_url }, userId);
 			} catch (err) {
 				console.error("Avatar upload failed:", err.message);

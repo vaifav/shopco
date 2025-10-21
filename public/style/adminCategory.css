@@ -1,0 +1,184 @@
+#category * {
+    color: black;
+}
+
+#category header * {
+    font-weight: 500;
+}
+
+#category header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5rem;
+}
+
+#category header button {
+    border: 1px solid dodgerblue;
+    color: dodgerblue;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0.6rem 2rem;
+    display: flex;
+    align-items: center;
+
+    & svg {
+        stroke: dodgerblue;
+        margin-right: 0.5rem;
+    }
+}
+
+/* CONTAINER: .category-grid */
+.category-grid {
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 20px;
+    padding: 20px;
+    margin-top: 1rem;
+}
+
+/* CARD ITEM: article */
+.category-grid article {
+    width: 350px; 
+    min-width: 350px; 
+    margin: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    transition: transform 0.2s ease-in-out;
+    position: relative;
+}
+
+.category-grid article span:hover {
+    cursor: pointer;
+}
+
+.category-grid article figure img {
+    width: 100%; /* Will now be 350px */
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Image Container (figure) */
+.category-grid article figure {
+    margin: 0;
+    height: 250px;
+    overflow: hidden;
+    background-color: #e0f7fa;
+}
+
+/* Icon Button Container */
+.category-grid article .btns {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+}
+
+/* Individual Icon Button (span) */
+.category-grid article .btns span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.85);
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    & svg {
+        stroke: #333;
+    }
+    & svg.delete {
+        stroke:#ff7262 ;
+    }
+}
+
+/* Optional: Hover effect for interaction */
+.category-grid article .btns span:hover {
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Lucide Icon Size (adjust as needed for the <i/> element) */
+.category-grid article .btns i {
+    width: 18px;
+    height: 18px;
+}
+
+/* Text Content Container (div) - The last div in the article */
+.category-grid article>div:last-child {
+    padding: 16px 20px;
+}
+
+/* Category Title (Men) */
+.category-grid article>div:last-child p:first-child {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    color: #333;
+}
+
+/* Item Count (1249 items) */
+.category-grid article>div:last-child p:last-child {
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin: 0;
+    color: #6b6b6b;
+}
+
+
+#category .category-search .search-container button.active-block-details,
+#category .category-search .search-container button.active-block-filter {
+    position: relative;
+}
+
+#category .category-search .search-container ul {
+    background-color: #F9FAFB;
+    padding-block: 1rem;
+    border-radius: 5px;
+    border: 1px solid #D1D5DB;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+#category .category-search .search-container ul li {
+    border-radius: 0;
+    font-weight: 300;
+    cursor: pointer;
+    background: transparent;
+    text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+}
+
+#category .category-search .search-container button.active-block-filter ul li{
+    padding-block: 0;
+    margin-bottom: 0.5rem;
+}
+#category .category-search .search-container button.active-block-filter ul li:first-child {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#category .category-search .search-container button.active-block-details:hover ul {
+    display: flex;
+}
+
+#category .category-search .search-container button.active-block-filter:hover ul {
+    display: flex;
+}

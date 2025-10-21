@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <title>Admin</title>
+  <style>
+    @import url("/style/adminPartials.css");
+    @import url("/style/admin.css");
+    @import url("/style/swal.css");
+    @import url("/style/adminCategory.css");
+    @import url("/style/adminCategoryAdd.css");
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <section class="nav wrapper">
+    <div class="container">
+      <nav id="admin-nav">
+        <ul>
+          <li data-url="/admin"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> <b>Dashboard</b></a></li>
+          <li data-url="/admin/orders"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
+          <li data-url="/admin/products"><a href="#products"><i data-lucide="package"></i> <b>Products</b></a></li>
+          <li class="active" data-url="/admin/categories"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
+          <li data-url="/admin/customers"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li data-url="/admin/reports"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
+          <li data-url="/admin/coupons"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
+          <li data-url="/admin/inbox"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
+          <li data-url="/admin/transactions"><a href="#transactions"><i data-lucide="credit-card"></i> <b>Transactions</b></a></li>
+          <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
+        </ul>
+      </nav>
+      <div class="sections">
+        <section id="category" class="show add-or-edit-category-section">
+          <header>
+            <h1>Add Category</h1>
+          </header>
+          <form class="overlay-form" enctype="multipart/form-data">
+            <div class="form-input-container">
+              <div>
+                <label for="categoryName">Category Name</label>
+                <input type="text" name="categoryName" id="categoryName" placeholder="Enter Category Name" value="">
+              </div>
+              <div>
+                <label for="parent-category">Parent Category (If Sub Category)</label>
+                <select name="parentCategory" id="parent-category">
+                  <option value="" selected disabled hidden>Select one</option>
+                  <% parentCategories.forEach(opt => { %>
+                  <option value="<%= opt._id %>"><%= opt.categoryName %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+            <div class="form-input-container">
+              <div>
+                <label for="description">Description</label>
+                <input type="text" name="description" id="description" placeholder="A brief description" value="">
+              </div>
+              <div>
+                <label for="meta-title">Meta Title</label>
+                <input type="text" name="metaTitle" id="meta-title" placeholder="Meta Title for SEO" value="">
+              </div>
+            </div>
+            <div class="form-input-container">
+              <div>
+                <label for="meta-description">Meta Description</label>
+                <input type="text" name="metaDescription" id="meta-description" placeholder="Meta Description for SEO" value="">
+              </div>
+              <div>
+                <div>
+                  <label for="sort-order">Sort Order</label>
+                  <input type="number" name="sortOrder" id="sort-order" placeholder="e.g., 100" value="" min="0">
+                </div>
+              </div>
+            </div>
+            <div class="form-input-container image-upload">
+              <div>
+                <input type="submit" value="Add Category">
+              </div>
+              <div>
+                <label for="category-image">Image</label>
+                <label class="add-image-label" for="category-image">
+                  <i data-lucide="circle-plus" width="30" height="30"></i>
+                </label>
+                <input type="file" name="categoryImage" id="category-image">
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </section>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/script/admin/adminNav.js"></script>
+  <script type="module" src="/script/admin/adminCategoryAdd.js"></script>
+</body>
+
+</html>

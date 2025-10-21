@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <title>Admin</title>
+  <style>
+    @import url("/style/adminPartials.css");
+    @import url("/style/admin.css");
+    @import url("/style/adminCategory.css");
+    @import url("/style/search.css");
+    @import url("/style/pagination.css");
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <section class="nav wrapper">
+    <div class="container">
+      <nav id="admin-nav">
+        <ul>
+          <li data-url="/admin"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> <b>Dashboard</b></a></li>
+          <li data-url="/admin/orders"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
+          <li data-url="/admin/products"><a href="#products"><i data-lucide="package"></i> <b>Products</b></a></li>
+          <li class="active" data-url="/admin/categories"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
+          <li data-url="/admin/customers"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li data-url="/admin/reports"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
+          <li data-url="/admin/coupons"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
+          <li data-url="/admin/inbox"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
+          <li data-url="/admin/transactions"><a href="#transactions"><i data-lucide="credit-card"></i> <b>Transactions</b></a></li>
+          <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
+        </ul>
+      </nav>
+      <div class="sections">
+        <section id="category" class="show">
+          <header>
+            <h1>Category</h1>
+            <button type="button"><i data-lucide="plus"></i> Add Category</button>
+          </header>
+
+          <section class="admin-search category-search">
+            <form>
+              <input type="text" name="adn-search" id="adn-search" placeholder="search">
+              <label for="adn-search"><i data-lucide="search"></i></label>
+            </form>
+            <div class="search-container">
+              <button class="up-down"><i data-lucide="arrow-down-up"></i></button>
+              <button class="active-block-filter"><i data-lucide="list-filter"></i>
+                <ul>
+                  <li>Filter By</li>
+                  <li class="active"><i data-lucide="chevrons-right"></i> Active Category</li>
+                  <li class="blocked"><i data-lucide="chevrons-right"></i> Blocked Category</li>
+                </ul>
+              </button>
+            </div>
+          </section>
+
+
+          <section class="category-grid">
+            <% data.forEach(category => { %>
+            <article>
+              <figure><img src="<%= category.categoryImage %>" alt=""></figure>
+              <div class="btns">
+                <% if (category.isBlocked) { %>
+                <span class="unlock" data-id="<%= category.id  %>"><i class="unlock" data-id="<%= category.id %>" data-lucide="unlock"></i></span>
+                <% } else {%>
+                <span class="edit" data-id="<%= category.id  %>"><i data-lucide="edit"></i></span>
+                <span class="delete" data-id="<%= category.id  %>"><i class="delete" data-lucide="trash-2"></i></span>
+                <% } %>
+              </div>
+              <div>
+                <p><%= category.categoryName %></p>
+                <p>1249 items</p>
+              </div>
+            </article>
+            <% }) %>
+          </section>
+          <div class="pagination">
+            <% if (page > 1) { %>
+            <a href="" class="pagination-btn" data-page="<%= page - 1 %>" data-limit="<%= limit %>"><i data-lucide="arrow-left"></i>Previous</a>
+            <% } else {%>
+            <a href="" style="visibility: hidden;"><i data-lucide="arrow-left"></i>Previous</a>
+            <% } %>
+
+            <span>
+              <% for(let i = 1; i <= totalPages; i++) { %>
+              <% if (i === page) { %>
+              <span class="btn disable"><%= i %></span>
+              <% } else { %>
+              <a class="btn pagination-btn" href="" data-page="<%= i %>" data-limit="<%= limit %>"><%= i %></a>
+              <% } %>
+              <% } %>
+            </span>
+
+            <% if (page < totalPages) { %>
+            <a href="" class="pagination-btn" data-page="<%= page + 1 %>" data-limit="<%= limit %>">Next<i data-lucide="arrow-right"></i></a>
+            <% } else {%>
+            <a href="" style="visibility: hidden;">Next<i data-lucide="arrow-right"></i></a>
+            <% } %>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module" src="/script/admin/adminCategory.js"></script>
+  <script src="/script/admin/adminNav.js"></script>
+</body>
+
+</html>

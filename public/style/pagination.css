@@ -18,3 +18,7 @@
  .pagination .btn {
      display: inline-block;
  }
+
+ .pagination .btn.disable {
+     background: #5e779c3d;
+ }
