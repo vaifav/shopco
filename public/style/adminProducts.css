@@ -1,0 +1,226 @@
+#products * {
+    color: black;
+}
+
+#products header * {
+    font-weight: 500;
+}
+
+#products header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5rem;
+}
+
+#products header button {
+    border: 1px solid dodgerblue;
+    color: dodgerblue;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0.6rem 2rem;
+    display: flex;
+    align-items: center;
+
+    & svg {
+        stroke: dodgerblue;
+        margin-right: 0.5rem;
+    }
+}
+
+/* --- Base Table and Header Styling --- */
+#products .product-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #fff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#products .product-list-table th {
+    padding: 15px 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+/* Aligning the Product header text to the left */
+#products .product-list-table .header-product {
+    text-align: left;
+    padding-left: 20px;
+}
+
+#products .product-list-table .header-actions {
+    text-align: center;
+}
+
+
+/* --- Table Row (Body) Styling --- */
+#products .product-row {
+    height: 70px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+#products .product-row:hover {
+    background-color: #f9f9f9;
+}
+
+#products .product-row td {
+    padding: 10px 15px;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* --- CONSOLIDATED PRODUCT INFO CELL STYLING --- */
+#products table {
+    margin-top: 1rem;
+}
+
+#products .product-info-cell-consolidated {
+    text-align: left;
+    padding-left: 20px;
+
+    /* Use Flexbox to align the image and text horizontally */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#products .product-thumbnail {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+#products .product-name {
+    font-weight: 600;
+}
+
+/* --- Data Cells Styling --- */
+
+#products .stock-cell,
+#products .color-cell,
+#products .price-cell {
+    text-align: center;
+}
+
+#products .rating-cell {
+    color: #888;
+    font-weight: 600;
+}
+
+/* --- Action Buttons Styling --- */
+
+#products .action-cell {
+    width: 120px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#products .action-btn {
+    width: 34px;
+    height: 34px;
+    margin: 0 4px;
+    padding: 0;
+
+    border: 1px solid transparent;
+    background-color: transparent;
+    border-radius: 6px;
+
+    cursor: pointer;
+    transition: all 0.2s;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Lucide Icon Specific Styling */
+#products .action-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+}
+
+
+#products .action-btn.delete-btn {
+    background: #fcdfda;
+    transition: all 0.5s;
+
+    & svg {
+        stroke: #ff7262;
+    }
+}
+
+#products .action-btn.edit-btn {
+    background: rgba(30, 143, 255, 0.171);
+transition: all 0.5s;
+    & svg {
+        stroke: dodgerblue;
+    }
+}
+
+#products .action-btn.delete-btn:hover {
+    border: 1px solid #ff7262;
+}
+
+#products .action-btn.edit-btn:hover {
+    border: 1px solid dodgerblue;
+}
+
+#products .products-search .search-container button.active-block-details,
+#products .products-search .search-container button.active-block-filter {
+    position: relative;
+}
+
+#products .products-search .search-container ul {
+    background-color: #F9FAFB;
+    padding-block: 1rem;
+    border-radius: 5px;
+    border: 1px solid #D1D5DB;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+#products .products-search .search-container ul li {
+    border-radius: 0;
+    font-weight: 300;
+    cursor: pointer;
+    background: transparent;
+    text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+}
+
+#products .products-search .search-container button.active-block-filter ul li{
+    padding-block: 0;
+    margin-bottom: 0.5rem;
+}
+#products .products-search .search-container button.active-block-filter ul li:first-child {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#products .products-search .search-container button.active-block-details:hover ul {
+    display: flex;
+}
+
+#products .products-search .search-container button.active-block-filter:hover ul {
+    display: flex;
+}

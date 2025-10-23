@@ -1,4 +1,3 @@
-import Joi from "joi";
 import {
 	createCategory,
 	deleteCategory,
@@ -9,20 +8,7 @@ import {
 } from "../../services/admin/categoryService.js";
 import { uploadSingleImage } from "../../services/cloudinaryService.js";
 
-const addCategorySchema = Joi.object({
-	categoryName: Joi.string().trim().min(2).max(100).required().messages({
-		"string.min": "Category name must be at least 2 characters",
-		"string.max": "Category name cannot exceed 100 characters",
-		"any.required": "Category name is required",
-		"string.empty": "Category name cannot be empty",
-	}),
-	parentCategory: Joi.string().hex().length(24).allow(null, ""),
-	description: Joi.string().trim().max(500).allow(null, ""),
-	categoryImage: Joi.string().trim().default("").allow(null, ""),
-	metaTitle: Joi.string().trim().max(60).allow(null, ""),
-	metaDescription: Joi.string().trim().max(160).allow(null, ""),
-	sortOrder: Joi.number().integer().min(0).default(0),
-});
+import { categoryJoiSchema } from "../../validation/addCategoryJoiValidation.js";
 
 const category = async (req, res) => {
 	const page = parseInt(req.query.page) || 1;
@@ -64,7 +50,7 @@ const getCategoryEditPage = async (req, res) => {
 const addCategory = async (req, res) => {
 	const userId = req.session.user.userId;
 	const file = req.file;
-	const { error, value } = addCategorySchema.validate(req.body, {
+	const { error, value } = categoryJoiSchema.validate(req.body, {
 		allowUnknown: true,
 		abortEarly: true,
 	});

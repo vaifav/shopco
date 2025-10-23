@@ -1,20 +1,26 @@
-// middleware/authMiddleware.js
+function requireAdminAuth(req, res, next) {
+	if (!req.session?.user) {
+		return res.redirect("/login");
+	}
+	const userRole = req.session.user.role;
 
-export const isAuthenticated = (req, res, next) => {
-  if (req.session.user || req.user) {
-    return next();
-  }
-  res.redirect("/login");
-};
+	if (userRole === "admin") {
+		next();
+	} else {
+		console.log(`Access denied: Admin tried to access admin route.`);
+		return res.redirect("/");
+	}
+}
 
-export const authorizeRoles = (...roles) => {
-  return (req, res, next) => {
-    const role = req.session.user?.role || req.user?.role;
-    if (!role) return res.redirect("/login");
+function requireAuth(req, res, next) {
+	if (!req.session?.user) return res.redirect("/login");
 
-    if (!roles.includes(role)) {
-      return res.status(403).render("user/noaccess"); // or redirect to a "no access" page
-    }
-    next();
-  };
-};
+	if (req.session.user.role === "user") {
+		next();
+	} else {
+		console.log(`Access denied: Admin tried to access user route.`);
+		return res.redirect("/admin");
+	}
+}
+
+export { requireAuth, requireAdminAuth };

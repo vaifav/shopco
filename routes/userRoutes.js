@@ -3,7 +3,7 @@ import home from "../controllers/user/homeController.js";
 import { account } from "../controllers/user/accountContoller.js";
 import { addAddress, editAddress, removeAddress } from "../controllers/user/addressController.js";
 import { addPersonalInfo, editPersonlInfo } from "../controllers/user/personalInfoController.js";
-import upload from "../middleware/multerMiddleware.js";
+import { upload } from "../middleware/multerMiddleware.js";
 
 const user = Router();
 

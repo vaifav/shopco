@@ -59,12 +59,14 @@
     <section class="home-product-collections">
       <h1>NEW ARRAIVALS</h1>
       <div class="container">
-        <article>
+       
+     <% for( let i = 0; i < 4; i++ ) { %>
+      <article>
           <figure>
-            <img src="images/images/image_7_289872.png" alt="T-SHIRT">
+            <img src="<%= products[i].image %>" alt="T-SHIRT">
           </figure>
           <div>
-            <h4>T-SHIRT WITH TAPE DETAILS</h4>
+            <h4><%= products[i].productName %></h4>
             <div class="icons">
               <div class="star">
                 <img src="images/icons/star.svg" alt="star">
@@ -77,72 +79,10 @@
               </div>
               <img src="images/icons/heart.svg" alt="heart">
             </div>
-            <h3>$200 <del>$250</del></h3>
+            <h3>$<%= products[i].price %> <del>$<%= products[i].discountedPrice %></del></h3>
           </div>
         </article>
-        <article>
-          <figure>
-            <img src="images/images/image_7_289872.png" alt="T-SHIRT">
-          </figure>
-          <div>
-            <h4>T-SHIRT WITH TAPE DETAILS</h4>
-            <div class="icons">
-              <div class="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                &nbsp;
-                5 / 5
-              </div>
-              <img src="images/icons/heart.svg" alt="heart">
-            </div>
-            <h3>$200 <del>$250</del></h3>
-          </div>
-        </article>
-        <article>
-          <figure>
-            <img src="images/images/image_7_289872.png" alt="T-SHIRT">
-          </figure>
-          <div>
-            <h4>T-SHIRT WITH TAPE DETAILS</h4>
-            <div class="icons">
-              <div class="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                &nbsp;
-                5 / 5
-              </div>
-              <img src="images/icons/heart.svg" alt="heart">
-            </div>
-            <h3>$200 <del>$250</del></h3>
-          </div>
-        </article>
-        <article>
-          <figure>
-            <img src="images/images/image_7_289872.png" alt="T-SHIRT">
-          </figure>
-          <div>
-            <h4>T-SHIRT WITH TAPE DETAILS</h4>
-            <div class="icons">
-              <div class="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                &nbsp;
-                5 / 5
-              </div>
-              <img src="images/icons/heart.svg" alt="heart">
-            </div>
-            <h3>$200 <del>$250</del></h3>
-          </div>
-        </article>
+     <% } %>
       </div>
       <a href=""><button>view all</button></a>
     </section>
@@ -152,12 +92,13 @@
     <section class="home-product-collections">
       <h1>TOP SELLING</h1>
       <div class="container">
-        <article>
+<% for( let i = 2; i < 6; i++ ) { %>
+      <article>
           <figure>
-            <img src="images/images/image_7_289872.png" alt="T-SHIRT">
+            <img src="<%= products[i].image %>" alt="T-SHIRT">
           </figure>
           <div>
-            <h4>T-SHIRT WITH TAPE DETAILS</h4>
+            <h4><%= products[i].productName %></h4>
             <div class="icons">
               <div class="star">
                 <img src="images/icons/star.svg" alt="star">
@@ -170,72 +111,10 @@
               </div>
               <img src="images/icons/heart.svg" alt="heart">
             </div>
-            <h3>$200 <del>$250</del></h3>
+            <h3>$<%= products[i].price %> <del>$<%= products[i].discountedPrice %></del></h3>
           </div>
         </article>
-        <article>
-          <figure>
-            <img src="images/images/image_7_289872.png" alt="T-SHIRT">
-          </figure>
-          <div>
-            <h4>T-SHIRT WITH TAPE DETAILS</h4>
-            <div class="icons">
-              <div class="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                &nbsp;
-                5 / 5
-              </div>
-              <img src="images/icons/heart.svg" alt="heart">
-            </div>
-            <h3>$200 <del>$250</del></h3>
-          </div>
-        </article>
-        <article>
-          <figure>
-            <img src="images/images/image_7_289872.png" alt="T-SHIRT">
-          </figure>
-          <div>
-            <h4>T-SHIRT WITH TAPE DETAILS</h4>
-            <div class="icons">
-              <div class="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                &nbsp;
-                5 / 5
-              </div>
-              <img src="images/icons/heart.svg" alt="heart">
-            </div>
-            <h3>$200 <del>$250</del></h3>
-          </div>
-        </article>
-        <article>
-          <figure>
-            <img src="images/images/image_7_289872.png" alt="T-SHIRT">
-          </figure>
-          <div>
-            <h4>T-SHIRT WITH TAPE DETAILS</h4>
-            <div class="icons">
-              <div class="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                &nbsp;
-                5 / 5
-              </div>
-              <img src="images/icons/heart.svg" alt="heart">
-            </div>
-            <h3>$200 <del>$250</del></h3>
-          </div>
-        </article>
+     <% } %>
       </div>
       <a href=""><button>view all</button></a>
     </section>
@@ -246,24 +125,20 @@
       <h1>BROWSE BY CATEGORY</h1>
       <div class="container">
         <div class="top">
+          <% for( let t = 3; t <= 4; t++ ) { %>
           <figure>
-            <img src="images/images/image_11_8dcd6d.png" alt="">
-            <figcaption>MEN</figcaption>
+            <img src="<%= category[t].categoryImage %>" alt="">
+            <figcaption><%= category[t].categoryName%></figcaption>
           </figure>
-          <figure>
-            <img src="images/images/image_12_e2cbfb.png" alt="">
-            <figcaption>WOMEN</figcaption>
-          </figure>
+          <% } %>
         </div>
         <div class="bottom">
+           <% for( let b = 1; b <= 2; b++ ) { %>
           <figure>
-            <img src="images/images/image_13_a73b29.png" alt="">
-            <figcaption>FORMAL</figcaption>
+            <img src="<%= category[b].categoryImage %>" alt="">
+            <figcaption><%= category[b].categoryName%></figcaption>
           </figure>
-          <figure>
-            <img src="images/images/Remove background project.png" alt="">
-            <figcaption>KIDS</figcaption>
-          </figure>
+          <% } %>
         </div>
       </div>
     </section>

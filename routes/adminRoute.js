@@ -15,13 +15,24 @@ import {
 
 import { dashboard } from "../controllers/admin/dashboardContoller.js";
 import { Router } from "express";
-import upload from "../middleware/multerMiddleware.js";
+import { upload, uploadMultipleVariantImages } from "../middleware/multerMiddleware.js";
+import {
+	addProduct,
+	getProductAdd,
+	getProductEdit,
+	productListPage,
+} from "../controllers/admin/productContoller.js";
 
 const admin = Router();
 
 admin.get("/", dashboard);
 admin.get("/categories", category);
 admin.get("/customers", getCustomers);
+admin.get("/products", productListPage);
+
+admin.route("/products/action").get(getProductAdd).post(uploadMultipleVariantImages, addProduct);
+
+admin.get("/products/action/:id", getProductEdit);
 
 admin
 	.route("/categories/action")
@@ -36,4 +47,5 @@ admin
 
 admin.route("/customers/:id").get(getSingleCustomer).patch(updateCustomerBlockStatus);
 
+admin.use((req, res) => res.status(404).render("user/pagenotfound"));
 export default admin;

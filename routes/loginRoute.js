@@ -20,5 +20,6 @@ authenticate.get(
 );
 
 authenticate.get("/logout", logout);
+authenticate.get("/admin/logout", logout);
 
 export default authenticate;
