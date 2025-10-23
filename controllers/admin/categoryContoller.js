@@ -82,7 +82,7 @@ const addCategory = async (req, res) => {
 		console.error("Error adding category:", error.message);
 		return res.status(500).json({
 			success: false,
-			message: `A server error occurred while processing the request.`,
+			message:  error.message,
 		});
 	}
 };
@@ -111,7 +111,7 @@ const editCategory = async (req, res) => {
 		console.error("Error updating category:", error.message);
 		return res.status(500).json({
 			success: false,
-			message: `A server error occurred while processing the request.`,
+			message:  error.message,
 		});
 	}
 };
@@ -128,7 +128,7 @@ const removeCategory = async (req, res) => {
 		console.error("Error updating category:", error.message);
 		return res.status(500).json({
 			success: false,
-			message: `A server error occurred while processing the request.`,
+			message:  error.message,
 		});
 	}
 };

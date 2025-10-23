@@ -28,6 +28,11 @@ const getCategoryInfo = async (_id) => {
 
 const createCategory = async (data, createdBy) => {
 	try {
+		const categoryNameExists = await categoryModel.findOne({
+			categoryName: data.categoryName.trim(),
+		});
+		if (categoryNameExists) throw new Error(`${data.categoryName} category exists`);
+
 		const category = await categoryModel.create({ ...data, createdBy });
 		return category;
 	} catch (error) {
@@ -40,6 +45,10 @@ const updateCategory = async (data, categoryId, updatedBy) => {
 	try {
 		const category = await categoryModel.findOne({ _id: new mongoose.Types.ObjectId(categoryId) });
 		if (!category) throw new Error("Category Not Found");
+
+		if (data.categoryName && category.categoryName === data.categoryName) {
+			throw new Error(`${data.categoryName} category exists`);
+		}
 
 		if (data.createdBy && category.createdBy !== data.createdBy) {
 			throw new Error("Not allowed to modify !");
@@ -115,7 +124,7 @@ const getAllCategoryDetails = async (
 				parentCategory: items.parentCategory,
 				description: items.description,
 				categoryImage: items.categoryImage,
-				isBlocked: items.isBlocked
+				isBlocked: items.isBlocked,
 			};
 		});
 

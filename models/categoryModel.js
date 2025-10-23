@@ -9,6 +9,7 @@ const categorySchema = new mongoose.Schema(
 			minlength: [2, "Category name must be at least 2 characters"],
 			maxlength: [100, "Category name cannot exceed 100 characters"],
 			index: true,
+			unique: true,
 		},
 
 		parentCategory: {
@@ -60,7 +61,7 @@ const categorySchema = new mongoose.Schema(
 		isBlocked: {
 			type: mongoose.Schema.Types.Boolean,
 			default: false,
-			required: true
+			required: true,
 		},
 	},
 	{
