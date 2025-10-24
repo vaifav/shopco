@@ -14,6 +14,9 @@
 #products.add-or-edit-products-section form {
     display: flex;
     gap: 3rem;
+    border-radius: 10px;
+    box-shadow: 0px 0 20px 0px #0000003f;
+    padding: 1.5rem;
 }
 
 #products.add-or-edit-products-section form .left,
@@ -23,8 +26,6 @@
     gap: 2rem;
     width: 50%;
     padding: 1rem;
-    border-radius: 10px;
-    box-shadow: 0px 0 20px 0px #0000003f;
     height: fit-content;
 }
 
@@ -110,59 +111,132 @@
 
 
 #products.add-or-edit-products-section form .input-container.preview-container label.preview.has-images {
-    border: 1px solid #d1d5db; 
+    border: 1px solid #d1d5db;
     background: #ffffff;
     display: flex;
-    flex-wrap: wrap; 
-    align-items: flex-start; 
+    flex-wrap: wrap;
+    align-items: flex-start;
     justify-content: flex-start;
-    padding: 10px; 
-    gap: 10px; 
+    padding: 10px;
+    gap: 10px;
 }
 
 #products.add-or-edit-products-section form .input-container.preview-container label.preview.has-images .upload-icon {
     display: none;
 }
 
-.preview-thumbnail {
-    position: relative;
-    width: 80px; 
-    height: 80px;
-    border-radius: 6px;
-    overflow: hidden;
-    border: 1px solid #e5e7eb;
+#products.add-or-edit-products-section form .preview.upload-trigger {
+    justify-content: start !important;
+    gap: 1rem;
+    padding-inline: 1rem;
+
+    & svg {
+        margin: 0 auto;
+    }
 }
 
-.preview-thumbnail img {
+#products.add-or-edit-products-section form .preview.upload-trigger.imageActive {
+    border: 3px solid #374151 !important;
+}
+
+#products.add-or-edit-products-section form .preview.upload-trigger.imageActive div {
+    width: 110px;
+    height: 110px;
+    border-radius: 5px;
+
+    & img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: inherit;
+    }
+}
+
+#products.add-or-edit-products-section .cropper-modal-overlay {
+    padding: 2rem;
+    position: fixed; 
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    background: rgba(0, 0, 0, 0.7); 
+    z-index: 9999; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none; 
+}
+
+#products.add-or-edit-products-section .cropper-modal-content {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    width: 90%;
+    max-width: 650px; 
+    overflow: hidden; 
+    animation: fadeIn 0.3s ease-out;
+}
+
+#products.add-or-edit-products-section .modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+#products.add-or-edit-products-section .modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+}
+
+#products.add-or-edit-products-section .img-container {
+    padding: 20px;
+    max-height: 70vh; 
+    overflow: hidden;
+}
+
+#products.add-or-edit-products-section #cropperImage {
     display: block;
+    max-width: 100%;
 }
 
-.remove-thumbnail {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: #ef4444; 
-    color: white;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    line-height: 18px;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 700;
+#products.add-or-edit-products-section .modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end; 
+    gap: 10px;
+}
+
+#products.add-or-edit-products-section .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    z-index: 10;
-    transition: transform 0.1s ease;
+    font-weight: 500;
+    transition: background-color 0.2s;
 }
 
-.remove-thumbnail:hover {
-    transform: scale(1.1);
+#products.add-or-edit-products-section .btn-primary {
+    background-color: #000; 
+    color: #fff;
 }
 
-#products.add-or-edit-products-section form .input-container.preview-container label.preview .upload-icon {
-     display: block; 
-     pointer-events: none; 
+#products.add-or-edit-products-section .btn-primary:hover {
+    background-color: #333;
+}
+
+#products.add-or-edit-products-section .btn-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+#products.add-or-edit-products-section .btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }

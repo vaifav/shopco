@@ -110,3 +110,5 @@ profileInput.addEventListener("change", async(e) => {
   };
   reader.readAsDataURL(file);
 });
+
+
