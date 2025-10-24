@@ -32,3 +32,16 @@
 .custom-cancel-btn:hover {
     background-color: #0e0d0d !important;
 }
+
+
+div:where(.swal2-icon).swal2-warning {
+    & div {
+        color: #f8bb86 !important;
+    }
+}
+
+div:where(.swal2-icon).swal2-info {
+    & div {
+        color: dodgerblue !important;
+    }
+}

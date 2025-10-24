@@ -1,4 +1,10 @@
-import { getCategories, createProduct, getProducts, getProductEditDetails } from "../../services/admin/productService.js";
+import crypto from "crypto";
+import {
+	getCategories,
+	createProduct,
+	getProducts,
+	getProductEditDetails,
+} from "../../services/admin/productService.js";
 import { productJoiSchema } from "../../validation/addProductJoiValidation.js";
 import { uploadMultipleImages } from "../../services/cloudinaryService.js";
 
@@ -28,18 +34,19 @@ const getProductAdd = async (req, res) => {
 	}
 };
 
-const getProductEdit = async (req,res) => {
+const getProductEdit = async (req, res) => {
 	try {
 		const categories = await getCategories();
 		const product = await getProductEditDetails(req.params.id);
-		
+
 		return res.render("admin/adminProductsEdit", {
-			categories,product
+			categories,
+			product,
 		});
 	} catch (error) {
 		console.error("Error loading product Edit page:", error);
 	}
-}
+};
 
 const addProduct = async (req, res) => {
 	let { error, value: validatedProductData } = productJoiSchema.validate(req.body, {
@@ -64,19 +71,20 @@ const addProduct = async (req, res) => {
 	console.log(validatedProductData);
 
 	const files = req.files;
-	const variantsToProcess = validatedProductData.variants;
+	console.log(files);
+	
+	const variants = validatedProductData.variants;
 	const allVariantUploadPromises = [];
 	const productBaseName = validatedProductData.productName.toLowerCase();
 
 	try {
 		const MAX_VARIANTS = 10;
 		for (let i = 0; i < MAX_VARIANTS; i++) {
-			const fieldName = `variants[${i}][image]`;
-			const fileArray = files[fieldName];
+			const fileArray = files[`variants[${i}][image]`];
 
-			if (fileArray && fileArray.length > 0 && variantsToProcess[i]) {
+			if (fileArray && fileArray.length > 0 && variants[i]) {
 				const buffers = fileArray.map((file) => file.buffer);
-				const baseId = `${productBaseName}-v${i}`;
+				const baseId = `${productBaseName}-${crypto.randomUUID()}`;
 
 				allVariantUploadPromises.push(uploadMultipleImages(buffers, baseId, "productVariants"));
 			} else {
@@ -86,16 +94,13 @@ const addProduct = async (req, res) => {
 
 		const allVariantUploadResults = await Promise.all(allVariantUploadPromises);
 
-		variantsToProcess.forEach((variant, index) => {
+		variants.forEach((variant, index) => {
 			const uploadResults = allVariantUploadResults[index];
 			const secureUrls = uploadResults.map((result) => result.secure_url);
 			variant.images = secureUrls || [];
 		});
 
 		const newProduct = await createProduct(validatedProductData);
-
-		console.log(req.body);
-		console.log(validatedProductData);
 		return res.status(201).json({
 			success: true,
 			message: "Product and variants added successfully.",
@@ -108,4 +113,9 @@ const addProduct = async (req, res) => {
 		});
 	}
 };
-export { productListPage, getProductAdd,getProductEdit, addProduct };
+
+const editProduct = async (req, res) => {
+	console.log(req.body);
+	return res.redirect("/products");
+};
+export { productListPage, getProductAdd, getProductEdit, addProduct, editProduct };

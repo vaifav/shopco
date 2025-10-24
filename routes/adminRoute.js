@@ -18,6 +18,7 @@ import { Router } from "express";
 import { upload, uploadMultipleVariantImages } from "../middleware/multerMiddleware.js";
 import {
 	addProduct,
+	editProduct,
 	getProductAdd,
 	getProductEdit,
 	productListPage,
@@ -33,6 +34,7 @@ admin.get("/products", productListPage);
 admin.route("/products/action").get(getProductAdd).post(uploadMultipleVariantImages, addProduct);
 
 admin.get("/products/action/:id", getProductEdit);
+admin.patch("/products/action/:id", uploadMultipleVariantImages, editProduct);
 
 admin
 	.route("/categories/action")

@@ -98,10 +98,9 @@ const getProductEditDetails = async (_id) => {
 					foreignField: "_id",
 					as: "variants",
 				},
-			}
+			},
 		]);
-		console.log(products[0]);
-		
+
 		return products[0];
 	} catch (error) {
 		console.log(error.message);
@@ -153,6 +152,6 @@ const createProduct = async (data) => {
 	}
 };
 
-
+const updateProduct = async (_id, data) => {};
 
 export { getProducts, getCategories, getProductEditDetails, createProduct };

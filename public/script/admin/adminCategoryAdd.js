@@ -33,6 +33,16 @@ imageInput.addEventListener("change", async (e) => {
 form.addEventListener("submit", async (e) => {
 	e.preventDefault();
 	const formData = new FormData(form);
+	Swal.fire({
+			title: "Processing...",
+			text: "Please wait while we upload the image.",
+			icon: "info",
+			allowOutsideClick: false,
+			showConfirmButton: false,
+			willOpen: () => {
+				Swal.showLoading();
+			},
+		});
 	try {
 		const res = await fetch("/admin/categories/action/", {
 			method: "POST",
@@ -42,6 +52,7 @@ form.addEventListener("submit", async (e) => {
 		const result = await res.json();
 
 		if (!res.ok || !result.success) {
+			Swal.close()
 			await Swal.fire({
 				icon: "error",
 				title: "Failed!",
@@ -52,6 +63,7 @@ form.addEventListener("submit", async (e) => {
 			return;
 		}
 
+		Swal.close()
 		await Swal.fire({
 			icon: "success",
 			title: "Category Created!",
@@ -62,6 +74,7 @@ form.addEventListener("submit", async (e) => {
 		form.reset();
 		window.location.pathname = "/admin/categories/";
 	} catch (err) {
+		Swal.close()
 		console.error("Error :", err);
 		await Swal.fire({
 			icon: "error",

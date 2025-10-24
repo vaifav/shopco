@@ -10,13 +10,12 @@ const cropSaveBtn = document.getElementById("cropSaveBtn");
 const cropCancelBtn = document.getElementById("cropCancelBtn");
 
 let currentCropper = null;
-let currentFileInput = null; 
-let currentPreviewWrapper = null; 
-
+let currentFileInput = null;
+let currentPreviewWrapper = null;
 
 let variantIndex =
 	variantsContainer.children.length > 0 ? variantsContainer.children.length - 1 : -1;
-if (variantIndex === -1) variantIndex = 0; 
+if (variantIndex === -1) variantIndex = 0;
 
 const dataURLtoFile = (dataurl, filename) => {
 	const arr = dataurl.split(",");
@@ -30,11 +29,21 @@ const dataURLtoFile = (dataurl, filename) => {
 	return new File([u8arr], filename, { type: mime });
 };
 
-addVariantBtn.addEventListener("click", (e) => {
+addVariantBtn.addEventListener("click", async (e) => {
 	variantIndex++;
+	if (variantIndex >= 10) {
+		await Swal.fire({
+			icon: "warning",
+			title: "Variants Exceed!",
+			text: "You can't add variants more than 10...",
+			customClass: { confirmButton: "custom-confirm-btn" },
+			buttonsStyling: false,
+		});
+		return;
+	}
 	const div = document.createElement("div");
 	div.classList.add("variant-card");
-	div.dataset.variantIndex = variantIndex; 
+	div.dataset.variantIndex = variantIndex;
 
 	const varintHtml = `
         <h1>Variant <span class="variant-index-display">${variantIndex + 1}</span></h1>
@@ -73,7 +82,7 @@ addVariantBtn.addEventListener("click", (e) => {
           </div>
         </div>
         `;
-	div.innerHTML = varintHtml.trim(); 
+	div.innerHTML = varintHtml.trim();
 	variantsContainer.append(div);
 	if (typeof lucide !== "undefined" && lucide.createIcons) {
 		lucide.createIcons();
@@ -162,7 +171,7 @@ variantsContainer.addEventListener("click", (e) => {
 		}
 		setTimeout(() => {
 			currentCropper = new Cropper(cropperImageElement, {
-				aspectRatio: 1 / 1, 
+				aspectRatio: 1 / 1,
 				viewMode: 1,
 			});
 		}, 100);
@@ -206,7 +215,6 @@ cropSaveBtn.addEventListener("click", () => {
 	cropperModal.style.display = "none";
 });
 
-
 cropCancelBtn.addEventListener("click", () => {
 	if (currentCropper) {
 		currentCropper.destroy();
@@ -216,7 +224,6 @@ cropCancelBtn.addEventListener("click", () => {
 	}
 	cropperModal.style.display = "none";
 });
-
 
 formSubmit.addEventListener("submit", async (e) => {
 	e.preventDefault();
