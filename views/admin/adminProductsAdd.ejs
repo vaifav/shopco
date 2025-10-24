@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
   <title>Admin</title>
   <style>
     @import url("/style/adminPartials.css");
@@ -82,7 +83,6 @@
             </div>
             <div class="right">
               <div id="variantsContainer" class="variants">
-
                 <div class="variant-card" data-variant-index="0">
                   <h1>Variant <span class="variant-index-display">1</span></h1>
                   <div class="variant-input-container">
@@ -90,7 +90,7 @@
                       <label for="variants[0][image]">Images <span>( Only 4 Images are allowed )</span></label>
                       <input type="file" name="variants[0][image]" id="variants[0][image]" multiple accept="image/*" class="variant-image-input" style="display: none;">
                       <label for="variants[0][image]" class="preview upload-trigger">
-                        <i data-lucide="circle-plus" class="upload-icon"></i>
+                        <i data-lucide="circle-plus"></i>
                       </label>
                     </div>
 
@@ -122,6 +122,21 @@
                 </div>
               </div>
 
+              <div id="imageCropperModal" class="cropper-modal-overlay">
+                <div class="cropper-modal-content">
+                  <header class="modal-header">
+                    <h2>Crop Image</h2>
+                  </header>
+                  <div class="img-container">
+                    <img id="cropperImage">
+                  </div>
+                  <footer class="modal-footer">
+                    <button type="button" id="cropSaveBtn" class="btn btn-primary">Save Crop</button>
+                    <button type="button" id="cropCancelBtn" class="btn btn-secondary">Cancel</button>
+                  </footer>
+                </div>
+              </div>
+
               <div class="input-container">
                 <button type="button" id="addVariantBtn"><i data-lucide="plus"></i> <b>Add Variant</b></button>
               </div>
@@ -133,6 +148,7 @@
   </section>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="/script/admin/adminNav.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
   <script type="module" src="/script/admin/adminProductsAdd.js"></script>
 </body>
 
