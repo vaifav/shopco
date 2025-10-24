@@ -6,7 +6,7 @@ import {
 	getProductEditDetails,
 } from "../../services/admin/productService.js";
 import { productJoiSchema } from "../../validation/addProductJoiValidation.js";
-import { uploadMultipleImages } from "../../services/cloudinaryService.js";
+import { uploadSingleImage } from "../../services/cloudinaryService.js";
 
 const productListPage = async (req, res) => {
 	const page = parseInt(req.query.page) || 1;
@@ -72,9 +72,9 @@ const addProduct = async (req, res) => {
 
 	const files = req.files;
 	console.log(files);
-	
+
+	const variantImageUploadPromises = [];
 	const variants = validatedProductData.variants;
-	const allVariantUploadPromises = [];
 	const productBaseName = validatedProductData.productName.toLowerCase();
 
 	try {
@@ -83,24 +83,22 @@ const addProduct = async (req, res) => {
 			const fileArray = files[`variants[${i}][image]`];
 
 			if (fileArray && fileArray.length > 0 && variants[i]) {
-				const buffers = fileArray.map((file) => file.buffer);
-				const baseId = `${productBaseName}-${crypto.randomUUID()}`;
-
-				allVariantUploadPromises.push(uploadMultipleImages(buffers, baseId, "productVariants"));
-			} else {
-				allVariantUploadPromises.push(Promise.resolve([]));
+				variants[i].images = [];
+				const variantUploads = fileArray.map((file, index) => {
+					const public_id = `${productBaseName}-${crypto.randomUUID()}-v${index}`;
+					const promise = uploadSingleImage(file.buffer, public_id, "productVariants").then((result) =>
+						variants[i].images.push(result.secure_url)
+					);
+					return promise;
+				});
+				variantImageUploadPromises.push(...variantUploads);
 			}
 		}
-
-		const allVariantUploadResults = await Promise.all(allVariantUploadPromises);
-
-		variants.forEach((variant, index) => {
-			const uploadResults = allVariantUploadResults[index];
-			const secureUrls = uploadResults.map((result) => result.secure_url);
-			variant.images = secureUrls || [];
-		});
-
+		if (variantImageUploadPromises.length !== 0) {
+			await Promise.all(variantImageUploadPromises);
+		}
 		const newProduct = await createProduct(validatedProductData);
+
 		return res.status(201).json({
 			success: true,
 			message: "Product and variants added successfully.",
