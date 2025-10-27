@@ -22,6 +22,7 @@ import {
 	getProductAdd,
 	getProductEdit,
 	productListPage,
+	softDeleteProduct,
 } from "../controllers/admin/productContoller.js";
 
 const admin = Router();
@@ -35,6 +36,7 @@ admin.route("/products/action").get(getProductAdd).post(uploadMultipleVariantIma
 
 admin.get("/products/action/:id", getProductEdit);
 admin.patch("/products/action/:id", uploadMultipleVariantImages, editProduct);
+admin.delete("/products/action/:id", softDeleteProduct);
 
 admin
 	.route("/categories/action")

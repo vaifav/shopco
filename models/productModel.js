@@ -49,6 +49,10 @@ const productSchema = new mongoose.Schema(
 			type: [mongoose.Types.ObjectId],
 			ref: "variant",
 		},
+		isBlocked: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{
 		timestamps: true,

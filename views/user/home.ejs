@@ -59,9 +59,9 @@
     <section class="home-product-collections">
       <h1>NEW ARRAIVALS</h1>
       <div class="container">
-       
-     <% for( let i = 0; i < 4; i++ ) { %>
-      <article>
+
+        <% for( let i = 0; i < 4; i++ ) { %>
+        <article>
           <figure>
             <img src="<%= products[i].image %>" alt="T-SHIRT">
           </figure>
@@ -69,20 +69,22 @@
             <h4><%= products[i].productName %></h4>
             <div class="icons">
               <div class="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
+                <% for( let star = 1; star <= 5; star++ ) { %>
+                <% if (star <= products[i].rating) { %>
+                <i data-lucide="star" class="rating true"></i>
+                <% } else {%>
+                <i data-lucide="star" class="rating false"></i>
+                <% } %>
+                <% } %>
                 &nbsp;
-                5 / 5
+                <span><%= products[i].rating %> / 5</span>
               </div>
               <img src="images/icons/heart.svg" alt="heart">
             </div>
-            <h3>$<%= products[i].price %> <del>$<%= products[i].discountedPrice %></del></h3>
+            <h3><i data-lucide="indian-rupee" class="ruppee-icon"></i> <b><%= products[i].price %></b> <del> <i data-lucide="indian-rupee" class="ruppee-icon"></i> <b><%= products[i].discountedPrice %></b> </del></h3>
           </div>
         </article>
-     <% } %>
+        <% } %>
       </div>
       <a href=""><button>view all</button></a>
     </section>
@@ -92,8 +94,8 @@
     <section class="home-product-collections">
       <h1>TOP SELLING</h1>
       <div class="container">
-<% for( let i = 2; i < 6; i++ ) { %>
-      <article>
+        <% for( let i = 2; i < 6; i++ ) { %>
+        <article>
           <figure>
             <img src="<%= products[i].image %>" alt="T-SHIRT">
           </figure>
@@ -101,20 +103,22 @@
             <h4><%= products[i].productName %></h4>
             <div class="icons">
               <div class="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
-                <img src="images/icons/star.svg" alt="star">
+                <% for( let star = 1; star <= 5; star++ ) { %>
+                <% if (star <= products[i].rating) { %>
+                <i data-lucide="star" class="rating true"></i>
+                <% } else {%>
+                <i data-lucide="star" class="rating false"></i>
+                <% } %>
+                <% } %>
                 &nbsp;
-                5 / 5
+                <span><%= products[i].rating %> / 5</span>
               </div>
               <img src="images/icons/heart.svg" alt="heart">
             </div>
-            <h3>$<%= products[i].price %> <del>$<%= products[i].discountedPrice %></del></h3>
+            <h3><i data-lucide="indian-rupee" class="ruppee-icon"></i> <b><%= products[i].price %></b> <del><i data-lucide="indian-rupee" class="ruppee-icon"></i><b><%= products[i].discountedPrice %></b></del></h3>
           </div>
         </article>
-     <% } %>
+        <% } %>
       </div>
       <a href=""><button>view all</button></a>
     </section>
@@ -125,17 +129,17 @@
       <h1>BROWSE BY CATEGORY</h1>
       <div class="container">
         <div class="top">
-          <% for( let t = 3; t <= 4; t++ ) { %>
+          <% for( let t = 0; t <= 1; t++ ) { %>
           <figure>
-            <img src="<%= category[t].categoryImage %>" alt="">
+            <img src="<%= category[t].categoryImage %>" alt="<%= category[t].categoryName %>">
             <figcaption><%= category[t].categoryName%></figcaption>
           </figure>
           <% } %>
         </div>
         <div class="bottom">
-           <% for( let b = 1; b <= 2; b++ ) { %>
+          <% for( let b = 2; b <= 3; b++ ) { %>
           <figure>
-            <img src="<%= category[b].categoryImage %>" alt="">
+            <img src="<%= category[b].categoryImage %>" alt="<%= category[b].categoryName %>">
             <figcaption><%= category[b].categoryName%></figcaption>
           </figure>
           <% } %>
@@ -209,6 +213,10 @@
   </section>
 
   <%- include('./partials/footer.ejs') %>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 
 </html>

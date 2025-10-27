@@ -16,7 +16,7 @@ const getParentCategories = async () => {
 
 const getCategoryInfo = async (_id) => {
 	try {
-		const category = await categoryModel.findOne({ _id });
+		const category = await categoryModel.findOne({ _id, isBlocked: false });
 		if (!category) throw new Error("Category Not Found");
 
 		return category;
@@ -47,7 +47,7 @@ const updateCategory = async (data, categoryId, updatedBy) => {
 
 		const update = await categoryModel.findOneAndUpdate(
 			{ _id: categoryId },
-			{ $set: { ...data, updatedBy } },
+			{ $set: { ...data, updatedBy, updatedAt: new Date() } },
 			{ new: true }
 		);
 
@@ -102,7 +102,7 @@ const getAllCategoryDetails = async (
 			.find(query)
 			.skip(skip)
 			.limit(limit)
-			.sort({ createdAt })
+			.sort({ createdAt, _id: createdAt })
 			.lean();
 
 		data.totalPages = totalPages;
@@ -115,7 +115,7 @@ const getAllCategoryDetails = async (
 				parentCategory: items.parentCategory,
 				description: items.description,
 				categoryImage: items.categoryImage,
-				isBlocked: items.isBlocked
+				isBlocked: items.isBlocked,
 			};
 		});
 

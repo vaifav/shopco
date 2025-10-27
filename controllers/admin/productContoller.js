@@ -1,22 +1,39 @@
-import crypto from "crypto";
 import {
 	getCategories,
 	createProduct,
 	getProducts,
 	getProductEditDetails,
+	updateProduct,
+	deleteProduct,
 } from "../../services/admin/productService.js";
 import { productJoiSchema } from "../../validation/addProductJoiValidation.js";
-import { uploadSingleImage } from "../../services/cloudinaryService.js";
+import { processVariantImages } from "../../services/admin/varinatImageUploadService.js";
 
 const productListPage = async (req, res) => {
 	const page = parseInt(req.query.page) || 1;
 	const limit = parseInt(req.query.limit) || 5;
-	const createdAt = parseInt(req.query.createdAt) || -1;
+	const createdAt = parseInt(req.query.createdAt) || null;
+	const productName = parseInt(req.query.productName) || null;
+	const rating = parseInt(req.query.rating) || null;
+	const stock = parseInt(req.query.stock) || null;
+	const price = parseInt(req.query.price) || null;
+	const variants = parseInt(req.query.variants) || null;
 	const search = req.query.search;
 	const isBlocked = req.query.isBlocked === "true" ? true : false;
 
 	try {
-		const data = await getProducts(page, limit, createdAt, search);
+		const data = await getProducts(
+			page,
+			limit,
+			createdAt,
+			productName,
+			rating,
+			stock,
+			price,
+			variants,
+			search,
+			isBlocked
+		);
 		return res.render("admin/adminProducts", data);
 	} catch (error) {
 		console.error("Error loading product addition page:", error);
@@ -35,6 +52,8 @@ const getProductAdd = async (req, res) => {
 };
 
 const getProductEdit = async (req, res) => {
+	console.log(req.params.id);
+
 	try {
 		const categories = await getCategories();
 		const product = await getProductEditDetails(req.params.id);
@@ -68,35 +87,14 @@ const addProduct = async (req, res) => {
 			? req.body.variants.map((variant) => ({ ...variant }))
 			: [],
 	};
-	console.log(validatedProductData);
 
 	const files = req.files;
 	console.log(files);
 
-	const variantImageUploadPromises = [];
 	const variants = validatedProductData.variants;
-	const productBaseName = validatedProductData.productName.toLowerCase();
 
 	try {
-		const MAX_VARIANTS = 10;
-		for (let i = 0; i < MAX_VARIANTS; i++) {
-			const fileArray = files[`variants[${i}][image]`];
-
-			if (fileArray && fileArray.length > 0 && variants[i]) {
-				variants[i].images = [];
-				const variantUploads = fileArray.map((file, index) => {
-					const public_id = `${productBaseName}-${crypto.randomUUID()}-v${index}`;
-					const promise = uploadSingleImage(file.buffer, public_id, "productVariants").then((result) =>
-						variants[i].images.push(result.secure_url)
-					);
-					return promise;
-				});
-				variantImageUploadPromises.push(...variantUploads);
-			}
-		}
-		if (variantImageUploadPromises.length !== 0) {
-			await Promise.all(variantImageUploadPromises);
-		}
+		await processVariantImages(variants, files);
 		const newProduct = await createProduct(validatedProductData);
 
 		return res.status(201).json({
@@ -107,13 +105,60 @@ const addProduct = async (req, res) => {
 		console.log(error.message);
 		return res.status(500).json({
 			success: false,
-			message: "Server error during file upload or database save.",
+			message: error.message,
 		});
 	}
 };
 
 const editProduct = async (req, res) => {
-	console.log(req.body);
-	return res.redirect("/products");
+	const variants = req.body.variants;
+	const files = req.files;
+
+	const validatedProductData = {
+		...req.body,
+		variants: Array.isArray(variants) ? req.body.variants.map((variant) => ({ ...variant })) : [],
+	};
+	console.log(validatedProductData);
+
+	try {
+		if (validatedProductData.variants.length !== 0) {
+			await processVariantImages(validatedProductData.variants, files);
+		}
+		const newProduct = await updateProduct(req.params.id, validatedProductData);
+
+		return res.status(200).json({
+			success: true,
+			message: "Product and variants edited successfully.",
+		});
+	} catch (error) {
+		console.log(error.message);
+		return res.status(500).json({
+			success: false,
+			message: error.message,
+		});
+	}
 };
-export { productListPage, getProductAdd, getProductEdit, addProduct, editProduct };
+
+const softDeleteProduct = async (req, res) => {
+	try {
+		await deleteProduct(req.params.id);
+		return res.status(200).json({
+			success: true,
+			message: "Product blocked successfully.",
+		});
+	} catch (error) {
+		console.log(error.message);
+		return res.status(500).json({
+			success: false,
+			message: error.message,
+		});
+	}
+};
+export {
+	productListPage,
+	getProductAdd,
+	getProductEdit,
+	addProduct,
+	editProduct,
+	softDeleteProduct,
+};
