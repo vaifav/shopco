@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
   <title>Admin</title>
   <style>
     @import url("/style/adminPartials.css");
@@ -89,31 +90,22 @@
             <div class="right">
 
               <% product.variants.forEach((element, index) => { %>
-              <div class="variant-card" data-variant-index="<%= index %>" data-variant-id="<%= element._id %>">
-
-                <input type="hidden" name="variants[<%= index %>][vrId]" value="<%= element._id %>">
-
+              <div class="variant-card" data-variant-index="<%= index %>">
                 <h1>Variant <span class="variant-index-display"><%= index+1 %></span></h1>
-                <button type="button" class="remove-variant-btn">Remove Variant</button>
-
                 <div class="variant-input-container">
                   <div class="input-container preview-container">
                     <label for="variants[<%= index %>][image]">Images <span>( Only 4 Images are allowed )</span></label>
-
-                    <input type="file" name="variants[<%= index %>][newImage]" id="variants[<%= index %>][image]" multiple accept="image/*" class="variant-image-input" style="display: none;">
-
-                    <label for="variants[<%= index %>][image]" class="preview upload-trigger <%= element.images.length > 0 ? 'has-images' : '' %>">
-
+                    <input type="file" name="variants[<%= index %>][image]" id="variants[<%= index %>][image]" multiple accept="image/*" class="variant-image-input" style="display: none;">
+                    <label for="variants[<%= index %>][image]" class="preview upload-trigger <%= element.images.length!==0 ? 'imageActive': '' %>">
+                      <% if (element.images.length!==0) { %>
                       <% element.images.forEach(image => { %>
-                      <div class="preview-thumbnail existing" data-image-url="<%= image %>">
-                        <img src="<%= image %>" alt="<%= product.productName %>">
-
-                        <input type="hidden" name="variants[<%= index %>][existingImages][]" value="<%= image %>">
-
-                        <span class="remove-thumbnail-existing remove-thumbnail">&times;</span>
+                      <div class="preview-image-wrapper">
+                        <img src="<%= image %>" alt="<%= image %>">
                       </div>
                       <% }) %>
-                      <i data-lucide="circle-plus" class="upload-icon"></i>
+                      <% } else {%>
+                      <i data-lucide="circle-plus"></i>
+                      <% } %>
                     </label>
                   </div>
 
@@ -124,7 +116,7 @@
 
                   <div class="input-container">
                     <label for="variants[<%= index %>][discountedPrice]">Discounted Price <span class="optional">(Optional)</span></label>
-                    <input type="number" name="variants[<%= index %>][discountedPrice]" id="variants[<%= index %>][discountedPrice]" placeholder="e.g., 40.00" value="<%= element.discountedPrice || '' %>" min="0">
+                    <input type="number" name="variants[<%= index %>][discountedPrice]" id="variants[<%= index %>][discountedPrice]" placeholder="e.g., 40.00" value="<%= element.discountedPrice %>" min="0">
                   </div>
 
                   <div class="input-container">
@@ -134,7 +126,7 @@
 
                   <div class="input-container">
                     <label for="variants[<%= index %>][sizes]">Sizes</label>
-                    <input type="text" name="variants[<%= index %>][sizes]" id="variants[<%= index %>][sizes]" placeholder="e.g., S, M, L, XL (comma separated)" value="<%= Array.isArray(element.sizes) ? element.sizes.join(', ') : element.sizes %>" required>
+                    <input type="text" name="variants[<%= index %>][sizes]" id="variants[<%= index %>][sizes]" placeholder="e.g., S, M, L, XL (comma separated)" value="<%= element.sizes.join(',') %>" required>
                   </div>
 
                   <div class="input-container">
@@ -144,18 +136,36 @@
                 </div>
               </div>
               <% }) %>
-            </div>
-      </div>
-      </form>
-  </section>
-  </div>
-  </div>
-  </section>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="/script/admin/adminNav.js"></script>
-  <script>
 
-  </script>
+
+              <div id="imageCropperModal" class="cropper-modal-overlay">
+                <div class="cropper-modal-content">
+                  <header class="modal-header">
+                    <h2>Crop Image</h2>
+                  </header>
+                  <div class="img-container">
+                    <img id="cropperImage">
+                  </div>
+                  <footer class="modal-footer">
+                    <button type="button" id="cropSaveBtn" class="btn btn-primary">Save Crop</button>
+                    <button type="button" id="cropCancelBtn" class="btn btn-secondary">Cancel</button>
+                  </footer>
+                </div>
+              </div>
+
+              <div class="input-container">
+                <button type="button" id="addVariantBtn"><i data-lucide="plus"></i> <b>Add Variant</b></button>
+              </div>
+            </div>
+          </form>
+      </div>
+  </section>
+  </div>
+  </div>
+  </section>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script src="/script/admin/adminNav.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
   <script type="module" src="/script/admin/adminProductsEdit.js"></script>
 </body>
 

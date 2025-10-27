@@ -1,5 +1,5 @@
 import categoryModel from "../models/categoryModel.js";
-import productModel from "../models/productModel.js"
+import productModel from "../models/productModel.js";
 
 const getAllData = async () => {
 	const data = {};
@@ -31,17 +31,20 @@ const getAllData = async () => {
 				},
 			},
 		]);
-		const category = await categoryModel.find({ isBlocked: false });
+		const category = await categoryModel
+			.find({ isBlocked: false })
+			.sort({ createdAt: -1, _id: -1 })
+			.limit(4);
 
 		data.products = products;
 		data.category = category;
 
-        console.log(data);
-        
+		console.log(data);
+
 		return data;
 	} catch (err) {
 		console.log(err);
 	}
 };
 
-export {getAllData}
+export { getAllData };

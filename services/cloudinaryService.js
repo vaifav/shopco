@@ -31,14 +31,5 @@ function uploadSingleImage(buffer, id, folder, gravity = null) {
 	});
 }
 
-function uploadMultipleImages(buffers, baseId, folder, gravity = null) {
-	const uploadPromises = buffers.map((buffer, index) => {
-		const publicId = `${baseId}-${index}`;
 
-		return uploadSingleImage(buffer, publicId, folder, gravity);
-	});
-
-	return Promise.all(uploadPromises);
-}
-
-export { uploadSingleImage, uploadMultipleImages };
+export { uploadSingleImage };

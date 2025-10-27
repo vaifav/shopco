@@ -18,9 +18,11 @@ import { Router } from "express";
 import { upload, uploadMultipleVariantImages } from "../middleware/multerMiddleware.js";
 import {
 	addProduct,
+	editProduct,
 	getProductAdd,
 	getProductEdit,
 	productListPage,
+	softDeleteProduct,
 } from "../controllers/admin/productContoller.js";
 
 const admin = Router();
@@ -33,6 +35,8 @@ admin.get("/products", productListPage);
 admin.route("/products/action").get(getProductAdd).post(uploadMultipleVariantImages, addProduct);
 
 admin.get("/products/action/:id", getProductEdit);
+admin.patch("/products/action/:id", uploadMultipleVariantImages, editProduct);
+admin.delete("/products/action/:id", softDeleteProduct);
 
 admin
 	.route("/categories/action")

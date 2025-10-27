@@ -13,6 +13,7 @@
     @import url("/style/admin.css");
     @import url("/style/adminproducts.css");
     @import url("/style/search.css");
+    @import url("/style/swal.css");
     @import url("/style/pagination.css");
   </style>
 </head>
@@ -54,6 +55,11 @@
                   <li>Filter By</li>
                   <li class="active"><i data-lucide="chevrons-right"></i> Active Products</li>
                   <li class="blocked"><i data-lucide="chevrons-right"></i> Blocked Products</li>
+                  <li class="sort-name"><i data-lucide="chevrons-right"></i>Sort by name : A &harr; Z</li>
+                  <li class="sort-variants"><i data-lucide="chevrons-right"></i>Sort by Products &harr; Variants</li>
+                  <li class="rating"><i data-lucide="chevrons-right"></i>Rating</li>
+                  <li class="stock"><i data-lucide="chevrons-right"></i>Stock</li>
+                  <li class="price"><i data-lucide="chevrons-right"></i>Price</li>
                 </ul>
               </button>
             </div>
@@ -100,9 +106,15 @@
                   <button class="action-btn edit-btn" title="Edit" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
                     <i data-lucide="edit"></i>
                   </button>
-                  <button class="action-btn delete-btn" title="Delete" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
+                  <% if (!item.isBlocked) { %>
+                   <button class="action-btn delete-btn" title="Delete" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
                     <i data-lucide="trash-2"></i>
                   </button>
+                  <% } else {%>
+                    <button class="action-btn unblock-btn" title="unblock" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
+                    <i data-lucide="unlock"></i>
+                  </button>
+                  <% } %>
                 </td>
               </tr>
               <% }) %>
@@ -140,7 +152,7 @@
       </div>
     </div>
   </section>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
   <script type="module" src="/script/admin/adminProducts.js"></script>
   <script src="/script/admin/adminNav.js"></script>
 </body>
