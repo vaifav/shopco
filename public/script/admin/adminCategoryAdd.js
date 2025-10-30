@@ -1,8 +1,31 @@
 import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
 
 const imageInput = document.querySelector("#category form #category-image");
-const preview = document.querySelector("#category form .add-image-label");
+const previewLabel = document.querySelector("#category form .add-image-label");
 const form = document.querySelector("#category.add-or-edit-category-section form");
+
+const cropperModal = document.getElementById("imageCropperModal");
+const cropperImageElement = document.getElementById("cropperImage");
+const cropSaveBtn = document.getElementById("cropSaveBtn");
+const cropCancelBtn = document.getElementById("cropCancelBtn");
+
+let currentCropper = null;
+let currentFile = null;
+
+const dataURLtoFile = (dataurl, filename) => {
+	const arr = dataurl.split(",");
+	const mime = arr[0]
+		.match(/:(.*?);/g)[0]
+		.replace(":", "")
+		.replace(";", "");
+	const bstr = atob(arr[1]);
+	let n = bstr.length;
+	const u8arr = new Uint8Array(n);
+	while (n--) {
+		u8arr[n] = bstr.charCodeAt(n);
+	}
+	return new File([u8arr], filename, { type: mime });
+};
 
 imageInput.addEventListener("change", async (e) => {
 	const file = e.target.files[0];
@@ -16,33 +39,87 @@ imageInput.addEventListener("change", async (e) => {
 			showConfirmButton: false,
 			timer: 2000,
 		});
-		profileInput.value = "";
+		imageInput.value = "";
 		return;
 	}
 
+	currentFile = file;
+
 	const reader = new FileReader();
 	reader.onload = (event) => {
-		preview.innerHTML = "";
-		const img = document.createElement("img");
-		img.src = event.target.result;
-		preview.append(img);
+		cropperImageElement.src = event.target.result;
+		cropperModal.style.display = "flex";
+
+		if (currentCropper) {
+			currentCropper.destroy();
+		}
+
+		setTimeout(() => {
+			currentCropper = new Cropper(cropperImageElement, {
+				aspectRatio: 1 / 1,
+				viewMode: 1,
+			});
+		}, 100);
 	};
 	reader.readAsDataURL(file);
+});
+
+cropSaveBtn.addEventListener("click", () => {
+	if (!currentCropper || !currentFile) return;
+
+	const canvas = currentCropper.getCroppedCanvas({
+		width: 400,
+		height: 400,
+	});
+	const croppedDataURL = canvas.toDataURL("image/png");
+
+	previewLabel.innerHTML = "";
+	const img = document.createElement("img");
+	img.src = croppedDataURL;
+	previewLabel.append(img);
+
+	const croppedFile = dataURLtoFile(croppedDataURL, currentFile.name);
+
+	const dataTransfer = new DataTransfer();
+	dataTransfer.items.add(croppedFile);
+	imageInput.files = dataTransfer.files;
+
+	currentCropper.destroy();
+	currentCropper = null;
+	currentFile = null;
+	cropperModal.style.display = "none";
+});
+
+cropCancelBtn.addEventListener("click", () => {
+	if (currentCropper) {
+		currentCropper.destroy();
+		currentCropper = null;
+	}
+	imageInput.value = "";
+	currentFile = null;
+
+	previewLabel.innerHTML = `<i data-lucide="circle-plus" width="30" height="30"></i>`;
+	if (typeof lucide !== "undefined" && lucide.createIcons) {
+		lucide.createIcons();
+	}
+
+	cropperModal.style.display = "none";
 });
 
 form.addEventListener("submit", async (e) => {
 	e.preventDefault();
 	const formData = new FormData(form);
+
 	Swal.fire({
-			title: "Processing...",
-			text: "Please wait while we upload the image.",
-			icon: "info",
-			allowOutsideClick: false,
-			showConfirmButton: false,
-			willOpen: () => {
-				Swal.showLoading();
-			},
-		});
+		title: "Processing...",
+		text: "Please wait while we add the category.",
+		icon: "info",
+		allowOutsideClick: false,
+		showConfirmButton: false,
+		willOpen: () => {
+			Swal.showLoading();
+		},
+	});
 	try {
 		const res = await fetch("/admin/categories/action/", {
 			method: "POST",
@@ -52,7 +129,7 @@ form.addEventListener("submit", async (e) => {
 		const result = await res.json();
 
 		if (!res.ok || !result.success) {
-			Swal.close()
+			Swal.close();
 			await Swal.fire({
 				icon: "error",
 				title: "Failed!",
@@ -63,7 +140,7 @@ form.addEventListener("submit", async (e) => {
 			return;
 		}
 
-		Swal.close()
+		Swal.close();
 		await Swal.fire({
 			icon: "success",
 			title: "Category Created!",
@@ -74,7 +151,7 @@ form.addEventListener("submit", async (e) => {
 		form.reset();
 		window.location.pathname = "/admin/categories/";
 	} catch (err) {
-		Swal.close()
+		Swal.close();
 		console.error("Error :", err);
 		await Swal.fire({
 			icon: "error",

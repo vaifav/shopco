@@ -46,10 +46,6 @@ const updateCategory = async (data, categoryId, updatedBy) => {
 		const category = await categoryModel.findOne({ _id: new mongoose.Types.ObjectId(categoryId) });
 		if (!category) throw new Error("Category Not Found");
 
-		if (data.categoryName && category.categoryName === data.categoryName) {
-			throw new Error(`${data.categoryName} category exists`);
-		}
-
 		if (data.createdBy && category.createdBy !== data.createdBy) {
 			throw new Error("Not allowed to modify !");
 		}

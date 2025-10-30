@@ -5,7 +5,22 @@ const getLogin = async (req, res) => {
 };
 
 const postLogin = async (req, res) => {
-	try {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+	const email = req.body.email ? String(req.body.email).trim() : "";
+	const password = req.body.password ? String(req.body.password) : "";
+try {
+	if (!email) {
+		throw new Error("Email address is required.");
+	} else if (!emailRegex.test(email)) {
+		throw new Error("Please enter a valid email format (e.g., user@domain.com).");
+	} else if (!password) {
+		throw new Error("Password is required.");
+	} else if (password.length <= 3) {
+		throw new Error("Password must be greater than 3 characters.");
+	}
+
+	
 		const user = await checkUser(req.body);
 		if (!user) return res.render("user/login", { error: "Invalid Credentials" });
 		req.session.user = {

@@ -15,6 +15,7 @@
     @import url("/style/adminCategory.css");
     @import url("/style/adminCategoryAdd.css");
   </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.css">
 </head>
 
 <body>
@@ -91,6 +92,7 @@
               </div>
               <div>
                 <label for="category-image">Image</label>
+                <input type="file" name="categoryImage" id="category-image" style="display: none;">
                 <label class="add-image-label" for="category-image">
                   <% if (category.categoryImage) { %>
                   <img src="<%= category.categoryImage %>" alt="">
@@ -98,16 +100,32 @@
                   <i data-lucide="circle-plus"></i>
                   <% } %>
                 </label>
-                <input type="file" name="categoryImage" id="category-image">
               </div>
             </div>
           </form>
+
+          <div id="imageCropperModal" class="cropper-modal-overlay">
+            <div class="cropper-modal-content">
+              <header class="modal-header">
+                <h2>Crop Category Image</h2>
+              </header>
+              <div class="img-container">
+                <img id="cropperImage">
+              </div>
+              <footer class="modal-footer">
+                <button type="button" id="cropSaveBtn" class="btn btn-primary">Save Crop</button>
+                <button type="button" id="cropCancelBtn" class="btn btn-secondary">Cancel</button>
+              </footer>
+            </div>
+          </div>
+
         </section>
       </div>
     </div>
   </section>
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
   <script src="/script/admin/adminNav.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
   <script type="module" src="/script/admin/adminCategoryEdit.js"></script>
 </body>
 

@@ -34,7 +34,7 @@ app.use((req, res) => res.status(404).render("user/pagenotfound"));
 
 app.use((err, req, res, next) => {
 	console.error("Server Error:", err.stack);
-	res.status(500).send({ message: "Internal Server Error" });
+	res.status(500).send("Internal Server Error" );
 });
 
 const PORT = process.env.PORT || 3000;
