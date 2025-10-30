@@ -3,8 +3,7 @@ import userModel from "../models/signupModel.js";
 
 const checkUser = async ({ email, password }) => {
 	try {
-		const user = await userModel.findOne({ email }).select('+password');
-console.log("user.password:", user);
+		const user = await userModel.findOne({ email }).select("+password");
 		if (!user) return false;
 
 		const isCorrectPassword = await verifyPassword(user.password, password);

@@ -6,14 +6,15 @@ const getLogin = async (req, res) => {
 
 const postLogin = async (req, res) => {
 	try {
-		console.log(req.body);
-		
 		const user = await checkUser(req.body);
 		if (!user) return res.render("user/login", { error: "Invalid Credentials" });
 		req.session.user = {
 			userId: user._id,
 			email: user.email,
 			role: user.role,
+			username: user.username,
+			isBlocked: user.isBlocked,
+			isVerified: user.isVerified,
 		};
 		return res.redirect("/");
 	} catch (error) {
@@ -27,7 +28,7 @@ const logout = async (req, res) => {
 		if (err) return res.redirect("/");
 	});
 	res.clearCookie("connect.sid");
-	return res.redirect("/");
+	return res.redirect("/login");
 };
 
 export { getLogin, logout, postLogin };

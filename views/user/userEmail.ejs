@@ -9,48 +9,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style/swal.css">
   <link rel="stylesheet" href="style/login.css">
-  <title>Login</title>
+  <title>User Email</title>
 </head>
 
 <body>
   <section class="login-container">
     <figure>
-      <img src="images/images/rectangle_3463273_eae506.jpg" alt="loginimage">
+      <img src="images/images/forgotPassword.png" alt="loginimage">
       <a href="/">
         <h1>SHOP.CO</h1>
       </a>
     </figure>
     <section>
-      <form action="/login" method="post">
+      <form action="/useremail" method="post" class="send-useremail">
         <div>
-          <h1>Welcome 👋</h1>
+          <h1>Your Email</h1>
           <% if(error) { %>
           <small style="color: red;">
             <%= error %>
           </small>
           <% } else { %>
-          <small>please login here.</small>
+          <small>Enter your registered email address. we’ll send you a code to reset your password</small>
           <% } %>
         </div>
         <div>
           <label for="email">Email Address</label>
           <input type="email" name="email" id="email" placeholder="Your Email">
         </div>
-        <div class="password-container">
-          <label for="password">Password</label>
-          <input type="password" name="password" id="password" placeholder="password" class="passwordField">
-          <img src="/images/icons/closedEye.png" class="toggle-password" alt="">
-        </div>
-        <input type="submit" value="Login" class="submit">
-        <article>
-          <img src="images/icons/google.svg" alt="google" class="googleicon">
-          <a href="google/signup" class="submit google">Login with Google</a>
-          <!-- <input type="submit" name="googlesubmit" value="signup with Google" class="submit google"> -->
-        </article>
-        <div class="extra-details">
-          <a href="/signup">Don't have an account? <u>signup</u></a>
-          <a href="/useremail" class="forgot-password" style="position: relative; top: 2px;">Forgot Password ?</a>
-        </div>
+        <input type="submit" value="Send Email" class="submit">
       </form>
     </section>
   </section>

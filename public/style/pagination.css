@@ -22,3 +22,14 @@
  .pagination .btn.disable {
      background: #5e779c3d;
  }
+
+ .pagination-btn-container {
+     padding-inline: 1rem;
+     overflow-x: scroll;
+     scrollbar-width: none;
+     width: 50%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     gap: 10px
+ }

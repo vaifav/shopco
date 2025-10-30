@@ -195,6 +195,11 @@ input:disabled {
 	cursor: auto !important;
 }
 
-button:hover, input[type="submit"] {
+button:hover,
+input[type="submit"] {
 	cursor: pointer;
+}
+
+h2.username {
+	color: #fff;
 }

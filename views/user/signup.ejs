@@ -33,12 +33,17 @@
           <% } %>
         </div>
         <div>
+          <label for="username">Username</label>
+          <input type="username" name="username" id="username" placeholder="Username">
+        </div>
+        <div>
           <label for="email">Email</label>
           <input type="email" name="email" id="email" placeholder="Email">
         </div>
-        <div>
+        <div class="password-container">
           <label for="password">Password</label>
-          <input type="text" name="password" id="password" placeholder="password">
+          <input type="password" name="password" id="password" placeholder="password" class="passwordField">
+          <img src="/images/icons/closedEye.png" class="toggle-password" alt="">
         </div>
         <input type="submit" value="Signup" class="submit">
         <article>
@@ -52,6 +57,8 @@
       </form>
     </section>
   </section>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script src="/script/login.js"></script>
 </body>
 
 </html>

@@ -39,8 +39,6 @@ const getAllData = async () => {
 		data.products = products;
 		data.category = category;
 
-		console.log(data);
-
 		return data;
 	} catch (err) {
 		console.log(err);

@@ -5,6 +5,22 @@
 	background: #f0f0f0;
 }
 
+del {
+	position: relative;
+}
+
+del::before {
+  content: '';
+  height:2px;
+  border-radius: 10px;
+  width: 100%; 
+  background: #b4b0b0;
+  position: absolute;
+  top: 50%; 
+  left: 7px;
+  transform: translateY(-50%);
+}
+
 .hero {
 	display: flex;
 	justify-content: space-between;
@@ -28,7 +44,7 @@
 }
 
 .hero .description {
-	color: #6d6d6d;
+	color: #b4b0b0;
 	margin-block: 2rem;
 	width: 80%;
 	line-height: 20px;
@@ -49,7 +65,7 @@
 }
 
 .hero .container div p {
-	color: #6d6d6d;
+	color: #b4b0b0;
 }
 
 .hero .container div h3 {
@@ -128,17 +144,17 @@
 }
 
 .home-product-collections h3 del {
-	color: #6d6d6d;
+	color: #b4b0b0;
 	padding-left: 0.5rem;
 	display: flex;
 	align-items: center;
 
 	& b {
-		color: #6d6d6d;
+		color: #b4b0b0;
 	}
 
 	& svg.ruppee-icon {
-		stroke: #6d6d6d;
+		stroke: #b4b0b0;
 	}
 }
 
@@ -322,4 +338,8 @@
 	justify-content: center;
 	align-items: center;
 	gap: 2rem;
+}
+
+.nav-to-product-detail-page:hover {
+	cursor: pointer;
 }

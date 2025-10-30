@@ -59,6 +59,19 @@ const productSchema = new mongoose.Schema(
 	}
 );
 
+productSchema.index(
+	{
+		productName: "text",
+		description: "text",
+	},
+	{
+		weights: {
+			productName: 3,
+			description: 1,
+		},
+	}
+);
+
 const productModel = mongoose.model("product", productSchema);
 
 export default productModel;

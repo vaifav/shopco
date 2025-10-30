@@ -23,7 +23,7 @@
         <p class="description">Browse through our diverse range of meticulously crafted garments, designed
           to bring out your
           individuality and cater to your sense of style.</p>
-        <a href=""><button>Shop Now</button></a>
+        <a href="/products"><button>Shop Now</button></a>
         <div class="container">
           <div>
             <h3>200+</h3>
@@ -61,7 +61,7 @@
       <div class="container">
 
         <% for( let i = 0; i < 4; i++ ) { %>
-        <article>
+        <article class="nav-to-product-detail-page" data-productid="<%= products[i].prId %>" data-variantid="<%= products[i].vrId %>">
           <figure>
             <img src="<%= products[i].image %>" alt="T-SHIRT">
           </figure>
@@ -81,12 +81,19 @@
               </div>
               <img src="images/icons/heart.svg" alt="heart">
             </div>
-            <h3><i data-lucide="indian-rupee" class="ruppee-icon"></i> <b><%= products[i].price %></b> <del> <i data-lucide="indian-rupee" class="ruppee-icon"></i> <b><%= products[i].discountedPrice %></b> </del></h3>
+            <h3>
+              <i data-lucide="indian-rupee" class="ruppee-icon"></i>
+              <b><%= products[i].price %></b>
+              <del>
+                <i data-lucide="indian-rupee" class="ruppee-icon"></i>
+                <b><%= products[i].price + products[i].discountedPrice %></b>
+              </del>
+            </h3>
           </div>
         </article>
         <% } %>
       </div>
-      <a href=""><button>view all</button></a>
+      <a href="/products"><button>view all</button></a>
     </section>
   </section>
 
@@ -95,7 +102,7 @@
       <h1>TOP SELLING</h1>
       <div class="container">
         <% for( let i = 2; i < 6; i++ ) { %>
-        <article>
+        <article class="nav-to-product-detail-page" data-productid="<%= products[i].prId %>" data-variantid="<%= products[i].vrId %>">
           <figure>
             <img src="<%= products[i].image %>" alt="T-SHIRT">
           </figure>
@@ -115,12 +122,12 @@
               </div>
               <img src="images/icons/heart.svg" alt="heart">
             </div>
-            <h3><i data-lucide="indian-rupee" class="ruppee-icon"></i> <b><%= products[i].price %></b> <del><i data-lucide="indian-rupee" class="ruppee-icon"></i><b><%= products[i].discountedPrice %></b></del></h3>
+            <h3><i data-lucide="indian-rupee" class="ruppee-icon"></i> <b><%= products[i].price %></b> <del><i data-lucide="indian-rupee" class="ruppee-icon"></i><b><%= products[i].price + products[i].discountedPrice %></b></del></h3>
           </div>
         </article>
         <% } %>
       </div>
-      <a href=""><button>view all</button></a>
+      <a href="/products"><button>view all</button></a>
     </section>
   </section>
 
@@ -130,7 +137,7 @@
       <div class="container">
         <div class="top">
           <% for( let t = 0; t <= 1; t++ ) { %>
-          <figure>
+          <figure class="category-section" data-categoryid="<%= category[t]._id %>">
             <img src="<%= category[t].categoryImage %>" alt="<%= category[t].categoryName %>">
             <figcaption><%= category[t].categoryName%></figcaption>
           </figure>
@@ -138,7 +145,7 @@
         </div>
         <div class="bottom">
           <% for( let b = 2; b <= 3; b++ ) { %>
-          <figure>
+          <figure class="category-section" data-categoryid="<%= category[b]._id %>">
             <img src="<%= category[b].categoryImage %>" alt="<%= category[b].categoryName %>">
             <figcaption><%= category[b].categoryName%></figcaption>
           </figure>
@@ -214,9 +221,7 @@
 
   <%- include('./partials/footer.ejs') %>
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
-  <script>
-    lucide.createIcons();
-  </script>
+  <script src="/script/home.js"></script>
 </body>
 
 </html>

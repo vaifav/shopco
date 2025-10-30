@@ -16,6 +16,8 @@ passport.use(
 					user = await userModel.create({
 						googleId: profile.id,
 						email: profile.emails[0].value,
+						username: profile.displayName,
+						isVerified: true,
 					});
 				}
 				return done(null, user);

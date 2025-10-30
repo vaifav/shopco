@@ -5,7 +5,7 @@
     </a>
     <nav>
       <ul>
-        <a href="">
+        <a href="/products">
           <li>Shop</li>
         </a>
         <a href="">
@@ -19,30 +19,37 @@
         </a>
       </ul>
       <form action="">
-        <label for="search"><img src="images/icons/search.svg" alt=""></label>
+        <label for="search"><img src="/images/icons/search.svg" alt=""></label>
         <input type="text" name="search" id="search" placeholder="search">
       </form>
     </nav>
     <nav class="icons">
-      <a href=""> <img src="images/icons/cart.svg" alt="cart"> </a>
-      <img class="account" src="images/icons/account.svg" alt="account">
+      <a href=""> <img src="/images/icons/cart.svg" alt="cart"> </a>
+      <img class="account" src="/images/icons/account.svg" alt="account">
 
       <div class="account-dropdown deactive">
+        <h2 class="username"></h2>
         <figure>
           <a href="#" class="create-account">
-            <img src="images/icons/user.svg" alt="create account">
+            <img src="/images/icons/user.svg" alt="create account">
             <span>Create an Account</span>
           </a>
         </figure>
         <figure>
           <a href="/account">
-            <img src="images/icons/Icon-account.svg" alt="my account">
+            <img src="/images/icons/Icon-account.svg" alt="my account">
             <span>Account</span>
           </a>
         </figure>
         <figure>
+          <a href="/login">
+            <img src="/images/icons/login-svgrepo-com.svg" style="width: 24px; height: 24px; stroke-width: 1px;" alt="create account">
+            <span>Login</span>
+          </a>
+        </figure>
+        <figure>
           <a href="/logout">
-            <img src="images/icons/Icon-logout.svg" alt="create account">
+            <img src="/images/icons/Icon-logout.svg" alt="create account">
             <span>Logout</span>
           </a>
         </figure>
@@ -91,5 +98,18 @@
         }
       });
     })
+
+
+
+
+    const fetchUsername = async () => {
+      const res = await fetch('/username');
+      const data = await res.json()
+      if (data.username) {
+        dropdown.querySelector("h2.username").innerHTML = `Hello, ${data.username}`
+      }
+    }
+
+    fetchUsername()
   </script>
 </section>

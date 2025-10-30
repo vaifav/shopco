@@ -1,0 +1,380 @@
+.wrapper.single-product {
+    width: 100%;
+    padding-block: 2rem;
+    position: relative;
+    background: #ffffff;
+}
+
+.single-product .product-container {
+    display: flex;
+    gap: 6rem;
+    padding-block: 3rem;
+}
+
+.single-product .product-container .product-images {
+    display: flex;
+    gap: 1rem;
+}
+
+.single-product .product-container .product-images figure {
+    height: 450px;
+    width: 450px;
+    border-radius: 20px;
+
+    & img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: inherit;
+    }
+}
+
+.single-product .product-container .product-images aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.single-product .product-container .product-images aside figure {
+    height: calc(calc(450px / 3) - 1rem);
+    width: calc(calc(450px / 3) - 1rem);
+}
+
+.single-product .product-container .text-details h1 {
+    font-weight: 900;
+    font-size: 2rem;
+    line-height: 3.8rem;
+    letter-spacing: 0.1rem;
+}
+
+.single-product .product-container .text-details p.description {
+    color: #9e9e9e;
+    margin-block: 1rem;
+    width: 80%;
+    line-height: 25px;
+    font-weight: 500;
+}
+
+.single-product .product-container form {
+    margin-top: 5rem;
+}
+
+/* Base style for the containers of colors and sizes */
+.single-product .product-container form div.for-size,
+.single-product .product-container form div.for-colors {
+    margin-top: 3rem;
+
+    & label {
+        color: #b4b0b0;
+        font-size: 1rem;
+    }
+}
+
+/* Color Selection Styles */
+.single-product .product-container form span.colors {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Hide the actual color radio button */
+.single-product .product-container form .color-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.single-product .product-container form .color-option {
+    display: inline-block;
+}
+
+/* Style for the custom color item */
+.single-product .product-container form span.colors .item {
+    height: 50px;
+    width: 50px;
+    display: block;
+    border-radius: 100%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+/* Specific color definitions */
+.single-product .product-container form span.colors .black-item {
+    background: #000;
+}
+
+.single-product .product-container form span.colors .red-item {
+    background: #e74c3c;
+}
+
+.single-product .product-container form span.colors .blue-item {
+    background: #3498db;
+}
+
+/* Checked state styling for color */
+.single-product .product-container form .color-option input[type="radio"]:checked+.item {
+    border-color: #00000038;
+    /* Use black border to highlight selection */
+    transform: scale(1.05);
+}
+
+/* Size Selection Styles */
+.single-product .product-container form span.sizes {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Hide the actual size radio button */
+.single-product .product-container form .size-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.single-product .product-container form .size-option {
+    display: inline-block;
+}
+
+/* Style for the custom size item (default state) */
+.single-product .product-container form span.sizes .items {
+    border-radius: 50px;
+    background: #F0F0F0;
+    padding: 0.8rem 1.5rem;
+    flex-grow: 0;
+    color: #00000055;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+/* Checked state styling for size */
+.single-product .product-container form .size-option input[type="radio"]:checked+.items {
+    background: #000;
+    color: #fff;
+}
+
+.single-product .product-container form .btns {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+
+    & button {
+        background: #000;
+        padding: 0.9rem 4rem;
+        font-size: 1rem;
+        border-radius: 5px;
+        color: #fff;
+    }
+}
+
+.single-product .product-container form .btns .count-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: #F0F0F0;
+    height: 50px;
+    width: 120px;
+    border-radius: 50px;
+    margin-right: 0;
+    padding: 0 0.5rem;
+}
+
+.single-product .product-container form .btns .count-container input {
+    appearance: none;
+    border: none;
+    outline: none;
+    background: transparent;
+    text-align: center;
+    width: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    padding: 0;
+    margin: 0;
+}
+
+.single-product .product-container .text-details h3.price {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+
+
+    & b {
+        font-weight: 600;
+        font-size: 1.5rem;
+    }
+
+    & svg.ruppee-icon {
+        height: 18px;
+        width: 18px;
+    }
+}
+
+.single-product .product-container .text-details del {
+    padding-left: 0.5rem;
+    display: flex;
+    align-items: center;
+
+    & svg.ruppee-icon {
+        stroke: #b4b0b0;
+    }
+
+    & b {
+        color: #b4b0b0;
+    }
+}
+
+.single-product .product-container .text-details .icons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding-block: 0.5rem;
+
+    & span {
+        position: relative;
+        top: -3px;
+    }
+}
+
+.single-product .product-container .text-details svg.rating {
+    height: 18px;
+    width: 18px;
+    stroke-width: 0px;
+}
+
+.single-product .product-container .text-details svg.rating.true {
+    fill: gold;
+}
+
+.single-product .product-container .text-details svg.rating.false {
+    fill: #ddd;
+}
+
+.single-product  del {
+    position: relative;
+}
+
+.single-product  del::before {
+    content: '';
+    height: 2px;
+    border-radius: 10px;
+    width: 100%;
+    background: #b4b0b0;
+    position: absolute;
+    top: 50%;
+    left: 7px;
+    transform: translateY(-50%);
+}
+
+.single-product .nav-to-product-detail-page:hover {
+    cursor: pointer;
+}
+
+.single-product .category-section {
+	padding-block: 5rem;
+	height: fit-content;
+}
+
+.single-product .category-section h1 {
+	text-align: center;
+	font-weight: 900;
+	font-size: 3rem;
+	margin-bottom: 4rem;
+}
+
+.single-product .category-section h4 {
+	font-weight: 600;
+	padding-top: 1rem;
+}
+
+.single-product .category-section h3 {
+	display: flex;
+	align-items: center;
+	
+	& b {
+		font-weight: 600;
+	}
+	
+	& svg.ruppee-icon {
+		height: 18px;
+		width: 18px;
+	}
+}
+
+.single-product .category-section h3 del {
+	color: #b4b0b0;
+	padding-left: 0.5rem;
+	display: flex;
+	align-items: center;
+
+	& b {
+		color: #b4b0b0;
+	}
+
+	& svg.ruppee-icon {
+		stroke: #b4b0b0;
+	}
+}
+
+.single-product .category-section div.container {
+	display: flex;
+    flex-wrap: wrap;
+	gap: 2rem;
+	width: 100%;
+	margin-bottom: 3rem;
+}
+
+.single-product .category-section div.container article {
+	height: fit-content;
+    width: 300px;
+    flex-grow: 0;
+}
+
+.single-product .category-section div.container figure {
+	width: 100%;
+	height: 300px;
+
+	& img {
+		width: 100%;
+		height: 100%;
+		border-radius: 10px;
+		object-fit: cover;
+	}
+}
+
+.single-product .category-section div.container .icons {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-block: 0.5rem;
+
+	& span {
+		position: relative;
+		top: -2px;
+	}
+}
+
+.single-product .category-section a {
+	display: block;
+	width: fit-content;
+	border: 1px solid;
+	border-radius: 50px;
+	padding: 0.5rem 2rem;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.single-product .category-section div.container article svg.rating {
+	height: 18px;
+	width: 18px;
+	stroke-width: 0px;
+}
+
+.single-product .category-section div.container article svg.rating.true {
+	fill: gold;
+}
+
+.single-product .category-section div.container article svg.rating.false {
+	fill: #dddddd;
+}

@@ -127,12 +127,13 @@ article {
 	}
 }
 
-/* article {
+form div.password-container {
 	position: relative;
 }
 
-.googleicon {
+form div .toggle-password {
 	position: absolute;
-	left: 0;
-	top: 0;
-} */
+	right: 0;
+	top: 34px;
+	margin-inline: 1rem;
+}

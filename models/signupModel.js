@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema(
 			lowercase: true,
 			match: [/^\S+@\S+\.\S+$/, "Please provide a valid email address"],
 		},
+		username: {
+			type: String,
+			trim: true,
+		},
 		password: {
 			type: String,
 			minlength: [6, "Password must be at least 6 characters long"],
@@ -32,6 +36,22 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			enum: ["user", "admin"],
 			default: "user",
+		},
+		otp: {
+			type: String,
+		},
+		otpExpires: {
+			type: Date,
+		},
+		isVerified: {
+			type: Boolean,
+			default: false,
+		},
+		changePasswordToken: {
+			type: String,
+		},
+		changePasswordTokenExpires: {
+			type: Date,
 		},
 	},
 	{

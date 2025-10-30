@@ -24,4 +24,17 @@
       </a>
     </figure>
   </header>
+  <script>
+    const fetchUsername = async () => {
+      const res = await fetch('/username');
+      const data = await res.json()
+      console.log(data);
+      
+      if (data.username) {
+        dropdown.querySelector(".profile h5").innerHTML = `Hello, ${data.username}`
+      }
+    }
+
+    fetchUsername()
+  </script>
 </section>

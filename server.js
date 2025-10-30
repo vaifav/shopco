@@ -7,7 +7,7 @@ import sessions from "./middleware/sessionMiddleware.js";
 import authenticate from "./routes/loginRoute.js";
 import admin from "./routes/adminRoute.js";
 import { noCache } from "./middleware/loginMiddleware.js";
-import { requireAdminAuth, requireAuth } from "./middleware/authMiddleware.js";
+import { checkBlockStatus, requireAdminAuth } from "./middleware/authMiddleware.js";
 
 dotenv.config();
 const app = express();
@@ -25,8 +25,9 @@ app.use(noCache);
 app.use(passport.initialize());
 
 app.use(authenticate); // login , signup
+app.use(checkBlockStatus);
 app.use("/admin", requireAdminAuth, admin);
-app.use("/", requireAuth, user);
+app.use("/", user);
 
 app.use("/pagenotfound", (req, res) => res.status(404).render("user/pagenotfound"));
 app.use((req, res) => res.status(404).render("user/pagenotfound"));

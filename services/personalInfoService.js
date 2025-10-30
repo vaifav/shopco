@@ -44,10 +44,19 @@ const updatePersonalInfo = async (data, userId, file = "") => {
 		}
 		if (data.email && info.email !== data.email) {
 			const isGoogleUser = await userModel.exists({ _id: userId, googleId: { $exists: true } });
-			if (isGoogleUser) throw new Error("You signed up using Google, so changing email is not allowed.");
+			if (isGoogleUser)
+				throw new Error("You signed up using Google, so changing email is not allowed.");
 			await userModel.findByIdAndUpdate(userId, { email: data.email });
 		}
-		const personalInfo = await personalInfoModel.findOneAndUpdate({ userId }, { $set: data }, { new: true, runValidators: true });
+		if (data.fname) {
+			await userModel.findByIdAndUpdate(userId, { username: data.fname });
+		}
+
+		const personalInfo = await personalInfoModel.findOneAndUpdate(
+			{ userId },
+			{ $set: data },
+			{ new: true, runValidators: true }
+		);
 		if (!personalInfo) throw new Error("Personal Information not found");
 		return personalInfo;
 	} catch (error) {
@@ -57,4 +66,4 @@ const updatePersonalInfo = async (data, userId, file = "") => {
 };
 
 export { getPersonalInfo, createPersonalInfo, updatePersonalInfo };
-// zod 
+// zod
