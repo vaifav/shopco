@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style/partials.css">
   <link rel="stylesheet" href="style/swal.css">
   <link rel="stylesheet" href="style/account.css">
@@ -24,19 +25,19 @@
           <div class="avatar">
             <img src="<%= personalInfo?.avatar ? `${personalInfo.avatar}`: 'images/icons/account.svg' %>" alt="avatar">
           </div>
-          <h5>Hello👋 <%=  personalInfo ?  personalInfo.fname: ''  %></h5>
+          <h5>Hello👋 <%= personalInfo ? personalInfo.fname: '' %></h5>
         </div>
 
         <ul>
-          <li class="active"><a href="#personal-information"><i data-lucide="user"></i><b>Personal Information</b></a></li>
-          <li><a href="#my-orders"><i data-lucide="shopping-bag"></i> <b>My Orders</b></a></li>
-          <li><a href="#my-reviews"><i data-lucide="star"></i> <b>My Reviews</b></a></li>
-          <li><a href="#my-wishlist"><i data-lucide="heart"></i> <b>My Wishlist</b></a></li>
-          <li><a href="#manage-address"><i data-lucide="map-pin"></i> <b>Manage Address</b></a></li>
-          <li><a href="#saved-cards"><i data-lucide="credit-card"></i> <b>Saved Cards</b></a></li>
-          <li><a href="#my-wallet"><i data-lucide="wallet"></i> <b>My Wallet</b></a></li>
-          <li><a href="#notification"><i data-lucide="bell"></i> <b>Notification</b></a></li>
-          <li><a href="#settings"><i data-lucide="settings"></i> <b>Settings</b></a></li>
+          <li class="active" data-section="personal-information"><a href="#personal-information"><i data-lucide="user"></i><b>Personal Information</b></a></li>
+          <li data-section="my-orders"><a href="#my-orders"><i data-lucide="shopping-bag"></i> <b>My Orders</b></a></li>
+          <li data-section="my-reviews"><a href="#my-reviews"><i data-lucide="star"></i> <b>My Reviews</b></a></li>
+          <li data-section="my-wishlist"><a href="#my-wishlist"><i data-lucide="heart"></i> <b>My Wishlist</b></a></li>
+          <li data-section="manage-address"><a href="#manage-address"><i data-lucide="map-pin"></i> <b>Manage Address</b></a></li>
+          <li data-section="saved-cards"><a href="#saved-cards"><i data-lucide="credit-card"></i> <b>Saved Cards</b></a></li>
+          <li data-section="my-wallet"><a href="#my-wallet"><i data-lucide="wallet"></i> <b>My Wallet</b></a></li>
+          <li data-section="notification"><a href="#notification"><i data-lucide="bell"></i> <b>Notification</b></a></li>
+          <li data-section="settings"><a href="#settings"><i data-lucide="settings"></i> <b>Settings</b></a></li>
         </ul>
 
       </nav>
@@ -128,11 +129,12 @@
                   <img src="images/icons/edit-black.svg" alt="edit">
                   <b>Edit</b>
                 </button>
-                <button type="button" class="delete" data-addressid=" <%=a._id%> "> <img src="images/icons/delete.svg" alt="delete"> <b>Delete</b> </button>
+                <button type="button" class="delete" data-addressid=" <%=a._id%> "> <img src="images/icons/delete.svg"
+                    alt="delete"> <b>Delete</b> </button>
               </div>
             </article>
             <% }) %>
-            <% }  %>
+            <% } %>
 
           </div>
           <button type="button" class="add-new-address-btn">Add Address</button>
@@ -202,20 +204,12 @@
 
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
   <script>
-    const listItems = document.querySelectorAll(".container nav ul li");
     window.accountData = {
       states: <%- JSON.stringify(state) %>,
       cities: <%- JSON.stringify(city) %>,
       addresses: <%- JSON.stringify(address) %>,
     };
-    listItems.forEach((li) => {
-      li.addEventListener("click", () => {
-        listItems.forEach((active) => {
-          active.classList.remove("active");
-        });
-        li.classList.add("active");
-      });
-    });
+    
     lucide.createIcons();
   </script>
   <script src="script/account.js" type="module"></script>
