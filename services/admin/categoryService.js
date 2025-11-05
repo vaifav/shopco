@@ -27,9 +27,10 @@ const getCategoryInfo = async (_id) => {
 };
 
 const createCategory = async (data, createdBy) => {
+	const categoryNamePattern = new RegExp(`^${data.categoryName.trim()}$`, "i");
 	try {
 		const categoryNameExists = await categoryModel.findOne({
-			categoryName: data.categoryName.trim(),
+			categoryName: categoryNamePattern,
 		});
 		if (categoryNameExists) throw new Error(`${data.categoryName} category exists`);
 
@@ -79,12 +80,24 @@ const deleteCategory = async (_id) => {
 const getAllCategoryDetails = async (
 	page = 1,
 	limit = 5,
-	createdAt = -1,
+	createdAt,
+	categoryName,
+	sortOrder,
 	search = "",
 	isBlocked = false
 ) => {
 	const data = {};
 	const query = {};
+	const sortCriteria = {};
+
+	const sortOption = { createdAt, categoryName, sortOrder };
+	const activeSortEntry = Object.entries(sortOption).find(([field, order]) => order !== null);
+	if (activeSortEntry) {
+		const [field, order] = activeSortEntry;
+		sortCriteria[field] = order;
+	} else {
+		sortCriteria["createdAt"] = -1;
+	}
 
 	if (search && search.trim() !== "") {
 		const regex = new RegExp("^" + search, "i");
@@ -107,7 +120,7 @@ const getAllCategoryDetails = async (
 			.find(query)
 			.skip(skip)
 			.limit(limit)
-			.sort({ createdAt, _id: createdAt })
+			.sort(sortCriteria)
 			.lean();
 
 		data.totalPages = totalPages;

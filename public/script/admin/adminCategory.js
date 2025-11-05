@@ -1,5 +1,6 @@
 import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
 
+const activeBlockBtn = document.querySelector("#category .category-search .active-block-filter");
 const addCategoryBtn = document.querySelector("#category header button");
 const searchForm = document.querySelector("#category .category-search form");
 const activeFilter = document.querySelector(
@@ -38,22 +39,6 @@ document.querySelectorAll(".pagination .pagination-btn").forEach((btn) => {
 		});
 	});
 });
-
-const createdAtFilterToggle = () => {
-	let val = -1;
-	const arrow = document.querySelector("#category .category-search .up-down");
-
-	arrow.addEventListener("click", () => {
-		const url = new URL(window.location.href);
-		let val = parseInt(url.searchParams.get("createdAt")) || -1;
-
-		val = val === -1 ? 1 : -1;
-		url.searchParams.set("createdAt", val);
-
-		window.location.href = url.toString();
-	});
-};
-createdAtFilterToggle();
 
 searchForm.addEventListener("submit", (e) => {
 	e.preventDefault();
@@ -180,10 +165,55 @@ restoreCategory.forEach((btn) => {
 	});
 });
 
-activeFilter.addEventListener("click", () => {
-	addOrUpdateQueryParams({ isBlocked: false });
+
+const sortToggle = (field, element, initVal) => {
+    const fieldArr = ["createdAt", "sortOrder", "categoryName"];
+    let index = fieldArr.indexOf(field);
+
+    if (index > -1) fieldArr.splice(index, 1);
+
+    const listItem = document.querySelector(element);
+
+    listItem.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        activeBlockBtn.querySelector("ul").classList.remove("activate-ul");
+
+        const url = new URL(window.location.href);
+        let val = parseInt(url.searchParams.get(field)) || initVal;
+
+        val = val === -1 ? 1 : -1;
+        fieldArr.forEach((params) => {
+            if (url.searchParams.has(params)) {
+                url.searchParams.delete(params);
+            }
+        });
+
+        url.searchParams.set(field, val);
+
+        window.location.href = url.toString();
+    });
+};
+
+activeBlockBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const ul = activeBlockBtn.querySelector("ul");
+    ul.classList.toggle("activate-ul");
 });
 
-blockedFilter.addEventListener("click", () => {
-	addOrUpdateQueryParams({ isBlocked: true });
+activeFilter.addEventListener("click", (e) => {
+    e.stopPropagation();
+    activeBlockBtn.querySelector("ul").classList.remove("activate-ul");
+    addOrUpdateQueryParams({ isBlocked: false });
 });
+
+blockedFilter.addEventListener("click", (e) => {
+    e.stopPropagation();
+    activeBlockBtn.querySelector("ul").classList.remove("activate-ul");
+    addOrUpdateQueryParams({ isBlocked: true });
+});
+
+sortToggle("createdAt", "#category .category-search .up-down", -1);
+sortToggle("sortOrder", ".active-block-filter .sort-by-sort-order", -1);
+sortToggle("categoryName", ".active-block-filter .sort-by-category-name", -1);

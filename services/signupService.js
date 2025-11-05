@@ -10,12 +10,12 @@ const createUser = async ({ username, email, password }) => {
 	try {
 		const isEmailExists = await userModel.findOne({ email, isVerified: true });
 		if (isEmailExists) throw new Error("Email Already Exists");
+		const hashedPassword = await hashPassword(password);
 
 		const tenMinutes = 10 * 60 * 1000;
 		const otp = generateOTP();
 		const otpExpires = new Date(Date.now() + tenMinutes);
 
-		const hashedPassword = await hashPassword(password);
 		const user = await userModel.findOneAndUpdate(
 			{ email },
 			{

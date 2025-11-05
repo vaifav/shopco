@@ -1,3 +1,5 @@
+/* --- Original Styles (Kept as is for context) --- */
+
 #products.add-or-edit-products-section * {
     color: black;
 }
@@ -48,21 +50,63 @@
     color: #374151;
 }
 
-
 #products.add-or-edit-products-section form .input-container.preview-container label.preview {
     height: 10rem;
     position: relative;
     background: #f9fafb;
     bottom: 0;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0;
     border: 3px dashed #374151;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#products.add-or-edit-products-section form .input-container.preview-container label.manual-upload-trigger {
+    padding: 1rem;
+    border-radius: 0 0 8px 8px;
+    position: relative;
+    top: -10px;
+    background: #0a102b;
 
     & svg {
-        stroke: #374151;
+        stroke: #fff;
     }
+}
+
+
+.preview-image-wrapper {
+    position: relative;
+    /* You may need other existing styles here like width, height, or border */
+}
+
+#products.add-or-edit-products-section form .input-container.preview-container .delete-image-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #0a102b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    padding: 0;
+    z-index: 10;
+}
+
+#products.add-or-edit-products-section form .input-container.preview-container .delete-image-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: #fff !important;
+}
+
+#products.add-or-edit-products-section form .input-container.preview-container label.preview svg {
+    stroke: #374151;
 }
 
 #products.add-or-edit-products-section form .input-container input,
@@ -84,18 +128,18 @@
     justify-content: center;
     gap: 0.7rem;
     margin-top: 0;
+}
 
-    & svg {
-        stroke: #fff;
-    }
+#products.add-or-edit-products-section form .input-container button svg {
+    stroke: #fff;
+}
 
-    * {
-        color: #fff;
-    }
+#products.add-or-edit-products-section form .input-container button * {
+    color: #fff;
 }
 
 #products.add-or-edit-products-section form .input-container input[type="submit"],
-#products.add-or-edit-products-section form .input-container button {
+#products.add-or-edit-products-section form .input-container button#addVariantBtn {
     background: #070b1d;
     color: #fff;
     padding: 0.75rem 1.5rem;
@@ -109,6 +153,9 @@
     height: auto;
 }
 
+#products.add-or-edit-products-section form .input-container button.crop-image-btn {
+    display: none;
+}
 
 #products.add-or-edit-products-section form .input-container.preview-container label.preview.has-images {
     border: 1px solid #d1d5db;
@@ -129,10 +176,10 @@
     justify-content: start !important;
     gap: 1rem;
     padding-inline: 1rem;
+}
 
-    & svg {
-        margin: 0 auto;
-    }
+#products.add-or-edit-products-section form .preview.upload-trigger svg {
+    margin: 0 auto;
 }
 
 #products.add-or-edit-products-section form .preview.upload-trigger.imageActive {
@@ -143,28 +190,28 @@
     width: 110px;
     height: 110px;
     border-radius: 5px;
+}
 
-    & img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: inherit;
-    }
+#products.add-or-edit-products-section form .preview.upload-trigger.imageActive div img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
 }
 
 #products.add-or-edit-products-section .cropper-modal-overlay {
     padding: 2rem;
-    position: fixed; 
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7); 
-    z-index: 9999; 
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-    display: none; 
+    display: none;
 }
 
 #products.add-or-edit-products-section .cropper-modal-content {
@@ -172,8 +219,8 @@
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     width: 90%;
-    max-width: 650px; 
-    overflow: hidden; 
+    max-width: 650px;
+    overflow: hidden;
     animation: fadeIn 0.3s ease-out;
 }
 
@@ -191,7 +238,7 @@
 
 #products.add-or-edit-products-section .img-container {
     padding: 20px;
-    max-height: 70vh; 
+    max-height: 70vh;
     overflow: hidden;
 }
 
@@ -204,7 +251,7 @@
     padding: 15px 20px;
     border-top: 1px solid #eee;
     display: flex;
-    justify-content: flex-end; 
+    justify-content: flex-end;
     gap: 10px;
 }
 
@@ -218,7 +265,7 @@
 }
 
 #products.add-or-edit-products-section .btn-primary {
-    background-color: #000; 
+    background-color: #000;
     color: #fff;
 }
 
@@ -236,7 +283,122 @@
     background-color: #e0e0e0;
 }
 
+#products.add-or-edit-products-section form .right .variant-card {
+    position: relative;
+}
+
+#products.add-or-edit-products-section form .right .variant-card .remove-variant-btn {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    width: fit-content;
+    background: transparent;
+    border: none;
+
+    & svg {
+        stroke: #ff7262;
+    }
+
+}
+
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95) translateY(-10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@media (max-width: 1024px) {
+
+    #products.add-or-edit-products-section form {
+        gap: 2rem;
+        padding: 1rem;
+    }
+
+    #products.add-or-edit-products-section form .left,
+    #products.add-or-edit-products-section form .right {
+        padding: 0.5rem;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    #products.add-or-edit-products-section form {
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem;
+    }
+
+    #products.add-or-edit-products-section form .left,
+    #products.add-or-edit-products-section form .right {
+        width: 100%;
+        padding: 1rem 0;
+    }
+
+    #products.add-or-edit-products-section form .left .input-container input[type="submit"] {
+        width: 100%;
+        align-self: auto;
+    }
+
+    #products.add-or-edit-products-section form .right .input-container button#addVariantBtn {
+        width: 100%;
+        align-self: auto;
+    }
+
+    #products.add-or-edit-products-section form .right .variant-input-container {
+        padding: 0.75rem;
+        gap: 1.5rem;
+    }
+
+    #products.add-or-edit-products-section form .right .variant-card h1 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    div.sections {
+        padding: 2rem 0.5rem 1rem;
+    }
+
+    #products.add-or-edit-products-section header {
+        padding-bottom: 1.5rem;
+    }
+
+    #products.add-or-edit-products-section header h1 {
+        font-size: 1.5rem;
+    }
+
+    #products.add-or-edit-products-section form {
+        padding: 0.5rem;
+    }
+
+    #products.add-or-edit-products-section form .input-container input,
+    #products.add-or-edit-products-section form .input-container select {
+        height: 50px;
+    }
+
+    #products.add-or-edit-products-section form .input-container.preview-container label.preview {
+        height: 8rem;
+    }
+}
+
+@media (max-width: 375px) {
+
+    #products.add-or-edit-products-section form .left,
+    #products.add-or-edit-products-section form .right {
+        padding: 0.5rem 0;
+    }
+
+    #products.add-or-edit-products-section form .input-container input[type="submit"],
+    #products.add-or-edit-products-section form .input-container button#addVariantBtn {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+    }
 }

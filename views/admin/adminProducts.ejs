@@ -36,6 +36,9 @@
           <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
         </ul>
       </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
       <div class="sections">
         <section id="products" class="show">
           <header>
@@ -107,11 +110,11 @@
                     <i data-lucide="edit"></i>
                   </button>
                   <% if (!item.isBlocked) { %>
-                   <button class="action-btn delete-btn" title="Delete" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
+                  <button class="action-btn delete-btn" title="Delete" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
                     <i data-lucide="trash-2"></i>
                   </button>
                   <% } else {%>
-                    <button class="action-btn unblock-btn" title="unblock" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
+                  <button class="action-btn unblock-btn" title="unblock" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
                     <i data-lucide="unlock"></i>
                   </button>
                   <% } %>

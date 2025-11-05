@@ -35,6 +35,9 @@
           <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
         </ul>
       </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
       <div class="sections">
         <section id="products" class="show add-or-edit-products-section">
           <header>
@@ -85,12 +88,20 @@
               <div id="variantsContainer" class="variants">
                 <div class="variant-card" data-variant-index="0">
                   <h1>Variant <span class="variant-index-display">1</span></h1>
+                  <button type="button" class="remove-variant-btn" data-variant-index="0">
+                    <i data-lucide="trash-2"></i>
+                  </button>
                   <div class="variant-input-container">
                     <div class="input-container preview-container">
                       <label for="variants[0][image]">Images <span>( Only 4 Images are allowed )</span></label>
                       <input type="file" name="variants[0][image]" id="variants[0][image]" multiple accept="image/*" class="variant-image-input" style="display: none;">
+
                       <label for="variants[0][image]" class="preview upload-trigger">
-                        <i data-lucide="circle-plus"></i>
+                        <i data-lucide="circle-plus "></i>
+                      </label>
+
+                      <label class="manual-upload-trigger">
+                        <i data-lucide="plus"></i>
                       </label>
                     </div>
 

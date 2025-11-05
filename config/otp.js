@@ -37,6 +37,7 @@ const sendOtpVerification = async (email, otp) => {
 };
 
 const sendForgotPasswordToken = async (email, token) => {
+	const resetUrl = `http://localhost:7000/forgotpassword?token=${token}`;
 	const mailOptions = {
 		from: process.env.NODEMAILER_EMAIL,
 		to: email,
@@ -44,12 +45,31 @@ const sendForgotPasswordToken = async (email, token) => {
 		html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
             <h2 style="color: #333;">Password Reset Requested</h2>
-            <p>You have requested to reset your password. Please use the following **One-Time Code (OTP)** to proceed with changing your password:</p>
-            <p style="font-size: 30px; font-weight: bold; color: #dc3545; letter-spacing: 5px; margin: 20px 0; text-align: center;">
-                ${token}
+            <p>You have requested to reset your password. Please click the link below to set a new password:</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a 
+                    href="${resetUrl}"
+                    target="_blank"
+                    style="
+                        background-color: #007bff; 
+                        color: white; 
+                        padding: 12px 25px; 
+                        text-decoration: none; 
+                        border-radius: 5px; 
+                        font-weight: bold; 
+                        font-size: 16px;
+                        display: inline-block;
+                    "
+                >
+                    Reset My Password
+                </a>
+            </div>           
+           <p>If the button above doesn't work, you can copy and paste the following link into your web browser:</p>
+            <p style="font-size: 14px; color: #007bff; word-break: break-all;">
+                ${resetUrl}
             </p>
-            <p>Enter this code on the password reset screen to set your new password.</p>
-            <p>This code is valid for a **short period of time** (e.g., 10 minutes). Do not share it with anyone.</p>
+            <p>This link is valid for a **limited period** (e.g., 1 hour). Do not share it with anyone.</p>
             <p style="font-size: 14px; color: #777; margin-top: 20px;">
                 If you did not request a password change, please ignore this email. Your password will remain secure.
             </p>

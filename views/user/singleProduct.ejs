@@ -22,12 +22,12 @@
       <section class="product-images">
         <aside>
           <% if (product.images.length > 1) { %>
-          <% for( let imageIndex = 1; imageIndex < product.images.length; imageIndex++ ) { %>
+          <% for( let imageIndex = 0; imageIndex < product.images.length; imageIndex++ ) { %>
           <figure> <img src="<%= product.images[imageIndex] %>" alt="<%= product.productName %>"> </figure>
           <% } %>
           <% } %>
         </aside>
-        <figure> <img src="<%= product.images[0] %>" alt="<%= product.productName %>"> </figure>
+        <figure class="main-image-display"> <img src="<%= product.images[0] %>" alt="<%= product.productName %>"> </figure>
       </section>
       <section class="product-details">
         <section class="text-details">

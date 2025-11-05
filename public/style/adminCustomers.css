@@ -1,3 +1,5 @@
+/* --- Original Styles (Kept as is) --- */
+
 #customers * {
     color: black;
 }
@@ -42,14 +44,14 @@
     justify-content: space-between;
     margin-bottom: 1.5rem;
     gap: 0;
+}
 
-    * {
-        font-weight: 600;
-    }
+#customers section.customer-number article div * {
+    font-weight: 600;
+}
 
-    & svg {
-        height: 1rem;
-    }
+#customers section.customer-number article div svg {
+    height: 1rem;
 }
 
 #customers section.customer-number article h3 {
@@ -84,7 +86,6 @@
     padding: 14px 16px;
     text-align: left;
     font-size: 14px;
-
 }
 
 #customers .customer-list th {
@@ -117,27 +118,26 @@
 
 #customers .customer-list .active {
     color: #22c55e;
+}
 
-    & .dot {
-        background-color: #22c55e;
-    }
-
+#customers .customer-list .active .dot {
+    background-color: #22c55e;
 }
 
 #customers .customer-list .inactive {
     color: #ff7262;
+}
 
-    & .dot {
-        background-color: #ff7262;
-    }
+#customers .customer-list .inactive .dot {
+    background-color: #ff7262;
 }
 
 #customers .customer-list .vip {
     color: #facc15;
+}
 
-    & .dot {
-        background-color: #facc15;
-    }
+#customers .customer-list .vip .dot {
+    background-color: #facc15;
 }
 
 #customers .customer-list .actions .block-svg {
@@ -163,6 +163,7 @@
     height: 20px;
 }
 
+/* Search Container styles are kept as they were */
 #customers .customer-search .search-container button.active-block-details,
 #customers .customer-search .search-container button.active-block-filter {
     position: relative;
@@ -174,7 +175,7 @@
     border-radius: 5px;
     border: 1px solid #D1D5DB;
     position: absolute;
-    bottom: 0;
+    top: 0;
     right: 0;
     z-index: 100;
     display: none;
@@ -195,10 +196,11 @@
     font-weight: 700;
 }
 
-#customers .customer-search .search-container button.active-block-filter ul li{
+#customers .customer-search .search-container button.active-block-filter ul li {
     padding-block: 0;
     margin-bottom: 0.5rem;
 }
+
 #customers .customer-search .search-container button.active-block-filter ul li:first-child {
     font-size: 1.5rem;
     margin-bottom: 1rem;
@@ -206,18 +208,18 @@
 
 #customers .customer-search .search-container ul li.active {
     color: #22c55e;
+}
 
-    & svg {
-        stroke: #1fa851;
-    }
+#customers .customer-search .search-container ul li.active svg {
+    stroke: #1fa851;
 }
 
 #customers .customer-search .search-container ul li.blocked {
     color: #ff7262;
+}
 
-    & svg {
-        stroke: #f8604f
-    }
+#customers .customer-search .search-container ul li.blocked svg {
+    stroke: #f8604f;
 }
 
 #customers .customer-search .search-container button.active-block-details:hover ul {
@@ -226,4 +228,161 @@
 
 #customers .customer-search .search-container button.active-block-filter:hover ul {
     display: flex;
+}
+
+
+/* --- Responsive Styles (From 810px down) --- */
+
+@media (max-width: 810px) {
+
+    /* --- Customer Cards Layout (General) --- */
+    #customers section.customer-number {
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 2rem;
+        justify-content: space-between;
+    }
+
+    #customers section.customer-number article {
+        flex-grow: 1;
+        min-width: 45%;
+        width: calc(50% - 0.5rem);
+        max-width: 100%;
+        padding: 1.25rem;
+    }
+
+    /* --- TABLE CARD LAYOUT FIX (Focus on Alignment and Content) --- */
+
+    #customers .customer-list {
+        /* Remove horizontal scrolling since we are using cards */
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: auto;
+    }
+
+    #customers .customer-list table {
+        border: 0;
+        box-shadow: none;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    #customers .customer-list thead {
+        /* Hide table headers */
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    #customers .customer-list tr {
+        /* Display row as a block/card element */
+        display: block;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e2e8f0;
+        /* Use a lighter border */
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        /* Lighter shadow */
+        background-color: white;
+        /* Ensure background is white */
+    }
+
+    #customers .customer-list td {
+        /* Display cell using Flexbox for alignment control */
+        display: flex;
+        justify-content: space-between;
+        /* Puts label on the left, value on the right */
+        align-items: center;
+        border-bottom: 1px solid #f0f0f0;
+        text-align: right;
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+
+    #customers .customer-list tr:last-child td {
+        border-bottom: none;
+        /* No border for the last cell of the last row */
+    }
+
+    #customers .customer-list td:last-child {
+        border-bottom: none;
+        /* No border for the last cell in each card */
+    }
+
+    #customers .customer-list td::before {
+        /* Styles for the virtual header (data-label) */
+        content: attr(data-label);
+        font-weight: 600;
+        /* Bold the header */
+        text-transform: uppercase;
+        color: #475569;
+        text-align: left;
+        flex-shrink: 0;
+        /* Prevents the label from shrinking */
+        font-size: 0.8rem;
+    }
+
+    /* Correct Alignment for Status Column */
+    #customers .customer-list .status {
+        /* The content within the status column should align together on the right */
+        justify-content: flex-end;
+        gap: 6px;
+    }
+
+    #customers .customer-list .status::before {
+        /* Align the label (e.g., 'Status') to the left */
+        margin-right: auto;
+    }
+
+    /* Action Column Adjustments */
+    #customers .customer-list .actions {
+        /* Center the action icon at the bottom of the card */
+        justify-content: center;
+        padding-top: 15px;
+    }
+
+    #customers .customer-list .actions::before {
+        /* The 'Action' label should be hidden or separated on its own line */
+        display: none;
+        /* Hide the 'Action' label for a cleaner button look */
+    }
+
+    #customers .customer-list .actions svg {
+        position: static;
+        margin: 0;
+    }
+
+    /* Ensure action icons are visible */
+    #customers .customer-list .actions .block-svg,
+    #customers .customer-list .actions .active-svg {
+        margin: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    div.sections {
+        padding: 2rem 0.5rem 1rem;
+    }
+
+    #customers header h1 {
+        font-size: 1.5rem;
+    }
+
+    #customers header button {
+        padding: 0.6rem 1rem;
+    }
+}
+
+/* Smaller Mobile Screens (Max-width 550px) */
+@media (max-width: 550px) {
+
+    /* Stack customer cards vertically */
+    #customers section.customer-number article {
+        width: 100%;
+        max-width: 100%;
+    }
 }

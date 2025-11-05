@@ -1,3 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    color: white;
+    list-style: none;
+    font-weight: 400;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: transparent;
+    font-family: "Montserrat", sans-serif;
+}
+
+body {
+    padding-top: 5rem;
+}
+
+.wrapper.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: #070B1D;
+}
+
 .nav.wrapper {
     display: flex;
     flex-direction: column;
@@ -9,6 +36,47 @@ div.container {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    position: relative;
+}
+
+#menu-toggle {
+    display: none;
+    align-self: flex-start;
+    background: #0a102b;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+#menu-toggle svg {
+    width: 28px;
+    height: 28px;
+    stroke: #ffffff;
+}
+
+#admin-menu-chevron {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 40px;
+    background: #0a102b;
+    z-index: 1010;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: left 0.3s ease-out;
+}
+
+#admin-menu-chevron svg {
+    width: 20px;
+    height: 20px;
+    stroke: #ffffff;
+    stroke-width: 2;
 }
 
 .container nav,
@@ -28,18 +96,27 @@ div.container {
     background: #0a102b;
     padding: 1rem;
     padding-block: 2rem;
+    transition: transform 0.3s ease-out;
+    position: sticky;
+    top: 5rem;
+    width: 250px;
+    transform: translateX(0);
 }
 
 .container ul li {
     transition: background 0.2s;
     padding: 1rem 1rem;
     border-radius: 10px;
+}
 
-    & a {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
+.container ul li a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.container ul li a svg {
+    flex-shrink: 0;
 }
 
 .container ul li:hover {
@@ -49,6 +126,7 @@ div.container {
 .container ul b {
     transition: color 0.2s;
     margin-right: 3rem;
+    white-space: nowrap;
 }
 
 .container ul a svg {
@@ -67,48 +145,111 @@ div.container {
     color: #5A607F;
 }
 
-.container div.image-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    & div.avatar {
-        background: #edebeb;
-        height: 40px;
-        width: 40px;
-        border-radius: 50px;
-    }
-
-    & div.avatar img {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-        border-radius: inherit;
-    }
-
-    h5 {
-        font-weight: 500;
-        font-size: 1rem;
-    }
-}
-
-div.sections {
-    flex-grow: 1;
-    padding: 2rem 3rem;
-}
-
 .container ul li.active {
     background: #ffffff;
 }
 
 .container ul li.active b {
-    transition: color 0.2s;
+    color: #5A607F;
 }
 
 .container ul li.active svg {
     stroke: #5A607F;
 }
 
-.container ul li.active b {
-    color: #5A607F;
+
+div.sections {
+    flex-grow: 1;
+    padding: 3rem 1rem 1rem;
+    transition: padding 0.3s ease-out, margin-left 0.3s ease-out;
+
+    & * {
+        color: black;
+    }
+}
+
+
+@media (max-width: 1024px) {
+    div.sections {
+        padding: 3rem 1rem 1rem;
+    }
+
+    .container ul b {
+        margin-right: 1rem;
+    }
+}
+
+@media (max-width: 1040px) {
+    div.container {
+        flex-direction: column;
+        padding-inline: 0;
+    }
+
+    #menu-toggle {
+        display: none;
+    }
+
+    #admin-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 250px;
+        z-index: 100;
+        padding-top: 7rem;
+        transform: translateX(-100%);
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
+
+    .container nav {
+        position: fixed;
+        padding-top: 5rem;
+        height: 100vh;
+    }
+
+    #admin-nav.active {
+        transform: translateX(0);
+    }
+
+    #admin-menu-chevron {
+        display: flex;
+        left: 0;
+        z-index: 1011;
+        transform: translateY(-50%) rotate(0deg);
+        transition: left 0.3s ease-out, background 0.3s;
+    }
+
+    #admin-menu-chevron.active {
+        left: 225px;
+        background: transparent;
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    div.sections {
+        width: 100%;
+        padding: 2rem 1rem 1rem;
+    }
+
+    .container ul {
+        width: 100%;
+    }
+
+    .container ul b {
+        margin-right: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav.wrapper {
+        padding-inline: 0.5rem;
+    }
+
+    div.sections {
+        padding: 6rem 0.5rem 1rem;
+    }
+
+    #admin-menu-chevron {
+        position: fixed;
+    }
 }

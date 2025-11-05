@@ -1,12 +1,13 @@
 import { sendTokenToEmail, verifyTokenFromEmail } from "../../services/forgotPasswordService.js";
 
 const getForgotPasswordPage = async (req, res) => {
-	return res.render("user/forgotPassword", { error: null });
+	const token = req.query.token;
+	return res.render("user/forgotPassword", { error: null, token });
 };
 
-const getUserEmailPage = async (req,res)=>{
-    return res.render("user/userEmail", { error: null });
-}
+const getUserEmailPage = async (req, res) => {
+	return res.render("user/userEmail", { error: null });
+};
 
 const sendToken = async (req, res) => {
 	const email = req.body.email;
@@ -15,10 +16,16 @@ const sendToken = async (req, res) => {
 
 	try {
 		await sendTokenToEmail(email);
-		return res.redirect("/forgotpassword");
+		return res.json({
+			success: true,
+			message: "We have send a code to reset your password",
+		});
 	} catch (error) {
 		console.log(error);
-		return res.render("user/forgotPassword", { error: error.message });
+		return res.json({
+			sucess: false,
+			message: error.message,
+		});
 	}
 };
 
@@ -30,8 +37,8 @@ const verifyToken = async (req, res) => {
 		return res.redirect("/login");
 	} catch (error) {
 		console.log(error);
-		return res.render("user/forgotPassword", { error: error.message });
+		return res.render("user/forgotPassword", { error: error.message, token: null });
 	}
 };
 
-export { getForgotPasswordPage, getUserEmailPage,sendToken, verifyToken };
+export { getForgotPasswordPage, getUserEmailPage, sendToken, verifyToken };

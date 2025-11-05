@@ -21,7 +21,7 @@
       </a>
     </figure>
     <section>
-      <form action="/useremail" method="post" class="send-useremail">
+      <form method="post" action="/useremail" class="send-useremail">
         <div>
           <h1>Your Email</h1>
           <% if(error) { %>
@@ -42,7 +42,7 @@
   </section>
 
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
-  <script src="/script/login.js"></script>
+  <script type="module" src="/script/login.js"></script>
 </body>
 
 </html>

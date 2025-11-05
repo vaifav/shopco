@@ -55,6 +55,7 @@
     <img src="images/images/calvin.svg" alt="calvin">
   </section>
 
+  <% if (products && products.length !== 0) { %>
   <section class="wrapper new-arraival">
     <section class="home-product-collections">
       <h1>NEW ARRAIVALS</h1>
@@ -130,9 +131,13 @@
       <a href="/products"><button>view all</button></a>
     </section>
   </section>
+  <% } else {%>
+  <h1>No Products</h1>
+  <% } %>
 
   <section class="wrapper category">
     <section>
+      <% if (category && category.length !== 0) { %>
       <h1>BROWSE BY CATEGORY</h1>
       <div class="container">
         <div class="top">
@@ -152,6 +157,9 @@
           <% } %>
         </div>
       </div>
+      <% } else {%>
+      <h1>No Category...</h1>
+      <%  }%>
     </section>
   </section>
 

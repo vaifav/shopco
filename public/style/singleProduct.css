@@ -31,7 +31,7 @@
         width: 100%;
         object-fit: cover;
         border-radius: inherit;
-        cursor: zoom-in;
+        cursor: pointer;
     }
 }
 
@@ -421,6 +421,25 @@
     fill: #dddddd;
 }
 
+.single-product .product-container .product-images figure {
+    height: 500px;
+    width: 500px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+
+    & img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: inherit;
+        transition: transform 0.7s ease-out;
+    }
+}
+.single-product .product-container .product-images figure.main-image-display img {
+    cursor: crosshair;
+}
+
 @media (max-width: 1100px) {
 
     .single-product .product-container {
@@ -531,7 +550,7 @@
     }
 
     .single-product .category-section {
-        max-width: 100%; 
+        max-width: 100%;
         padding-inline: 0;
     }
 
@@ -543,37 +562,39 @@
     .single-product .category-section div.container {
         -ms-overflow-style: none;
         scrollbar-width: none;
+
         &::-webkit-scrollbar {
             display: none;
         }
-        flex-wrap: nowrap; 
-        overflow-x: auto; 
-        justify-content: flex-start; 
+
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
         gap: 0;
         padding-inline: 1.5rem;
         margin-bottom: 0;
-        scroll-snap-type: x mandatory; 
+        scroll-snap-type: x mandatory;
     }
 
     .single-product .category-section div.container article {
-        flex-shrink: 0; 
+        flex-shrink: 0;
         width: 250px;
         margin-right: 1.5rem;
         scroll-snap-align: start;
         max-width: none;
     }
-    
+
     .single-product .category-section div.container article:last-child {
         margin-right: 0;
     }
-    
+
     .single-product .category-section div.container figure {
         height: 250px;
     }
-    
+
     .single-product .category-section div.container::after {
         content: '';
-        width: 0; 
+        width: 0;
         flex-shrink: 0;
     }
 
@@ -618,3 +639,17 @@
         font-size: 1.2rem;
     }
 }
+
+
+
+
+/* @media (max-width: 1020px) {
+
+    .single-product .product-container .product-images figure {
+        width: 90vw;
+        max-width: 400px;
+        height: 350px;
+        border-radius: 8px;
+    }
+
+} */

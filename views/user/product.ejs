@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="style/partials.css">
   <link rel="stylesheet" href="style/swal.css">
   <link rel="stylesheet" href="style/pagination.css">
-  <link rel="stylesheet" href="style/product.css"> 
+  <link rel="stylesheet" href="style/product.css">
   <title>Products</title>
 </head>
 
@@ -42,13 +42,13 @@
               <i data-lucide="chevron-down"></i>
             </div>
             <ul class="size-drop-down">
-              <li class="active" data-size=""><b>All</b></li>
-              <li data-size="s" ><b>Small</b></li>
-              <li data-size="m" ><b>Medium</b></li>
-              <li data-size="l" ><b>Large</b></li>
-              <li data-size="xl" ><b>X-Large</b></li>
-              <li data-size="xxl" ><b>2X-Large</b></li>
-              <li data-size="xxxl" ><b>3X-Large</b></li>
+              <li data-size=""><b>All</b></li>
+              <li data-size="s"><b>Small</b></li>
+              <li data-size="m"><b>Medium</b></li>
+              <li data-size="l"><b>Large</b></li>
+              <li data-size="xl"><b>X-Large</b></li>
+              <li data-size="xxl"><b>2X-Large</b></li>
+              <li data-size="xxxl"><b>3X-Large</b></li>
             </ul>
           </section>
           <section class="filter filter-price-range">
@@ -57,8 +57,8 @@
               <i data-lucide="chevron-down"></i>
             </div>
             <form>
-              <input type="number" required min="<%= maxPrice %>" name="price-range-start" id="price-range-start" placeholder="₹ Min">
-              <input type="number" required max="<%= minPrice %>" min="<%= maxPrice %>" name="price-range-end" id="price-range-end" placeholder="₹ Max">
+              <input type="number" required min="<%= 0 %>" max="<%= minPrice %>" name="price-range-start" id="price-range-start" placeholder="₹ Min">
+              <input type="number" required min="<%= 0 %>" max="<%= minPrice %>" name="price-range-end" id="price-range-end" placeholder="₹ Max">
               <input type="submit" value="Apply">
             </form>
           </section>
@@ -67,24 +67,24 @@
       </div>
       <section class="main">
         <section class="sort-section">
-          <h1 class="category-heading" >All</h1>
+          <h1 class="category-heading">All</h1>
           <div class="sort-and-actions">
             <div class="sort-container">
-                <label for="sortby">Sort by: </label>
-                <select name="sortby" id="sortby">
-                  <option value="" disabled selected>Price</option>
-                  <option class="price-sort" value="-1">price low &harr; high</option>
-                </select>
+              <label for="sortby">Sort by: </label>
+              <select name="sortby" id="sortby">
+                <option value="" disabled selected>Price</option>
+                <option class="price-sort" value="-1">price low &harr; high</option>
+              </select>
             </div>
             <div class="mobile-actions">
-                <form class="mobile-search-form">
-                    <input type="text" placeholder="Search products..." name="search-mobile">
-                    <button type="submit"><i data-lucide="search"></i></button>
-                </form>
+              <form class="mobile-search-form">
+                <input type="text" placeholder="Search products..." name="search-mobile">
+                <button type="submit"><i data-lucide="search"></i></button>
+              </form>
 
-                <button class="mobile-filter-btn" type="button">
-                    <i data-lucide="filter"></i>
-                </button>
+              <button class="mobile-filter-btn" type="button">
+                <i data-lucide="filter"></i>
+              </button>
             </div>
           </div>
         </section>

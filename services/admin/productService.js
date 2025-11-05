@@ -63,7 +63,7 @@ const getProducts = async (
 				{ $project: { _id: 0, variantSize: 1 } },
 			]);
 			const total = totalVariants[0].variantSize;
-			
+
 			let totalPages = Math.ceil(total / limit);
 			if (page < 1) page = 1;
 			if (page > totalPages) page = totalPages || 1;
@@ -198,8 +198,6 @@ const getProductEditDetails = async (_id) => {
 				},
 			},
 		]);
-		console.log(products[0]);
-
 		return products[0];
 	} catch (error) {
 		console.log(error.message);
@@ -298,6 +296,7 @@ const updateProduct = async (_id, data) => {
 			await productModel.findOneAndUpdate({ _id }, { $set: updateProductFields }, { new: true });
 		}
 
+		console.log(variants);
 		for (let variantIndex = 0; variantIndex < variants.length; variantIndex++) {
 			const variantId = product.variants[variantIndex];
 			if (!variantId) {
@@ -314,7 +313,18 @@ const updateProduct = async (_id, data) => {
 
 			const updateVariant = await variantModel.findOneAndUpdate(
 				{ _id: variantId },
-				{ $set: variants[variantIndex] },
+				{
+					$set: {
+						price: variants[variantIndex].price,
+						color: variants[variantIndex].color,
+						sizes: variants[variantIndex].sizes,
+						stock: variants[variantIndex].stock,
+						discountedPrice: variants[variantIndex].discountedPrice,
+					},
+					$push: {
+						images: { $each: [...variants[variantIndex].images] },
+					},
+				},
 				{ new: true }
 			);
 		}

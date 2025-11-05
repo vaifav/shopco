@@ -33,6 +33,9 @@
           <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
         </ul>
       </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
       <div class="sections">
         <section id="customers" class="show">
           <header>
@@ -47,7 +50,7 @@
                   <img src="<%= data.avatar %>" alt="avatar">
                 </figure>
                 <% }else{ %>
-                <figure class="avatar" style="background-color: aliceblue;"><i  data-lucide="user"></i></figure>
+                <figure class="avatar" style="background-color: aliceblue;"><i data-lucide="user"></i></figure>
                 <% } %>
                 <h3><%= data.name %></h3>
               </section>

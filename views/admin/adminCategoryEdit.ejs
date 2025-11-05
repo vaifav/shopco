@@ -36,6 +36,9 @@
           <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
         </ul>
       </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
       <div class="sections">
         <section id="category" class="show add-or-edit-category-section">
           <header>
@@ -93,12 +96,15 @@
               <div>
                 <label for="category-image">Image</label>
                 <input type="file" name="categoryImage" id="category-image" style="display: none;">
-                <label class="add-image-label" for="category-image">
+                <label class="add-image-label">
                   <% if (category.categoryImage) { %>
                   <img src="<%= category.categoryImage %>" alt="">
                   <% } else {%>
                   <i data-lucide="circle-plus"></i>
                   <% } %>
+                </label>
+                <label for="category-image" class="add-image-label-real">
+                  <i data-lucide="plus"></i>
                 </label>
               </div>
             </div>

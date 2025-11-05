@@ -35,6 +35,9 @@
           <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
         </ul>
       </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
       <div class="sections">
         <section id="customers" class="show">
           <header>
@@ -78,6 +81,7 @@
                 <ul>
                   <li>Filter By</li>
                   <li class="total"><i data-lucide="chevrons-right"></i> Total Customers</li>
+                  <li class="sort-by-name"><i data-lucide="chevrons-right"></i> Sort Name A &harr; Z</li>
                   <li class="active"><i data-lucide="chevrons-right"></i> Active Customers</li>
                   <li class="blocked"><i data-lucide="chevrons-right"></i> Blocked Customers</li>
                 </ul>
@@ -106,14 +110,14 @@
               <tbody>
                 <% customers.forEach(cust => { %>
                 <tr data-id="<%= cust.id %>">
-                  <td class="<%= cust.id %>-td"><%= `${cust.id.toString().slice(0,3).toUpperCase()}...${cust.id.toString().slice(-4).toUpperCase()}` %></td>
-                  <td class="<%= cust.id %>-td"><%= cust.name %></td>
-                  <td class="<%= cust.id %>-td"><%= cust.phone %></td>
-                  <td class="<%= cust.id %>-td status <%= cust.isBlocked ? 'inactive' : 'active' %>">
+                  <td class="<%= cust.id %>-td" data-label="Customer Id"><%= `${cust.id.toString().slice(0,3).toUpperCase()}...${cust.id.toString().slice(-4).toUpperCase()}` %></td>
+                  <td class="<%= cust.id %>-td" data-label="Name"><%= cust.name %></td>
+                  <td class="<%= cust.id %>-td" data-label="Phone"><%= cust.phone %></td>
+                  <td class="<%= cust.id %>-td status <%= cust.isBlocked ? 'inactive' : 'active' %>" data-label="Status">
                     <span class="dot"></span>
                     <%= cust.isBlocked ? "Blocked" : "Active" %>
                   </td>
-                  <td class="actions">
+                  <td class="actions" data-label="Action">
                     <% if (!cust.isBlocked) { %>
                     <i data-lucide="trash-2" data-toggle-block-id="<%= cust.id %>" data-isblocked="<%= cust.isBlocked %>" class="block-svg"></i>
                     <% } else {%>
@@ -148,7 +152,7 @@
               <a href="" style="visibility: hidden;">Next<i data-lucide="arrow-right"></i></a>
               <% } %>
             </div>
-            
+
           </section>
         </section>
       </div>

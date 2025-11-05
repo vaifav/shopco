@@ -2,9 +2,19 @@ import mongoose from "mongoose";
 import personalInfoModel from "../../models/personalInfoModel.js";
 import userModel from "../../models/signupModel.js";
 
-async function customerDetails(page = 1, limit = 5, createdAt = -1, search = "", isBlocked = "") {
+async function customerDetails(page = 1, limit = 5, createdAt, fname, search = "", isBlocked = "") {
 	const data = {};
 	const query = {};
+	const sortCriteria = {};
+
+	const sortOption = { createdAt, fname };
+	const activeSortEntry = Object.entries(sortOption).find(([field, order]) => order !== null);
+	if (activeSortEntry) {
+		const [field, order] = activeSortEntry;
+		sortCriteria[field] = order;
+	} else {
+		sortCriteria["createdAt"] = -1;
+	}
 
 	if (search && search.trim() !== "") {
 		const regex = new RegExp("^" + search, "i");
@@ -38,7 +48,7 @@ async function customerDetails(page = 1, limit = 5, createdAt = -1, search = "",
 		const personalInfos = await personalInfoModel
 			.find(query)
 			.populate({ path: "userId", select: "isBlocked role email -_id", match: { role: "user" } })
-			.sort({ createdAt })
+			.sort(sortCriteria)
 			.skip(skip)
 			.limit(limit)
 			.lean();

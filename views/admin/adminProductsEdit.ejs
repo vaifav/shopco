@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
-  <title>Admin</title>
+  <title>Admin - Edit Product</title>
   <style>
     @import url("/style/adminPartials.css");
     @import url("/style/admin.css");
@@ -35,33 +35,36 @@
           <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
         </ul>
       </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
       <div class="sections">
         <section id="products" class="show add-or-edit-products-section">
           <header>
-            <h1>Edit products</h1>
+            <h1>Edit Product: <%= product.productName %></h1>
           </header>
           <form class="overlay-form" data-id="<%= product._id %>">
             <div class="left">
               <div class="input-container">
                 <label for="productName">Product Name</label>
-                <input type="text" name="productName" id="productName" placeholder="e.g., Slim Fit Cotton T-Shirt" value="<%= product.productName %>">
+                <input type="text" name="productName" id="productName" placeholder="e.g., Slim Fit Cotton T-Shirt" value="<%= product.productName %>" required>
               </div>
               <div class="input-container">
                 <label for="description">Description</label>
-                <input type="text" name="description" id="description" placeholder="A short summary of the product's key features and benefits." value="<%= product.description %>">
+                <input type="text" name="description" id="description" placeholder="A short summary of the product's key features and benefits." value="<%= product.description %>" required>
               </div>
 
               <div class="input-container">
                 <label for="brand">Brand</label>
                 <select name="brand" id="brand">
                   <option value="" selected disabled>Select Brand (e.g., Nike, Levi's)</option>
-                </select>
+                  </select>
               </div>
 
               <div class="input-container">
                 <label for="category">Category</label>
-                <select name="category" id="category">
-                  <option value="" selected disabled>Select Category (e.g., Apparel, Electronics, Home Goods)</option>
+                <select name="category" id="category" required>
+                  <option value="" disabled>Select Category</option>
                   <% categories.forEach(opt => { %>
                   <option value="<%= opt._id %>" <%= product.category.toString() === opt._id.toString() ? 'selected' : '' %>><%= opt.categoryName %></option>
                   <% }) %>
@@ -70,12 +73,12 @@
 
               <div class="input-container">
                 <label for="targetedAudience">Targeted Audience</label>
-                <input type="text" name="targetedAudience" id="targetedAudience" placeholder="e.g., Men, Women, Teens, Unisex (comma separated)" value="<%= product.targetedAudience.join(', ') %>">
+                <input type="text" name="targetedAudience" id="targetedAudience" placeholder="e.g., Men, Women, Teens, Unisex (comma separated)" value="<%= product.targetedAudience.join(', ') %>" required>
               </div>
 
               <div class="input-container">
                 <label for="tags">Tags</label>
-                <input type="text" name="tags" id="tags" placeholder="e.g., summer, casual, cotton, eco-friendly (comma separated)" value="<%= product.tags.join(', ') %>">
+                <input type="text" name="tags" id="tags" placeholder="e.g., summer, casual, cotton, eco-friendly (comma separated)" value="<%= product.tags.join(', ') %>" required>
               </div>
 
               <div class="input-container">
@@ -84,28 +87,45 @@
               </div>
 
               <div class="input-container">
-                <input type="submit" value="Save">
+                <input type="submit" value="Save Changes">
               </div>
             </div>
-            <div class="right">
+
+            <div class="right" id="variantsContainer"> 
 
               <% product.variants.forEach((element, index) => { %>
-              <div class="variant-card" data-variant-index="<%= index %>">
+              <div class="variant-card" 
+                   data-variant-index="<%= index %>" 
+                   data-variant-id="<%= element._id %>" 
+                   data-product-id="<%= product._id %>"> 
+                
                 <h1>Variant <span class="variant-index-display"><%= index+1 %></span></h1>
+                
+                <button type="button" class="remove-variant-btn" data-variant-index="<%= index %>">
+                    <i data-lucide="trash-2"></i>
+                </button>
+                
+                <input type="hidden" name="variants[<%= index %>][id]" value="<%= element._id %>">
+
                 <div class="variant-input-container">
                   <div class="input-container preview-container">
                     <label for="variants[<%= index %>][image]">Images <span>( Only 4 Images are allowed )</span></label>
                     <input type="file" name="variants[<%= index %>][image]" id="variants[<%= index %>][image]" multiple accept="image/*" class="variant-image-input" style="display: none;">
-                    <label for="variants[<%= index %>][image]" class="preview upload-trigger <%= element.images.length!==0 ? 'imageActive': '' %>">
-                      <% if (element.images.length!==0) { %>
-                      <% element.images.forEach(image => { %>
-                      <div class="preview-image-wrapper">
-                        <img src="<%= image %>" alt="<%= image %>">
-                      </div>
-                      <% }) %>
+                    
+                    <label class="preview upload-trigger <%= element.images.length > 0 ? 'imageActive': '' %>">
+                      <% if (element.images.length > 0) { %>
+                        <% element.images.forEach(image => { %>
+                          <div class="preview-image-wrapper">
+                            <img src="<%= image %>" alt="Existing Image">
+                          </div>
+                        <% }) %>
                       <% } else {%>
-                      <i data-lucide="circle-plus"></i>
+                        <i data-lucide="circle-plus" class="upload-icon"></i>
                       <% } %>
+                    </label>
+
+                    <label class="manual-upload-trigger">
+                      <i data-lucide="plus"></i>
                     </label>
                   </div>
 
@@ -126,7 +146,7 @@
 
                   <div class="input-container">
                     <label for="variants[<%= index %>][sizes]">Sizes</label>
-                    <input type="text" name="variants[<%= index %>][sizes]" id="variants[<%= index %>][sizes]" placeholder="e.g., S, M, L, XL (comma separated)" value="<%= element.sizes.join(',') %>" required>
+                    <input type="text" name="variants[<%= index %>][sizes]" id="variants[<%= index %>][sizes]" placeholder="e.g., S, M, L, XL (comma separated)" value="<%= element.sizes.join(', ') %>" required>
                   </div>
 
                   <div class="input-container">
@@ -136,7 +156,6 @@
                 </div>
               </div>
               <% }) %>
-
 
               <div id="imageCropperModal" class="cropper-modal-overlay">
                 <div class="cropper-modal-content">
@@ -157,12 +176,12 @@
                 <button type="button" id="addVariantBtn"><i data-lucide="plus"></i> <b>Add Variant</b></button>
               </div>
             </div>
-          </form>
+            </form>
+        </section>
       </div>
+    </div>
   </section>
-  </div>
-  </div>
-  </section>
+
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
   <script src="/script/admin/adminNav.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>

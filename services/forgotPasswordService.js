@@ -26,16 +26,18 @@ const sendTokenToEmail = async (email) => {
 	}
 };
 
-const verifyTokenFromEmail = async ( token, newPassword, confirmPassword) => {
+const verifyTokenFromEmail = async (token, newPassword, confirmPassword) => {
 	try {
 		const isUserExists = await userModel.findOne({ changePasswordToken: token });
 		if (!isUserExists) throw new Error("User not found...");
 
+		const userId = isUserExists._id;
 		const currentTime = new Date();
 		if (currentTime > isUserExists.changePasswordTokenExpires) {
 			await userModel.findOneAndUpdate(
-				{ email },
-				{ changePasswordToken: null, changePasswordTokenExpires: null }
+				{ _id: userId },
+				{ changePasswordToken: null, changePasswordTokenExpires: null },
+				{ new: true, runValidators: true }
 			);
 			throw new Error("Your Token Expired. Try again...");
 		}
@@ -44,7 +46,7 @@ const verifyTokenFromEmail = async ( token, newPassword, confirmPassword) => {
 
 		const hashNewPassword = await hashPassword(newPassword);
 		const user = await userModel.findOneAndUpdate(
-			{ changePasswordToken: token },
+			{ _id: userId },
 			{ changePasswordToken: null, changePasswordTokenExpires: null, password: hashNewPassword },
 			{ new: true }
 		);

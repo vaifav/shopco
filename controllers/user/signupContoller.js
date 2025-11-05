@@ -21,10 +21,8 @@ const postSignup = async (req, res) => {
 			throw new Error("Password must be greater than 3 characters.");
 		} else if (!username) {
 			throw new Error("Username is required.");
-		} else if (username.length <= 3) {
-			throw new Error("Username must be greater than 3 characters.");
 		}
-		
+
 		const user = await createUser(req.body);
 		req.session.user = {
 			userId: user._id,
@@ -39,7 +37,7 @@ const postSignup = async (req, res) => {
 		return res.status(201).redirect("/verifyotp");
 	} catch (error) {
 		console.log(error);
-		return res.status(400).render("user/signup", { error: error.message });
+		return res.status(400).render("user/signup", { error: error.message});
 	}
 };
 

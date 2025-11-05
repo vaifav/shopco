@@ -53,4 +53,15 @@ function checkBlockStatus(req, res, next) {
 	}
 }
 
-export { requireAuth, requireAdminAuth, baseAuth, checkBlockStatus };
+function isVerified(req, res, next) {
+    if (req.session?.user && req.session.user.isVerified === false) {
+        console.log(`Access denied: Unverified user tried to access protected route. Redirecting to /verifyotp.`);
+
+        if (req.originalUrl !== '/verifyotp') {
+            return res.redirect("/verifyotp");
+        }
+    }
+    next();
+}
+
+export { requireAuth, requireAdminAuth, baseAuth, checkBlockStatus, isVerified };

@@ -3,38 +3,49 @@
     <a href="/">
       <h1>SHOP.CO</h1>
     </a>
-    <nav>
-      <form action="">
-        <label for="search"><i data-lucide="search"></i></label>
-        <input type="text" name="search" id="search" placeholder="search">
-      </form>
-    </nav>
-    <nav class="icons">
-      <a href=""> <i data-lucide="message-square"></i> </a>
-      <i data-lucide="bell"></i>
-      <div class="profile">
-        <figure><i data-lucide="user"></i></figure>
-        <h5>Name</h5>
+    <div class="header-icons-container">
+      <div class="mobile-visible-icons">
+        <nav class="icons">
+          <a href=""> <i data-lucide="message-square"></i> </a>
+          <a href=""> <i data-lucide="bell"></i> </a>
+        </nav>
+        <a href="javascript:void(0);" class="menu-toggle"> <i data-lucide="menu"></i> </a>
       </div>
-    </nav>
-    <figure class="logout">
-      <a href="/admin/logout">
-        <img src="/images/icons/Icon-logout.svg" alt="create account">
-        <span>Logout</span>
-      </a>
-    </figure>
+
+      <div class="header-menu-container">
+        <nav class="icons">
+          <div class="profile">
+            <figure><i data-lucide="user"></i></figure>
+            <h5>Name</h5>
+          </div>
+          <figure class="logout">
+            <a href="/admin/logout">
+              <img src="/images/icons/Icon-logout.svg" alt="create account">
+              <span>Logout</span>
+            </a>
+          </figure>
+        </nav>
+      </div>
+    </div>
   </header>
   <script>
     const fetchUsername = async () => {
       const res = await fetch('/username');
       const data = await res.json()
       console.log(data);
-      
+
       if (data.username) {
         document.querySelector(".profile h5").innerHTML = `${data.username}`
       }
     }
-
     fetchUsername()
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menuContainer = document.querySelector('.header-menu-container');
+
+    if (menuToggle && menuContainer) {
+      menuToggle.addEventListener('click', () => {
+        menuContainer.classList.toggle('active');
+      });
+    }
   </script>
 </section>

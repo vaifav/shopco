@@ -22,7 +22,8 @@
     background-color: #fcdfda !important;
 }
 
-.custom-cancel-btn {
+.custom-cancel-btn,
+.swal2-cancel {
     background-color: #000 !important;
     color: #fff !important;
     border-radius: 10px;
@@ -33,6 +34,9 @@
     background-color: #0e0d0d !important;
 }
 
+.swal2-icon.swal2-question.swal2-icon-show .swal2-icon-content {
+    color: #7c9fad;
+}
 
 div:where(.swal2-icon).swal2-warning {
     & div {

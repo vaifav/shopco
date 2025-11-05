@@ -10,14 +10,15 @@ const countries = Country.getAllCountries();
 async function getCustomers(req, res) {
 	let page = parseInt(req.query.page) || 1;
 	let limit = parseInt(req.query.limit) || 5;
-	let createdAt = parseInt(req.query.createdAt) || -1;
+	let createdAt = parseInt(req.query.createdAt) || null;
+	let fname = parseInt(req.query.fname) || null;
 	let search = req.query.search;
 	let isBlocked = "";
 	if (req.query.isBlocked) {
 		isBlocked = req.query.isBlocked === "true" ? true : false;
 	}
 
-	const data = await customerDetails(page, limit, createdAt, search, isBlocked);
+	const data = await customerDetails(page, limit, createdAt, fname, search, isBlocked);
 	res.render("admin/adminCustomers", {
 		customers: data.data,
 		totalCustomers: data.totalCustomers,

@@ -19,18 +19,40 @@ const getProductData = async (
 	const pipeline = [];
 	const sizeFilter = [];
 
+	const selectedSizes =
+		size && size.trim() !== ""
+			? size
+					.split(",")
+					.map((s) => s.trim())
+					.filter((s) => s !== "")
+			: [];
+
+	const selectedCategories =
+		category && category.trim() !== ""
+			? category
+					.split(",")
+					.map((id) => {
+						try {
+							return new mongoose.Types.ObjectId(id.trim());
+						} catch (error) {
+							return null;
+						}
+					})
+					.filter((id) => id !== null)
+			: [];
+
 	if (search && search.trim() !== "") {
 		pipeline.push({ $match: { $text: { $search: search } } });
 	}
 
-	if (category && category.trim() !== "") {
-		query.category = new mongoose.Types.ObjectId(category);
+	if (selectedCategories.length > 0) {
+		query.category = { $in: selectedCategories };
 	}
 
-	if (size && size.trim() !== "") {
+	if (selectedSizes.length > 0) {
 		sizeFilter.push({
 			$match: {
-				"allVariants.sizes": { $in: [size] },
+				"allVariants.sizes": { $in: selectedSizes },
 			},
 		});
 	}
@@ -46,8 +68,8 @@ const getProductData = async (
 	}
 
 	query.isBlocked = false;
-
 	pipeline.push({ $match: query });
+
 	try {
 		const totalVariants = await productModel.aggregate([
 			...pipeline,
@@ -69,7 +91,7 @@ const getProductData = async (
 			},
 			...sizeFilter,
 			{ ...range },
-			{ $group: { _id: null, variantSize: { $sum: { $size: "$variants" } } } },
+			{ $group: { _id: null, variantSize: { $sum: 1 } } },
 			{ $project: { _id: 0, variantSize: 1 } },
 		]);
 
@@ -85,10 +107,12 @@ const getProductData = async (
 			{
 				$facet: {
 					minPrice: [
+						{ $unwind: "$allVariants" },
 						{ $group: { _id: null, value: { $min: "$allVariants.price" } } },
 						{ $project: { _id: 0, min: "$value" } },
 					],
 					maxPrice: [
+						{ $unwind: "$allVariants" },
 						{ $group: { _id: null, value: { $max: "$allVariants.price" } } },
 						{ $project: { _id: 0, max: "$value" } },
 					],
@@ -96,8 +120,10 @@ const getProductData = async (
 			},
 		]);
 
-		const { minPrice, maxPrice } = minMaxPrice[0];
-		const total = totalVariants[0]?.variantSize;
+		const minPriceValue = minMaxPrice[0]?.minPrice[0]?.min || 0;
+		const maxPriceValue = minMaxPrice[0]?.maxPrice[0]?.max || 0;
+
+		const total = totalVariants[0]?.variantSize || 0;
 		let totalPages = Math.ceil(total / limit);
 		if (page < 1) page = 1;
 		if (page > totalPages) page = totalPages || 1;
@@ -107,8 +133,8 @@ const getProductData = async (
 		data.page = page;
 		data.limit = limit;
 		data.totalPages = totalPages;
-		data.maxPrice = minPrice[0]["min"][0];
-		data.minPrice = maxPrice[0]["max"][0];
+		data.maxPrice = maxPriceValue;
+		data.minPrice = minPriceValue;
 		data.categories = await categoryModel.find({ isBlocked: false });
 		data.products = await productModel.aggregate([
 			...pipeline,

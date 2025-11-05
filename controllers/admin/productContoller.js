@@ -118,8 +118,7 @@ const editProduct = async (req, res) => {
 		...req.body,
 		variants: Array.isArray(variants) ? req.body.variants.map((variant) => ({ ...variant })) : [],
 	};
-	console.log(validatedProductData);
-
+	
 	try {
 		if (validatedProductData.variants.length !== 0) {
 			await processVariantImages(validatedProductData.variants, files);

@@ -3,7 +3,12 @@ import { getLogin, logout, postLogin } from "../controllers/user/loginController
 import { getSignup, postSignup, signupWithGoogle } from "../controllers/user/signupContoller.js";
 import { redirectIfAuthenticated } from "../middleware/loginMiddleware.js";
 import passport from "passport";
-import { getOtpPage, sendOtp } from "../controllers/user/otpController.js";
+import {
+	getOtpPage,
+	otpExpireTimer,
+	resentOtpToEmail,
+	sendOtp,
+} from "../controllers/user/otpController.js";
 import {
 	getForgotPasswordPage,
 	getUserEmailPage,
@@ -32,6 +37,8 @@ authenticate.get(
 	signupWithGoogle
 );
 
+authenticate.get("/otpexpiredate", otpExpireTimer);
+
 authenticate.get("/logout", logout);
 authenticate.get("/admin/logout", logout);
 
@@ -43,4 +50,6 @@ authenticate.post("/useremail", sendToken);
 
 authenticate.get("/forgotpassword", getForgotPasswordPage);
 authenticate.post("/forgotpassword", verifyToken);
+
+authenticate.post("/resentotp", resentOtpToEmail);
 export default authenticate;

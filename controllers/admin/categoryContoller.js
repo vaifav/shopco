@@ -13,11 +13,21 @@ import { categoryJoiSchema } from "../../validation/addCategoryJoiValidation.js"
 const category = async (req, res) => {
 	const page = parseInt(req.query.page) || 1;
 	const limit = parseInt(req.query.limit) || 5;
-	const createdAt = parseInt(req.query.createdAt) || -1;
+	const createdAt = parseInt(req.query.createdAt) || null;
+	const categoryName = parseInt(req.query.categoryName) || null;
+	const sortOrder = parseInt(req.query.sortOrder) || null;
 	const search = req.query.search;
 	const isBlocked = req.query.isBlocked === "true" ? true : false;
 
-	const data = await getAllCategoryDetails(page, limit, createdAt, search, isBlocked);
+	const data = await getAllCategoryDetails(
+		page,
+		limit,
+		createdAt,
+		categoryName,
+		sortOrder,
+		search,
+		isBlocked
+	);
 	return res.render("admin/adminCategory", data);
 };
 
@@ -65,10 +75,6 @@ const addCategory = async (req, res) => {
 	const data = value;
 	try {
 		const category = await createCategory(data, userId);
-		res.status(201).json({
-			success: true,
-			message: "Category Added SucccessFully",
-		});
 
 		if (file) {
 			try {
@@ -78,11 +84,16 @@ const addCategory = async (req, res) => {
 				console.log("Couldn't upload category: " + error.message);
 			}
 		}
+
+		return res.status(201).json({
+			success: true,
+			message: "Category Added SucccessFully",
+		});
 	} catch (error) {
-		console.error("Error adding category:", error.message);
+		console.error("Error adding category:", error);
 		return res.status(500).json({
 			success: false,
-			message:  error.message,
+			message: error.message,
 		});
 	}
 };
@@ -111,7 +122,7 @@ const editCategory = async (req, res) => {
 		console.error("Error updating category:", error.message);
 		return res.status(500).json({
 			success: false,
-			message:  error.message,
+			message: error.message,
 		});
 	}
 };
@@ -128,7 +139,7 @@ const removeCategory = async (req, res) => {
 		console.error("Error updating category:", error.message);
 		return res.status(500).json({
 			success: false,
-			message:  error.message,
+			message: error.message,
 		});
 	}
 };

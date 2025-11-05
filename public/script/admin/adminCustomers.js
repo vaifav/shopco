@@ -99,22 +99,6 @@ document.querySelectorAll(".pagination .pagination-btn").forEach((btn) => {
 	});
 });
 
-const createdAtFilterToggle = () => {
-	let val = -1;
-	const arrow = document.querySelector("#customers .customer-search .up-down");
-
-	arrow.addEventListener("click", () => {
-		const url = new URL(window.location.href);
-		let val = parseInt(url.searchParams.get("createdAt")) || -1;
-
-		val = val === -1 ? 1 : -1;
-		url.searchParams.set("createdAt", val);
-
-		window.location.href = url.toString();
-	});
-};
-
-createdAtFilterToggle();
 const searchForm = document.querySelector("#customers .customer-search form");
 const activeCustomerFilter = document.querySelector(
 	"#customers .customer-search .search-container .active-block-filter ul li.active"
@@ -148,3 +132,32 @@ searchForm.addEventListener("submit", (e) => {
 	let search = searchForm.querySelector("input#adn-search").value;
 	addOrUpdateQueryParams({ search: search });
 });
+
+const sortToggle = (field, element, initVal) => {
+	const fieldArr = ["createdAt", "fname"];
+	let index = fieldArr.indexOf(field);
+
+	if (index > -1) fieldArr.splice(index, 1);
+
+	const btn = document.querySelector(element);
+
+	btn.addEventListener("click", (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		const url = new URL(window.location.href);
+		let val = parseInt(url.searchParams.get(field)) || initVal;
+
+		val = val === -1 ? 1 : -1;
+		fieldArr.forEach((params) => {
+			if (url.searchParams.has(params)) {
+				url.searchParams.delete(params);
+			}
+		});
+
+		url.searchParams.set(field, val);
+		window.location.href = url.toString();
+	});
+};
+
+sortToggle("createdAt", "#customers .customer-search .up-down", -1);
+sortToggle("fname", "#customers .search-container .sort-by-name", -1);

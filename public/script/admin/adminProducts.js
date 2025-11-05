@@ -2,6 +2,12 @@ import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
 
 const addProductBtn = document.querySelector("#products header button");
 const searchForm = document.querySelector("#products .products-search form");
+const filterButtonContainer = document.querySelector(
+	"#products .products-search .active-block-filter"
+);
+const filterListItems = document.querySelectorAll(
+	"#products .products-search .active-block-filter ul li:not(:first-child)"
+);
 const activeFilter = document.querySelector(
 	"#products .products-search .active-block-filter .active"
 );
@@ -11,6 +17,26 @@ const blockedFilter = document.querySelector(
 const edit = document.querySelectorAll("#products .action-btn.edit-btn");
 const softDelete = document.querySelectorAll("#products .action-btn.delete-btn");
 const unblock = document.querySelectorAll("#products .action-btn.unblock-btn");
+
+if (filterButtonContainer) {
+	filterButtonContainer.addEventListener("click", (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		const clickedListItem = e.target.closest("li:not(:first-child)");
+
+		if (!clickedListItem) {
+			filterButtonContainer.classList.toggle("open");
+		}
+	});
+}
+
+document.addEventListener("click", (e) => {
+	if (filterButtonContainer && filterButtonContainer.classList.contains("open")) {
+		if (!filterButtonContainer.contains(e.target)) {
+			filterButtonContainer.classList.remove("open");
+		}
+	}
+});
 
 addProductBtn.addEventListener("click", (e) => {
 	window.location.pathname = "/admin/products/action";
@@ -39,11 +65,15 @@ document.querySelectorAll(".pagination .pagination-btn").forEach((btn) => {
 	});
 });
 
-activeFilter.addEventListener("click", () => {
+activeFilter.addEventListener("click", (e) => {
+	e.preventDefault();
+	e.stopPropagation();
 	addOrUpdateQueryParams({ isBlocked: false });
 });
 
-blockedFilter.addEventListener("click", () => {
+blockedFilter.addEventListener("click", (e) => {
+	e.preventDefault();
+	e.stopPropagation();
 	addOrUpdateQueryParams({ isBlocked: true });
 });
 
@@ -55,7 +85,9 @@ const sortToggle = (field, element, initVal) => {
 
 	const btn = document.querySelector(element);
 
-	btn.addEventListener("click", () => {
+	btn.addEventListener("click", (e) => {
+		e.preventDefault();
+		e.stopPropagation();
 		const url = new URL(window.location.href);
 		let val = parseInt(url.searchParams.get(field)) || initVal;
 

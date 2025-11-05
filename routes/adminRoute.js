@@ -24,6 +24,7 @@ import {
 	productListPage,
 	softDeleteProduct,
 } from "../controllers/admin/productContoller.js";
+import { isVerified } from "../middleware/authMiddleware.js";
 
 const admin = Router();
 
@@ -38,6 +39,7 @@ admin.get("/products/action/:id", getProductEdit);
 admin.patch("/products/action/:id", uploadMultipleVariantImages, editProduct);
 admin.delete("/products/action/:id", softDeleteProduct);
 
+admin.use(isVerified);
 admin
 	.route("/categories/action")
 	.get(getCategoryAddPage)

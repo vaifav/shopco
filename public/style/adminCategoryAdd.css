@@ -24,6 +24,7 @@
 }
 
 #category.add-or-edit-category-section form .form-input-container {
+    /* Primary layout for desktop/tablet: two columns */
     display: flex;
     justify-content: space-between;
     gap: 5rem;
@@ -56,7 +57,6 @@
 #category.add-or-edit-category-section form .form-input-container input:focus,
 #category.add-or-edit-category-section form .form-input-container select:focus {
     box-shadow: 0 0 10px 1px rgba(7, 11, 29, 0.1);
-    ;
     outline: none;
 }
 
@@ -76,38 +76,51 @@
     position: absolute;
 }
 
+#category.add-or-edit-category-section form .form-input-container label.add-image-label-real {
+    padding: 1rem;
+    border-radius: 0 0 8px 8px;
+    position: relative;
+    top: -10px;
+    background: #0a102b;
+
+    & svg {
+        stroke: #fff;
+    }
+}
+
 #category.add-or-edit-category-section form .form-input-container label.add-image-label {
     width: 100%;
     height: 150px;
     position: relative;
     margin-top: 0.5rem;
     border: 2px dashed #d1d5db;
-    border-radius: 8px;
+    border-radius: 8px 8px 0 0;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    overflow: visible; 
+    overflow: visible;
 }
 
 #category.add-or-edit-category-section form .form-input-container label.add-image-label img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
     border-radius: inherit;
     transition: all 0.2s ease-in-out;
-    z-index: 1; 
+    z-index: 1;
 }
 
+/* Keep the image zoom on hover for desktop */
 #category.add-or-edit-category-section form .form-input-container label.add-image-label img:hover {
-    width: auto; 
-    max-width: 500px; 
+    width: auto;
+    max-width: 500px;
     height: auto;
-    max-height: 500px; 
-    object-fit: contain; 
-    position: absolute; 
-    z-index: 10; 
+    max-height: 500px;
+    object-fit: contain;
+    position: absolute;
+    z-index: 10;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     border: 1px solid #ffffff;
 }
@@ -149,61 +162,143 @@
     background: #0a102b;
 }
 
-    .cropper-modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
+/* Cropper Modal Styles */
+.cropper-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.cropper-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%;
+    width: 600px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.img-container {
+    height: 400px;
+    max-height: 70vh;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.img-container img {
+    display: block;
+    max-width: 100%;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.modal-footer button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal-footer #cropSaveBtn {
+    background-color: #000000;
+    color: white;
+}
+
+.modal-footer #cropCancelBtn {
+    background-color: #fff;
+    color: #6c757d;
+    border: 1px solid #6c757d;
+}
+
+
+
+@media (max-width: 992px) {
+
+    /* Reduce form container gap for better space utilization */
+    #category.add-or-edit-category-section form .form-input-container {
+        gap: 2.5rem;
+    }
+}
+
+/* Mobile screens (Stacking the columns) */
+@media (max-width: 768px) {
+
+    /* Main form container: Switch to a single column layout */
+    #category.add-or-edit-category-section form .form-input-container {
+        flex-direction: column;
+        gap: 1.5rem;
+        /* Standardize gap between stacked inputs */
     }
 
+    /* Make stacked divs take full width */
+    #category.add-or-edit-category-section form .form-input-container>div {
+        flex: none;
+        width: 100%;
+    }
+
+    /* Adjust image upload container for mobile */
+    #category.add-or-edit-category-section form .form-input-container.image-upload {
+        flex-direction: column-reverse;
+        /* Put submit button below image section for better flow */
+        align-items: flex-start;
+        /* Align all items to the start */
+        margin-top: 0.5rem;
+        gap: 1.5rem;
+    }
+
+    /* Ensure the submit button is easy to tap */
+    #category.add-or-edit-category-section form .form-input-container input[type="submit"] {
+        width: 100%;
+        /* Full width submit button */
+        align-self: center;
+        /* Center the full-width button */
+        margin-top: 0;
+    }
+
+    /* Disable hover zoom on small screens to prevent layout shifting */
+    #category.add-or-edit-category-section form .form-input-container label.add-image-label img:hover {
+        position: static;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        box-shadow: none;
+        border: none;
+        object-fit: cover;
+    }
+
+    /* Reduce padding on the main form box */
+    #category.add-or-edit-category-section form {
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+
+    /* Reduce cropper size */
     .cropper-modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 90%;
-      width: 600px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        max-width: 95%;
+        padding: 15px;
     }
 
     .img-container {
-      height: 400px;
-      max-height: 70vh;
-      overflow: hidden;
-      margin-bottom: 20px;
+        height: 300px;
     }
+}
 
-    .img-container img {
-      display: block;
-      max-width: 100%;
+/* Smallest mobile screens */
+@media (max-width: 480px) {
+    #category.add-or-edit-category-section header h1 {
+        font-size: 1.5rem;
     }
-
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .modal-footer button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .modal-footer #cropSaveBtn {
-      background-color: #000000;
-      color: white;
-    }
-
-    .modal-footer #cropCancelBtn {
-      background-color: #fff;
-      color: #6c757d;
-      border: 1px solid #6c757d;
-    }
+}
