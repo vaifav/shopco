@@ -34,11 +34,11 @@
         </div>
         <div>
           <label for="username">Username</label>
-          <input type="username" name="username" id="username" placeholder="Username">
+          <input type="username" name="username" id="username" placeholder="Username" value="<%= username ? username : '' %>">
         </div>
         <div>
           <label for="email">Email</label>
-          <input type="email" name="email" id="email" placeholder="Email">
+          <input type="email" name="email" id="email" placeholder="Email" value="<%= email ? email : '' %>">
         </div>
         <div class="password-container">
           <label for="password">Password</label>

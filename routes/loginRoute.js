@@ -22,10 +22,15 @@ authenticate
 	.route("/login")
 	.get(redirectIfAuthenticated, getLogin)
 	.post(redirectIfAuthenticated, postLogin);
+
 authenticate
 	.route("/signup")
 	.get(redirectIfAuthenticated, getSignup)
 	.post(redirectIfAuthenticated, postSignup);
+
+authenticate.route("/verifyotp").get(getOtpPage).post(sendOtp);
+authenticate.route("/useremail").get(getUserEmailPage).post(sendToken);
+authenticate.route("/forgotpassword").get(getForgotPasswordPage).post(verifyToken);
 
 authenticate.get(
 	"/google/signup",
@@ -42,14 +47,6 @@ authenticate.get("/otpexpiredate", otpExpireTimer);
 authenticate.get("/logout", logout);
 authenticate.get("/admin/logout", logout);
 
-authenticate.get("/verifyotp", getOtpPage);
-authenticate.post("/verifyotp", sendOtp);
-
-authenticate.get("/useremail", getUserEmailPage);
-authenticate.post("/useremail", sendToken);
-
-authenticate.get("/forgotpassword", getForgotPasswordPage);
-authenticate.post("/forgotpassword", verifyToken);
-
 authenticate.post("/resentotp", resentOtpToEmail);
+
 export default authenticate;

@@ -1,367 +1,332 @@
 #customers * {
-    color: black;
+	color: black;
 }
 
 #customers header * {
-    font-weight: 500;
+	font-weight: 500;
 }
 
 #customers header {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 #customers header button {
-    border: 1px solid dodgerblue;
-    color: dodgerblue;
-    background-color: #fff;
-    border-radius: 5px;
-    padding: 0.6rem 2rem;
+	border: 1px solid dodgerblue;
+	color: dodgerblue;
+	background-color: #fff;
+	border-radius: 5px;
+	padding: 0.6rem 2rem;
 }
 
-/* --- Optimized Desktop Flexbox (Base) --- */
 #customers .customer-details-container {
-    margin-top: 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    /* Adjusted gap for better spacing */
-    align-items: flex-start;
-    /* Aligns content neatly at the top */
-    justify-content: space-between;
+	margin-top: 2rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+
+	align-items: flex-start;
+
+	justify-content: space-between;
 }
 
 #customers .customer-details-container .left {
-    border-radius: 10px;
-    /* Use specific flexible sizing instead of fit-content */
-    flex: 0 0 350px;
-    max-width: 40%;
-    box-shadow: -1px 2px 6px 2px #00000017;
-    padding: 1rem;
-    padding-right: 2rem;
+	border-radius: 10px;
+
+	flex: 0 0 350px;
+	max-width: 40%;
+	box-shadow: -1px 2px 6px 2px #00000017;
+	padding: 1rem;
+	padding-right: 2rem;
 }
 
 #customers .customer-details-container .right {
-    /* Takes up remaining space */
-    flex: 1 1 55%;
-    min-width: 400px;
+	flex: 1 1 55%;
+	min-width: 400px;
 }
 
 #customers .customer-details-container .details {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
+	display: flex;
+	align-items: center;
+	gap: 2rem;
 
-    & h3 {
-        font-weight: 700;
-        font-size: 1.3rem;
-    }
+	& h3 {
+		font-weight: 700;
+		font-size: 1.3rem;
+	}
 }
 
 #customers .customer-details-container .details figure.avatar {
-    height: 60px;
-    width: 60px;
-    border-radius: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	height: 60px;
+	width: 60px;
+	border-radius: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-    & svg {
-        stroke: #475569;
-    }
+	& svg {
+		stroke: #475569;
+	}
 
-    & img {
-        height: 100%;
-        width: 100%;
-        object-fit: contain;
-        border-radius: inherit;
-    }
+	& img {
+		height: 100%;
+		width: 100%;
+		object-fit: contain;
+		border-radius: inherit;
+	}
 }
 
 #customers .customer-details-container .overview {
-    margin-top: 2rem;
+	margin-top: 2rem;
 }
 
 #customers .customer-details-container .overview h3 {
-    color: black;
-    font-weight: 600;
-    margin-bottom: 1rem;
+	color: black;
+	font-weight: 600;
+	margin-bottom: 1rem;
 }
 
 #customers .customer-details-container .overview h5 {
-    color: #5A607F;
-    font-size: 1rem;
-    font-weight: 500;
-    margin: 0.5rem 0 0.2rem 0;
+	color: #5a607f;
+	font-size: 1rem;
+	font-weight: 500;
+	margin: 0.5rem 0 0.2rem 0;
 }
 
 #customers .customer-details-container .overview p {
-    color: #A1A7C4;
-    margin: 0 0 1rem 0;
-    line-height: 1.2rem;
-    font-size: 0.8rem;
+	color: #a1a7c4;
+	margin: 0 0 1rem 0;
+	line-height: 1.2rem;
+	font-size: 0.8rem;
 }
 
 #customers .customer-details-container .status.active {
-    color: green;
-    font-weight: bold;
+	color: green;
+	font-weight: bold;
 }
 
 #customers .customer-details-container .status.inactive {
-    color: red;
-    font-weight: bold;
+	color: red;
+	font-weight: bold;
 }
 
 #customers .customer-details-container table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+	width: 100%;
+	border-collapse: collapse;
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	overflow: hidden;
 }
 
 #customers .customer-details-container thead {
-    background: #f1f5f9;
+	background: #f1f5f9;
 }
 
-/* Optimized table padding for better fit */
 #customers .customer-details-container th,
 #customers .customer-details-container td {
-    padding: 1rem 1.5rem;
-    /* Reduced from 4rem */
-    text-align: left;
-    font-size: 14px;
-    white-space: nowrap;
-    /* Prevent content from wrapping on desktop */
+	padding: 1rem 1.5rem;
+
+	text-align: left;
+	font-size: 14px;
+	white-space: nowrap;
 }
 
 #customers .customer-details-container th {
-    font-weight: 600;
-    color: #475569;
+	font-weight: 600;
+	color: #475569;
 }
 
 #customers .customer-details-container tbody tr {
-    border-bottom: 1px solid #e2e8f0;
-    width: 100%;
+	border-bottom: 1px solid #e2e8f0;
+	width: 100%;
 }
 
 #customers .customer-details-container tbody tr:hover {
-    background-color: #f9fafb;
-    cursor: pointer;
+	background-color: #f9fafb;
+	cursor: pointer;
 }
 
 #customers .customer-details-container .status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 500;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-weight: 500;
 }
 
 #customers .customer-details-container .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
 }
 
 #customers .customer-details-container .active .dot {
-    background-color: #22c55e;
+	background-color: #22c55e;
 }
 
 #customers .customer-details-container .inactive .dot {
-    background-color: #ef4444;
+	background-color: #ef4444;
 }
 
 #customers .customer-details-container .vip .dot {
-    background-color: #facc15;
+	background-color: #facc15;
 }
 
 #customers .customer-details-container .actions svg {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #475569;
-    font-size: 16px;
-    position: relative;
-    left: 0;
-    /* Changed from 1rem to 0 for better alignment */
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: #475569;
+	font-size: 16px;
+	position: relative;
+	left: 0;
 }
 
 #customers .customer-details-container svg {
-    stroke: #475569;
-    height: 20px;
+	stroke: #475569;
+	height: 20px;
 }
 
-/* -------------------------------------------------------------------------- */
-/* RESPONSIVENESS (Max-width 1280px) - Initial Stack Columns                  */
-/* -------------------------------------------------------------------------- */
 @media (max-width: 1280px) {
-    #customers .customer-details-container {
-        flex-direction: column;
-    }
+	#customers .customer-details-container {
+		flex-direction: column;
+	}
 
-    #customers .customer-details-container .left,
-    #customers .customer-details-container .right {
-        flex: 1 1 100%;
-        max-width: 100%;
-        min-width: unset;
-        width: 100%;
-    }
+	#customers .customer-details-container .left,
+	#customers .customer-details-container .right {
+		flex: 1 1 100%;
+		max-width: 100%;
+		min-width: unset;
+		width: 100%;
+	}
 }
-
-
-/* -------------------------------------------------------------------------- */
-/* RESPONSIVENESS (Max-width 750px) - Table to Card Layout Transformation     */
-/* -------------------------------------------------------------------------- */
 
 @media (max-width: 750px) {
+	#customers header h1 {
+		font-size: 1.3rem;
+	}
 
-    #customers header h1 {
-        font-size: 1.3rem;
-    }
+	#customers .customer-details-container .right {
+		overflow-x: unset;
+		padding-bottom: 0;
+	}
 
-    /* Remove scroll wrapper logic */
-    #customers .customer-details-container .right {
-        overflow-x: unset;
-        padding-bottom: 0;
-    }
+	#customers .customer-details-container table {
+		min-width: unset;
+		width: 100%;
+		box-shadow: none;
+	}
 
-    /* Remove forced table width and shadow since rows will act as cards */
-    #customers .customer-details-container table {
-        min-width: unset;
-        width: 100%;
-        box-shadow: none;
-    }
+	#customers .customer-details-container thead {
+		display: none;
+	}
 
-    /* 1. Hide table headers (thead) */
-    #customers .customer-details-container thead {
-        display: none;
-    }
+	#customers .customer-details-container table,
+	#customers .customer-details-container tbody,
+	#customers .customer-details-container tr {
+		display: block;
+		width: 100%;
+	}
 
-    /* 2. Change display for core table elements to block/card format */
-    #customers .customer-details-container table,
-    #customers .customer-details-container tbody,
-    #customers .customer-details-container tr {
-        display: block;
-        width: 100%;
-    }
+	#customers .customer-details-container tbody tr {
+		margin-bottom: 1.5rem;
+		border: 1px solid #e2e8f0;
+		border-radius: 8px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+		background-color: white;
+	}
 
-    /* Style the table row as an individual card */
-    #customers .customer-details-container tbody tr {
-        margin-bottom: 1.5rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        background-color: white;
-        /* Ensure background is white */
-    }
+	#customers .customer-details-container tbody tr:hover {
+		background-color: white;
+	}
 
-    /* Remove hover effect from the whole row when in card view */
-    #customers .customer-details-container tbody tr:hover {
-        background-color: white;
-    }
+	#customers .customer-details-container td {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		text-align: right;
+		padding: 0.75rem 1rem;
+		border-bottom: 1px solid #f1f5f9;
+		font-size: 14px;
+		white-space: normal;
+	}
 
-    /* 3. Style table cells as separate rows in the card */
-    #customers .customer-details-container td {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        text-align: right;
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid #f1f5f9;
-        font-size: 14px;
-        white-space: normal;
-        /* Allow content to wrap */
-    }
+	#customers .customer-details-container td:last-child {
+		border-bottom: none;
+	}
 
-    #customers .customer-details-container td:last-child {
-        border-bottom: none;
-    }
+	#customers .customer-details-container td:before {
+		font-weight: 600;
+		text-align: left;
+		color: #475569;
+		flex-basis: 50%;
 
-    /* 4. Inject header label using pseudo-elements and nth-child for generic column mapping */
-    #customers .customer-details-container td:before {
-        font-weight: 600;
-        text-align: left;
-        color: #475569;
-        flex-basis: 50%;
-        /* Give the label space */
-        content: "";
-        /* Base content */
-    }
+		content: "";
+	}
 
-    /* Assign specific labels based on typical column order (1st column is Order ID, 2nd is Status, etc.) */
-    #customers .customer-details-container td:nth-child(1):before {
-        content: "Order ID:";
-    }
+	#customers .customer-details-container td:nth-child(1):before {
+		content: "Order ID:";
+	}
 
-    #customers .customer-details-container td:nth-child(2):before {
-        content: "Status:";
-    }
+	#customers .customer-details-container td:nth-child(2):before {
+		content: "Status:";
+	}
 
-    #customers .customer-details-container td:nth-child(3):before {
-        content: "Date:";
-    }
+	#customers .customer-details-container td:nth-child(3):before {
+		content: "Date:";
+	}
 
-    #customers .customer-details-container td:nth-child(4):before {
-        content: "Amount:";
-    }
+	#customers .customer-details-container td:nth-child(4):before {
+		content: "Amount:";
+	}
 
-    /* The actions cell is often just icons and doesn't need a label */
-    #customers .customer-details-container .actions {
-        justify-content: flex-end;
-        /* Push icons to the right */
-        gap: 10px;
-    }
+	#customers .customer-details-container .actions {
+		justify-content: flex-end;
 
-    #customers .customer-details-container .actions:before {
-        content: none !important;
-    }
+		gap: 10px;
+	}
+
+	#customers .customer-details-container .actions:before {
+		content: none !important;
+	}
 }
 
 @media (max-width: 480px) {
-    div.sections {
-        padding: 1rem 0.5rem 1rem;
-    }
+	div.sections {
+		padding: 1rem 0.5rem 1rem;
+	}
 }
 
 @media (max-width: 400px) {
-    #customers header h1 {
-        font-size: 1rem;
-    }
+	#customers header h1 {
+		font-size: 1rem;
+	}
 }
 
-/* -------------------------------------------------------------------------- */
-/* Mobile Screens (Max-width 500px) - Tighter Polish             */
-/* -------------------------------------------------------------------------- */
 @media (max-width: 500px) {
+	#customers header h1 {
+		font-size: 1.2rem;
+	}
 
-    /* Tighter header for small screens */
-    #customers header h1 {
-        font-size: 1.2rem;
-    }
+	#customers header button {
+		padding: 0.4rem 0.8rem;
+		font-size: 0.75rem;
+	}
 
-    #customers header button {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.75rem;
-    }
+	#customers .customer-details-container .left {
+		padding: 1rem;
+	}
 
-    /* Tighter padding in the details card */
-    #customers .customer-details-container .left {
-        padding: 1rem;
-    }
+	#customers .customer-details-container td {
+		padding: 0.6rem 0.8rem;
+		font-size: 13px;
+	}
 
-    /* Further reduce card padding if needed */
-    #customers .customer-details-container td {
-        padding: 0.6rem 0.8rem;
-        font-size: 13px;
-    }
+	#customers .customer-details-container .overview h5 {
+		font-size: 0.9rem;
+	}
 
-    /* Tighter overview spacing */
-    #customers .customer-details-container .overview h5 {
-        font-size: 0.9rem;
-    }
-
-    #customers .customer-details-container .overview p {
-        font-size: 0.75rem;
-    }
+	#customers .customer-details-container .overview p {
+		font-size: 0.75rem;
+	}
 }

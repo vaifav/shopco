@@ -4,7 +4,11 @@ import { account } from "../controllers/user/accountContoller.js";
 import { addAddress, editAddress, removeAddress } from "../controllers/user/addressController.js";
 import { addPersonalInfo, editPersonlInfo } from "../controllers/user/personalInfoController.js";
 import { upload } from "../middleware/multerMiddleware.js";
-import { products, singleProduct } from "../controllers/user/productController.js";
+import {
+	products,
+	singleProduct,
+	singleProductByColor,
+} from "../controllers/user/productController.js";
 import { baseAuth, isVerified, requireAuth } from "../middleware/authMiddleware.js";
 
 const user = Router();
@@ -19,6 +23,7 @@ user.get("/username", (req, res) => {
 user.get("/", baseAuth, home);
 user.get("/products", baseAuth, products);
 user.get("/products/:id/:varId", baseAuth, singleProduct);
+user.get("/products/:id/:varId/:color", baseAuth, singleProductByColor);
 
 user.get("/account", requireAuth, isVerified, account);
 user.post("/address", requireAuth, isVerified, addAddress);

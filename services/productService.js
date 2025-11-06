@@ -302,4 +302,116 @@ const getSingleProduct = async (_id, varId) => {
 	}
 };
 
-export { getProductData, getSingleProduct };
+const getSingleProductByColor = async (_id, varId, color) => {
+	const data = {};
+	const colorRegex = new RegExp(`^${color}$`, "i");
+	try {
+		const findProduct = await productModel.findOne({ _id: new mongoose.Types.ObjectId(_id) });
+		if (!findProduct) throw new Error("Product not found");
+
+		const product = await productModel.aggregate([
+			{
+				$match: {
+					isBlocked: false,
+					_id: new mongoose.Types.ObjectId(_id),
+				},
+			},
+			{
+				$lookup: {
+					from: "variants",
+					localField: "variants",
+					foreignField: "_id",
+					as: "allVariants",
+				},
+			},
+			{
+				$unwind: "$allVariants",
+			},
+			{
+				$match: {
+					"allVariants.color": colorRegex,
+				},
+			},
+			{
+				$project: {
+					_id: 0,
+					vrId: "$allVariants._id",
+					price: "$allVariants.price",
+					images: "$allVariants.images",
+					discountedPrice: "$allVariants.discountedPrice",
+					stock: "$allVariants.stock",
+					prId: "$_id",
+					productName: "$productName",
+					rating: "$rating",
+					description: "$description",
+					sizes: "$allVariants.sizes",
+				},
+			},
+		]);
+
+		if (product.length === 0) {
+			throw new Error("Variant not found for this product.");
+		}
+
+		const colors = await variantModel.aggregate([
+			{ $match: { product: new mongoose.Types.ObjectId(_id) } },
+			{ $group: { _id: null, colors: { $addToSet: "$color" } } },
+			{ $project: { _id: 0, colors: "$colors" } },
+		]);
+
+		const categoryId = findProduct.category;
+		const productBasedOnCategory = await productModel.aggregate([
+			{
+				$match: {
+					isBlocked: false,
+					category: new mongoose.Types.ObjectId(categoryId),
+				},
+			},
+			{
+				$limit: 4,
+			},
+			{
+				$lookup: {
+					from: "variants",
+					localField: "variants",
+					foreignField: "_id",
+					as: "allVariants",
+				},
+			},
+			{
+				$unwind: "$allVariants",
+			},
+			{
+				$match: {
+					"allVariants._id": new mongoose.Types.ObjectId(varId),
+				},
+			},
+			{
+				$project: {
+					_id: 0,
+					vrId: "$allVariants._id",
+					price: "$allVariants.price",
+					images: "$allVariants.images",
+					discountedPrice: "$allVariants.discountedPrice",
+					stock: "$allVariants.stock",
+					prId: "$_id",
+					productName: "$productName",
+					rating: "$rating",
+					description: "$description",
+					sizes: "$allVariants.sizes",
+				},
+			},
+		]);
+
+		data.product = product[0];
+		data.product.colors = colors.length > 0 ? colors[0]["colors"] : [];
+		data.relatedProducts = productBasedOnCategory;
+
+		return data;
+	} catch (error) {
+		console.log(error);
+		throw new Error(error.message);
+	}
+};
+
+export { getProductData, getSingleProduct, getSingleProductByColor };

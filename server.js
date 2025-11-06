@@ -8,6 +8,7 @@ import authenticate from "./routes/loginRoute.js";
 import admin from "./routes/adminRoute.js";
 import { noCache } from "./middleware/loginMiddleware.js";
 import { checkBlockStatus, requireAdminAuth } from "./middleware/authMiddleware.js";
+import { errorHandling } from "./middleware/errorHandlingMiddleware.js";
 
 dotenv.config();
 const app = express();
@@ -32,10 +33,7 @@ app.use("/", user);
 app.use("/pagenotfound", (req, res) => res.status(404).render("user/pagenotfound"));
 app.use((req, res) => res.status(404).render("user/pagenotfound"));
 
-app.use((err, req, res, next) => {
-	console.error("Server Error:", err.stack);
-	res.status(500).send("Internal Server Error" );
-});
+app.use(errorHandling);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));

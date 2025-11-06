@@ -1,103 +1,87 @@
 .pagination {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .pagination a,
 span.btn {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-size: 0.8rem;
-    gap: 1rem;
-    border: 1px solid #D1D5DB;
-    margin-top: 2rem;
-    /* Ensure cursor pointer for clickable elements */
-    cursor: pointer; 
+	display: flex;
+	align-items: center;
+	padding: 0.5rem 1rem;
+	border-radius: 5px;
+	font-size: 0.8rem;
+	gap: 1rem;
+	border: 1px solid #d1d5db;
+	margin-top: 2rem;
+
+	cursor: pointer;
 }
 
 .pagination .btn {
-    display: inline-block;
-    text-decoration: none; /* Ensure numbers don't look like links if not clickable */
+	display: inline-block;
+	text-decoration: none;
 }
 
 .pagination .btn.disable {
-    background: #5e779c3d;
-    cursor: default;
+	background: #5e779c3d;
+	cursor: default;
 }
 
 .pagination-btn-container {
-    padding-inline: 1rem;
-    overflow-x: scroll;
-    scrollbar-width: none;
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px
+	padding-inline: 1rem;
+	overflow-x: scroll;
+	scrollbar-width: none;
+	width: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
 }
 
 .pagination-btn-container::-webkit-scrollbar {
-    display: none; /* Hide scrollbar in webkit browsers */
+	display: none;
 }
 
-/* --- Mobile Styles for Pagination (Tablet to Large Mobile) --- */
 @media (max-width: 768px) {
-    /* * The mobile override for .pagination was removed to ensure it keeps 
-     * 'justify-content: space-between' from the default style, aligning 
-     * the 'Previous' and 'Next' buttons to the edges.
-     */
+	.pagination a,
+	.pagination .btn {
+		padding: 0.8rem 1.2rem;
+	}
 
-    .pagination a,
-    .pagination .btn {
-        /* Give pagination buttons a better touch target and reduced size */
-        padding: 0.8rem 1.2rem;
-    }
-
-    .pagination-btn-container {
-        /* Revert width to 50% to ensure space for edge buttons and rely on scroll */
-        width: 50%;
-        padding-inline: 0;
-    }
+	.pagination-btn-container {
+		width: 50%;
+		padding-inline: 0;
+	}
 }
 
-/* --- Small Mobile Styles for Pagination (Max-width: 480px) --- */
 @media (max-width: 480px) {
-    .pagination a,
-    .pagination .btn {
-        /* Further reduce padding/size for "Previous" and "Next" buttons */
-        padding: 0.7rem 1rem;
-        font-size: 0.75rem;
-        gap: 0.5rem;
-    }
+	.pagination a,
+	.pagination .btn {
+		padding: 0.7rem 1rem;
+		font-size: 0.75rem;
+		gap: 0.5rem;
+	}
 
-    .pagination a svg {
-        /* Reduce icon size in the side buttons */
-        width: 16px;
-        height: 16px;
-    }
+	.pagination a svg {
+		width: 16px;
+		height: 16px;
+	}
 
-    .pagination-btn-container {
-        /* Increase width to give more space for the page numbers */
-        width: 60%;
-    }
+	.pagination-btn-container {
+		width: 60%;
+	}
 }
 
-/* --- Extra Small Mobile Styles for Pagination (Max-width: 415px) --- */
 @media (max-width: 415px) {
-    .pagination a,
-    .pagination .btn{
-        /* Make side buttons even smaller for maximum space saving */
-        padding: 0.4rem 0.6rem;
-    }
-    .pagination a svg {
-        /* Tiny adjustment to icon size */
-        width: 14px;
-        height: 14px;
-    }
-    .pagination-btn-container {
-        /* Maximize space for the scrollable page numbers */
-        width: 70%;
-    }
+	.pagination a,
+	.pagination .btn {
+		padding: 0.4rem 0.6rem;
+	}
+	.pagination a svg {
+		width: 14px;
+		height: 14px;
+	}
+	.pagination-btn-container {
+		width: 70%;
+	}
 }

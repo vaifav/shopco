@@ -12,7 +12,6 @@ const cropCancelBtn = document.getElementById("cropCancelBtn");
 let currentCropper = null;
 let currentFile = null;
 
-// Function to convert a Data URL (like a cropped image) into a File object
 const dataURLtoFile = (dataurl, filename) => {
     const arr = dataurl.split(",");
     const mime = arr[0]
@@ -25,27 +24,18 @@ const dataURLtoFile = (dataurl, filename) => {
     while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
     }
-    // We try to keep the original file name/type if possible, but default to .png for cropped image
     const name = filename.split('.').slice(0, -1).join('.') || 'cropped_image';
     return new File([u8arr], `${name}.png`, { type: mime });
 };
 
-// --- INITIAL IMAGE CHECK (FOR EDIT PAGE) ---
-// If the preview contains an existing image from the database, 
-// we set currentFile to a dummy object to hold the filename for saving the crop.
 const initialImage = previewLabel.querySelector('img');
 if (initialImage) {
-    // Extract filename from the URL, or use a default
     const url = initialImage.src;
     const filename = url.substring(url.lastIndexOf('/') + 1) || "existing_category_image.jpg";
-    // We set currentFile to have a name property so dataURLtoFile can name the new cropped image
     currentFile = { name: filename };
 }
 
 
-/**
- * 1. Event Listener for the hidden file input's 'change' event (Triggered on new file selection).
- */
 imageInput.addEventListener("change", async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -62,7 +52,7 @@ imageInput.addEventListener("change", async (e) => {
         return;
     }
 
-    currentFile = file; // Update currentFile to the newly selected file
+    currentFile = file;
 
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -84,30 +74,23 @@ imageInput.addEventListener("change", async (e) => {
 });
 
 
-/**
- * 2. NEW LOGIC: Event Listener for clicking the preview area to re-crop/edit the image.
- */
 previewLabel.addEventListener("click", () => {
     const currentImage = previewLabel.querySelector("img");
 
     if (currentImage) {
-        // If an image exists, we are re-cropping it
         cropperImageElement.src = currentImage.src;
         cropperModal.style.display = "flex";
 
-        // IMPORTANT: Ensure currentFile is set for dataURLtoFile if it was only a database image initially
         if (!currentFile && currentImage.src.startsWith('http')) {
             const url = currentImage.src;
             const filename = url.substring(url.lastIndexOf('/') + 1) || "existing_category_image.jpg";
             currentFile = { name: filename };
         }
 
-        // Destroy any existing cropper instance
         if (currentCropper) {
             currentCropper.destroy();
         }
 
-        // Initialize the cropper for re-cropping the displayed image
         setTimeout(() => {
             currentCropper = new Cropper(cropperImageElement, {
                 aspectRatio: 1 / 1,
@@ -116,18 +99,12 @@ previewLabel.addEventListener("click", () => {
         }, 100);
 
     } else {
-        // If there's no image (it shows the icon), delegate the click to the file input 
         imageInput.click();
     }
 });
 
 
-/**
- * 3. Event Listener for the 'Save Crop' button.
- */
 cropSaveBtn.addEventListener("click", () => {
-    // currentFile might be a File object from a new upload, or a simple {name: '...'} object 
-    // from an initial database image load.
     if (!currentCropper || !currentFile) return;
 
     const canvas = currentCropper.getCroppedCanvas({
@@ -136,38 +113,30 @@ cropSaveBtn.addEventListener("click", () => {
     });
     const croppedDataURL = canvas.toDataURL("image/png");
 
-    // Update the preview
     previewLabel.innerHTML = "";
     const img = document.createElement("img");
     img.src = croppedDataURL;
     previewLabel.append(img);
 
-    // Convert the cropped Data URL back into a File object for submission
     const croppedFile = dataURLtoFile(croppedDataURL, currentFile.name);
 
-    // Update the hidden file input's files property with the cropped image
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(croppedFile);
     imageInput.files = dataTransfer.files;
 
     currentCropper.destroy();
     currentCropper = null;
-    currentFile = croppedFile; // Keep track of the *final* file
+    currentFile = croppedFile;
     cropperModal.style.display = "none";
 });
 
 
-/**
- * 4. Event Listener for the 'Cancel Crop' button.
- */
 cropCancelBtn.addEventListener("click", () => {
     if (currentCropper) {
         currentCropper.destroy();
         currentCropper = null;
     }
     
-    // Clear the input only if the user is canceling an initial upload or they are clearing a previous one
-    // If we have existing files in the input or an initial image was loaded, we leave the preview alone.
     if (!imageInput.files.length && !previewLabel.querySelector('img')) {
         imageInput.value = "";
         currentFile = null;
@@ -178,14 +147,10 @@ cropCancelBtn.addEventListener("click", () => {
         }
     }
     
-    // If the user was re-cropping an existing database image, canceling just closes the modal.
     cropperModal.style.display = "none";
 });
 
 
-/**
- * 5. Event Listener for form submission.
- */
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
     

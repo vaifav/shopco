@@ -1,4 +1,8 @@
-import { getProductData, getSingleProduct } from "../../services/productService.js";
+import {
+	getProductData,
+	getSingleProduct,
+	getSingleProductByColor,
+} from "../../services/productService.js";
 
 const products = async (req, res) => {
 	const page = parseInt(req.query.page) || 1;
@@ -21,13 +25,24 @@ const products = async (req, res) => {
 
 const singleProduct = async (req, res) => {
 	try {
-		const data = await getSingleProduct(req.params.id,req.params.varId);
+		const data = await getSingleProduct(req.params.id, req.params.varId);
 
-		return res.render("user/singleProduct",data);
+		return res.render("user/singleProduct", data);
 	} catch (error) {
 		console.error("Error rendering product page:", error.message);
 		return res.status(500).render("user/pagenotfound", { error });
 	}
 };
 
-export { products, singleProduct };
+const singleProductByColor = async (req, res) => {
+	try {
+		const data = await getSingleProductByColor(req.params.id, req.params.varId, req.params.color);
+
+		return res.render("user/singleProduct", data);
+	} catch (error) {
+		console.error("Error rendering product page:", error.message);
+		return res.status(500).render("user/pagenotfound", { error });
+	}
+};
+
+export { products, singleProduct, singleProductByColor };

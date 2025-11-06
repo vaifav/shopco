@@ -1,531 +1,471 @@
-/* --- 1. YOUR ORIGINAL BASE STYLES (Desktop/Large Screen > 940px) --- */
-
 #products * {
-  color: black;
+	color: black;
 }
 
 #products header * {
-  font-weight: 500;
+	font-weight: 500;
 }
 
 #products header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5rem;
-  flex-wrap: wrap;
-  gap: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 5rem;
+	flex-wrap: wrap;
+	gap: 10px;
 }
 
 #products header button {
-  border: 1px solid dodgerblue;
-  color: dodgerblue;
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 0.6rem 2rem;
-  display: flex;
-  align-items: center;
+	border: 1px solid dodgerblue;
+	color: dodgerblue;
+	background-color: #fff;
+	border-radius: 5px;
+	padding: 0.6rem 2rem;
+	display: flex;
+	align-items: center;
 
-  & svg {
-    stroke: dodgerblue;
-    margin-right: 0.5rem;
-  }
+	& svg {
+		stroke: dodgerblue;
+		margin-right: 0.5rem;
+	}
 }
 
-/* --- Base Table and Header Styling --- */
 #products .product-list-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-  background-color: #fff;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-  /* Ensure it remains a standard table on desktop */
-  display: table;
+	width: 100%;
+	border-collapse: collapse;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	color: #333;
+	background-color: #fff;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	overflow: hidden;
+	display: table;
 }
 
 #products .product-list-table thead {
-  background: #f1f5f9;
-  /* 🔥 AGGRESSIVE RESET: Ensure header is visible */
-  display: table-header-group;
+	background: #f1f5f9;
+	display: table-header-group;
 }
 
 #products .product-list-table th {
-  padding: 15px 15px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: #555;
+	padding: 15px 15px;
+	text-align: center;
+	font-size: 14px;
+	font-weight: 600;
+	color: #555;
 }
 
-/* Aligning the Product header text to the left */
 #products .product-list-table .header-product {
-  text-align: left;
-  padding-left: 20px;
+	text-align: left;
+	padding-left: 20px;
 }
 
 #products .product-list-table .header-actions {
-  text-align: center;
-  width: 120px;
+	text-align: center;
+	width: 120px;
 }
 
-/* --- Table Row (Body) Styling --- */
 #products .product-row {
-  height: 70px;
-  border-bottom: 1px solid #f0f0f0;
-  transition: background-color 0.2s;
-  /* 🔥 AGGRESSIVE RESET: Ensure proper table row display on desktop */
-  display: table-row;
+	height: 70px;
+	border-bottom: 1px solid #f0f0f0;
+	transition: background-color 0.2s;
+	display: table-row;
 }
 
 #products .product-row:hover {
-  background-color: #f9f9f9;
+	background-color: #f9f9f9;
 }
 
 #products .product-row td {
-  padding: 10px 15px;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  width: auto !important;
-  /* Resetting mobile width */
+	padding: 10px 15px;
+	font-size: 14px;
+	font-weight: 500;
+	text-align: center;
+	width: auto !important;
 }
 
-/* --- CONSOLIDATED PRODUCT INFO CELL STYLING --- */
 #products table {
-  margin-top: 1rem;
+	margin-top: 1rem;
 }
 
 #products .product-info-cell-consolidated {
-  text-align: left;
-  padding-left: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  vertical-align: middle;
+	text-align: left;
+	padding-left: 20px;
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	vertical-align: middle;
 }
 
 #products .product-thumbnail {
-  width: 45px;
-  height: 45px;
-  object-fit: cover;
-  border-radius: 4px;
-  flex-shrink: 0;
+	width: 45px;
+	height: 45px;
+	object-fit: cover;
+	border-radius: 4px;
+	flex-shrink: 0;
 }
 
 #products .product-name {
-  font-weight: 600;
-  word-break: break-word;
+	font-weight: 600;
+	word-break: break-word;
 }
-
-/* --- Data Cells Styling --- */
 
 #products .stock-cell,
 #products .color-cell,
 #products .price-cell,
 #products .rating-cell {
-  text-align: center;
+	text-align: center;
 }
 
 #products .rating-cell {
-  color: #888;
-  font-weight: 600;
+	color: #888;
+	font-weight: 600;
 }
 
-/* --- Action Buttons Styling (Retained Original) --- */
 #products .action-cell {
-  width: 120px;
-  text-align: center;
-  white-space: nowrap;
+	width: 120px;
+	text-align: center;
+	white-space: nowrap;
 }
 
 #products .action-btn {
-  width: 34px;
-  height: 34px;
-  margin: 0 4px;
-  padding: 0;
-  border: 1px solid transparent;
-  background-color: transparent;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+	width: 34px;
+	height: 34px;
+	margin: 0 4px;
+	padding: 0;
+	border: 1px solid transparent;
+	background-color: transparent;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.2s;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
 }
 
-/* Lucide Icon Specific Styling */
 #products .action-btn svg {
-  width: 16px;
-  height: 16px;
-  stroke-width: 2;
+	width: 16px;
+	height: 16px;
+	stroke-width: 2;
 }
 
 #products .action-btn.delete-btn {
-  background: #fcdfda;
-  transition: all 0.5s;
+	background: #fcdfda;
+	transition: all 0.5s;
 
-  & svg {
-    stroke: #ff7262;
-  }
+	& svg {
+		stroke: #ff7262;
+	}
 }
 
 #products .action-btn.edit-btn {
-  background: #1e8fff2c;
-  transition: all 0.5s;
+	background: #1e8fff2c;
+	transition: all 0.5s;
 
-  & svg {
-    stroke: dodgerblue;
-  }
+	& svg {
+		stroke: dodgerblue;
+	}
 }
 
 #products .action-btn.unblock-btn {
-  background: #19875442;
-  transition: all 0.5s;
+	background: #19875442;
+	transition: all 0.5s;
 
-  & svg {
-    stroke: #198754;
-  }
+	& svg {
+		stroke: #198754;
+	}
 }
 
 #products .action-btn.delete-btn:hover {
-  border: 1px solid #ff7262;
+	border: 1px solid #ff7262;
 }
 
 #products .action-btn.edit-btn:hover {
-  border: 1px solid dodgerblue;
+	border: 1px solid dodgerblue;
 }
 
 #products .action-btn.unblock-btn:hover {
-  border: 1px solid #198754;
+	border: 1px solid #198754;
 }
-
-/* --- Search and Filter Dropdown Styles (FIXED FOR SMALL SCREENS) --- */
 
 #products .search-container button.active-block-details,
 #products .search-container button.active-block-filter {
-  position: relative;
+	position: relative;
 }
 
 #products .search-container ul {
-  background-color: #F9FAFB;
-  padding-block: 1rem;
-  border-radius: 5px;
-  border: 1px solid #D1D5DB;
-  position: absolute;
-  /* FIX: Position below the button */
-    top: 100%; 
-  right: 0;
-  z-index: 100;
-  display: none;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-  width: fit-content;
-    /* Added box-shadow for visual separation */
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    margin-top: 0.25rem;
+	background-color: #f9fafb;
+	padding-block: 1rem;
+	border-radius: 5px;
+	border: 1px solid #d1d5db;
+	position: absolute;
+
+	top: 100%;
+	right: 0;
+	z-index: 100;
+	display: none;
+	flex-direction: column;
+	justify-content: start;
+	align-items: start;
+	width: fit-content;
+
+	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	margin-top: 0.25rem;
 }
 
-/* 🌟 FIX: Use the .open class (toggled by JS) to display the menu */
 #products .search-container button.active-block-details.open ul,
 #products .search-container button.active-block-filter.open ul {
-    display: flex;
+	display: flex;
 }
 
 #products .search-container ul li {
-  border-radius: 0;
-  font-weight: 300;
-  cursor: pointer;
-  background: transparent;
-  text-wrap: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 700;
-    /* Added padding for easier clicking */
-    padding: 0.25rem 1rem; 
-    width: 100%;
+	border-radius: 0;
+	font-weight: 300;
+	cursor: pointer;
+	background: transparent;
+	text-wrap: nowrap;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-weight: 700;
+
+	padding: 0.25rem 1rem;
+	width: 100%;
 }
 
-/* Added hover for better desktop/mouse UX */
 #products .search-container ul li:hover {
-    background-color: #E5E7EB;
+	background-color: #e5e7eb;
 }
 
 #products .search-container button.active-block-filter ul li {
-  padding-block: 0;
-  margin-bottom: 0.5rem;
+	padding-block: 0;
+	margin-bottom: 0.5rem;
 }
 
 #products .search-container button.active-block-filter ul li:first-child {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-    /* Adjustments for the title row */
-    cursor: default;
-    background: none;
-    padding: 0 1rem 0.5rem 1rem; 
-    border-bottom: 1px solid #D1D5DB;
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+
+	cursor: default;
+	background: none;
+	padding: 0 1rem 0.5rem 1rem;
+	border-bottom: 1px solid #d1d5db;
 }
 
 #products .search-container ul li.active {
-  color: #22c55e;
+	color: #22c55e;
 
-  & svg {
-    stroke: #1fa851;
-  }
+	& svg {
+		stroke: #1fa851;
+	}
 }
 
 #products .search-container ul li.blocked {
-  color: #ff7262;
+	color: #ff7262;
 
-  & svg {
-    stroke: #f8604f
-  }
+	& svg {
+		stroke: #f8604f;
+	}
 }
-
-/* ❌ REMOVED: Relying on the .open class instead of :hover */
-/*
-#products .search-container button.active-block-details:hover ul {
-  display: flex;
-}
-
-#products .search-container button.active-block-filter:hover ul {
-  display: flex;
-}
-*/
-
-/* ------------------------------------------------------------------ */
-/* --- 2. RESPONSIVENESS OVERRIDES: TABLET/MEDIUM SCREEN (<= 940px) 🌎 --- */
-/* ------------------------------------------------------------------ */
 
 @media (max-width: 940px) {
+	.sections {
+		overflow-x: hidden;
+		padding: 10px;
+	}
 
-  /* R: Prevents horizontal scrolling on the content area */
-  .sections {
-    overflow-x: hidden;
-    padding: 10px;
-  }
+	#products .product-list-table thead {
+		display: none;
+	}
 
-  /* R: Hide Table Headers */
-  #products .product-list-table thead {
-    display: none;
-  }
+	#products .product-list-table {
+		display: block;
+		min-width: 100%;
+		box-shadow: none;
+	}
 
-  /* R: Reset table display properties to block/grid */
-  #products .product-list-table {
-    display: block;
-    min-width: 100%;
-    box-shadow: none;
-  }
+	#products .product-list-table tbody {
+		display: block;
+	}
 
-  #products .product-list-table tbody {
-    display: block;
-  }
+	#products .product-row {
+		height: auto;
+		border: 1px solid #e0e0e0;
+		border-bottom: 1px solid #e0e0e0;
+		margin-bottom: 15px;
+		padding: 15px;
+		border-radius: 8px;
 
-  /* R: Apply CSS Grid to the Row (The Card) */
-  #products .product-row {
-    height: auto;
-    border: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
-    margin-bottom: 15px;
-    padding: 15px;
-    border-radius: 8px;
+		display: grid;
 
-    display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-areas:
+			"product-info product-info"
+			"stock-label price-label"
+			"stock-value price-value"
+			"color-label rating-label"
+			"color-value rating-value"
+			"actions actions";
+	}
 
-    /* Define the structure for labels and values */
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-areas:
-      "product-info product-info"
-      "stock-label price-label"
-      "stock-value price-value"
-      "color-label rating-label"
-      "color-value rating-value"
-      "actions actions";
-  }
+	#products .product-row td {
+		padding: 0;
+		text-align: left;
+		width: auto !important;
+		min-width: auto !important;
+		padding-block: 1rem;
+	}
 
-  /* R: Reset Cell Display and Padding */
-  #products .product-row td {
-    padding: 0;
-    text-align: left;
-    width: auto !important;
-    min-width: auto !important;
-    padding-block: 1rem;
-  }
+	#products .product-info-cell-consolidated {
+		grid-area: product-info;
+		border-bottom: 1px solid #f0f0f0;
+		padding-bottom: 15px;
+		margin-bottom: 15px;
 
-  /* R: Layout Product Info (Top of Card) */
-  #products .product-info-cell-consolidated {
-    grid-area: product-info;
-    border-bottom: 1px solid #f0f0f0;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding-left: 0;
+		max-width: 100%;
+	}
 
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-left: 0;
-    max-width: 100%;
-  }
+	#products .product-thumbnail {
+		width: 60px;
+		height: 60px;
+	}
 
-  #products .product-thumbnail {
-    width: 60px;
-    height: 60px;
-  }
+	#products .stock-cell::before,
+	#products .price-cell::before,
+	#products .color-cell::before,
+	#products .rating-cell::before {
+		display: block;
+		font-weight: 700;
+		color: #555;
+		font-size: 0.9em;
+		padding-top: 5px;
+	}
 
-  /* R: Create Labels and Position Values */
-  #products .stock-cell::before,
-  #products .price-cell::before,
-  #products .color-cell::before,
-  #products .rating-cell::before {
-    display: block;
-    font-weight: 700;
-    color: #555;
-    font-size: 0.9em;
-    padding-top: 5px;
-  }
+	#products .stock-cell::before {
+		content: "Stock:";
+		grid-area: stock-label;
+	}
 
-  #products .stock-cell::before {
-    content: "Stock:";
-    grid-area: stock-label;
-  }
+	#products .price-cell::before {
+		content: "Price:";
+		grid-area: price-label;
+	}
 
-  #products .price-cell::before {
-    content: "Price:";
-    grid-area: price-label;
-  }
+	#products .color-cell::before {
+		content: "Color:";
+		grid-area: color-label;
+	}
 
-  #products .color-cell::before {
-    content: "Color:";
-    grid-area: color-label;
-  }
+	#products .rating-cell::before {
+		content: "Rating:";
+		grid-area: rating-label;
+	}
 
-  #products .rating-cell::before {
-    content: "Rating:";
-    grid-area: rating-label;
-  }
+	#products .stock-cell {
+		grid-area: stock-value;
+	}
 
-  #products .stock-cell {
-    grid-area: stock-value;
-  }
+	#products .price-cell {
+		grid-area: price-value;
+	}
 
-  #products .price-cell {
-    grid-area: price-value;
-  }
+	#products .color-cell {
+		grid-area: color-value;
+	}
 
-  #products .color-cell {
-    grid-area: color-value;
-  }
+	#products .rating-cell {
+		grid-area: rating-value;
+	}
 
-  #products .rating-cell {
-    grid-area: rating-value;
-  }
+	#products .action-cell {
+		grid-area: actions;
+		width: 100%;
+		text-align: center;
+		padding-top: 15px;
+		margin-top: 10px;
+		border-top: 1px dashed #e0e0e0;
+	}
 
-
-  /* R: Action Buttons (Bottom of Card) */
-  #products .action-cell {
-    grid-area: actions;
-    width: 100%;
-    text-align: center;
-    padding-top: 15px;
-    margin-top: 10px;
-    border-top: 1px dashed #e0e0e0;
-  }
-
-  #products .action-btn {
-    width: 44px;
-    height: 44px;
-    margin: 0 8px;
-  }
+	#products .action-btn {
+		width: 44px;
+		height: 44px;
+		margin: 0 8px;
+	}
 }
-
-/* ---------------------------------------------------------------- */
-/* --- 3. RESPONSIVENESS OVERRIDES: SMALL MOBILE OPTIMIZATION (< 768px) 📱 --- */
-
-/* ---------------------------------------------------------------- */
 
 @media (max-width: 620px) {
+	#products header {
+		margin-bottom: 3rem;
+	}
 
-  #products header {
-    margin-bottom: 3rem;
-  }
+	#products header h1 {
+		font-size: 1.3rem;
+	}
 
-  #products header h1 {
-    font-size: 1.3rem;
-  }
+	#products header button {
+		font-size: 0rem;
+		border-radius: 100px;
+		width: 40px;
+		height: 40px;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
 
-  #products header button {
-    font-size: 0rem;
-    border-radius: 100px;
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
+		& svg {
+			margin: 0;
+			height: 15px;
+		}
+	}
 
-    & svg {
-      margin: 0;
-      height: 15px;
-    }
-  }
+	#products .admin-search {
+		padding-inline: 0;
+	}
 
-  #products .admin-search {
-    padding-inline: 0;
-  }
-
-  #products .admin-search form {
-    width: 100%;
-    max-width: none;
-  }
+	#products .admin-search form {
+		width: 100%;
+		max-width: none;
+	}
 }
 
-
 @media (max-width: 480px) {
-  div.sections {
-    padding: 1rem 0.5rem 1rem;
-  }
+	div.sections {
+		padding: 1rem 0.5rem 1rem;
+	}
 }
 
 @media (max-width: 768px) {
+	#products .product-row {
+		padding: 12px;
+	}
 
-  /* Optimize Padding and Margins for smaller viewports */
+	#products .product-row td {
+		padding-block: 0.75rem;
+		font-size: 13px;
+	}
 
-  #products .product-row {
-    /* Reduce overall card padding slightly */
-    padding: 12px;
-  }
+	#products .product-info-cell-consolidated {
+		gap: 8px;
+		padding-bottom: 12px;
+		margin-bottom: 12px;
+	}
 
-  /* Reduce vertical space between content/labels */
-  #products .product-row td {
-    padding-block: 0.75rem;
-    font-size: 13px;
-    /* Slightly smaller font on tiny screens */
-  }
+	#products .product-thumbnail {
+		width: 50px;
+		height: 50px;
+	}
 
-  #products .product-info-cell-consolidated {
-    /* Reduce gap in product name/image area */
-    gap: 8px;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-  }
+	#products .action-cell {
+		padding-top: 12px;
+		margin-top: 8px;
+	}
 
-  #products .product-thumbnail {
-    /* Reduce thumbnail size */
-    width: 50px;
-    height: 50px;
-  }
-
-  #products .action-cell {
-    padding-top: 12px;
-    margin-top: 8px;
-  }
-
-  #products .action-btn {
-    /* Smaller buttons */
-    width: 38px;
-    height: 38px;
-    margin: 0 5px;
-  }
+	#products .action-btn {
+		width: 38px;
+		height: 38px;
+		margin: 0 5px;
+	}
 }

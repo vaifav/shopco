@@ -62,7 +62,7 @@
               <% product.colors.forEach(color => { %>
               <label class="color-option">
                 <input type="radio" name="color" value="<%= color %>" checked>
-                <span class="item" data-color="<%= color.toLowerCase() %>"></span>
+                <span class="item" data-color="<%= color.toLowerCase() %>" data-productid="<%= product.prId %>" data-variantid="<%= product.vrId %>"></span>
               </label>
               <% }) %>
             </span>

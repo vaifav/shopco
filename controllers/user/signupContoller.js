@@ -1,7 +1,7 @@
 import createUser from "../../services/signupService.js";
 
 const getSignup = async (req, res) => {
-	return res.status(200).render("user/signup", { error: null });
+	return res.status(200).render("user/signup", { error: null, email: null, username: null });
 };
 
 const postSignup = async (req, res) => {
@@ -37,7 +37,7 @@ const postSignup = async (req, res) => {
 		return res.status(201).redirect("/verifyotp");
 	} catch (error) {
 		console.log(error);
-		return res.status(400).render("user/signup", { error: error.message});
+		return res.status(400).render("user/signup", { error: error.message, email, username });
 	}
 };
 
