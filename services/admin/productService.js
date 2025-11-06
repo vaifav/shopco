@@ -296,7 +296,6 @@ const updateProduct = async (_id, data) => {
 			await productModel.findOneAndUpdate({ _id }, { $set: updateProductFields }, { new: true });
 		}
 
-		console.log(variants);
 		for (let variantIndex = 0; variantIndex < variants.length; variantIndex++) {
 			const variantId = product.variants[variantIndex];
 			if (!variantId) {
@@ -311,22 +310,29 @@ const updateProduct = async (_id, data) => {
 				);
 			}
 
-			const updateVariant = await variantModel.findOneAndUpdate(
-				{ _id: variantId },
-				{
-					$set: {
-						price: variants[variantIndex].price,
-						color: variants[variantIndex].color,
-						sizes: variants[variantIndex].sizes,
-						stock: variants[variantIndex].stock,
-						discountedPrice: variants[variantIndex].discountedPrice,
-					},
-					$push: {
-						images: { $each: [...variants[variantIndex].images] },
-					},
+			const newImages = variants[variantIndex].images;
+			const hasNewImages = Array.isArray(newImages) && newImages.length > 0;
+
+			const updateOperation = {
+				$set: {
+					price: variants[variantIndex].price,
+					color: variants[variantIndex].color,
+					sizes: variants[variantIndex].sizes,
+					stock: variants[variantIndex].stock,
+					discountedPrice: variants[variantIndex].discountedPrice,
 				},
-				{ new: true }
-			);
+			};
+
+			if (hasNewImages) {
+				updateOperation.$push = {
+					images: { $each: newImages },
+				};
+			} else {
+				updateOperation.$set.images = variants[variantIndex].existingImages || [];
+			}
+			const updateVariant = await variantModel.findOneAndUpdate({ _id: variantId }, updateOperation, {
+				new: true,
+			});
 		}
 		return product;
 	} catch (error) {
