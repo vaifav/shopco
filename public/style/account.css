@@ -1,0 +1,578 @@
+.account.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	padding-block: 2rem;
+	padding-top: 130px;
+}
+
+div.container {
+	display: flex;
+	gap: 5rem;
+	justify-content: space-between;
+}
+
+.container nav,
+.container ul {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	flex-shrink: 0;
+}
+
+.container ul {
+	gap: 10px;
+	flex-shrink: initial;
+}
+
+.container ul li {
+	transition: background 0.2s;
+	padding: 1rem 1rem;
+	border-radius: 10px;
+	cursor: pointer;
+
+	& a {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+}
+
+.container ul li:hover {
+	background: #000;
+}
+
+b {
+	transition: color 0.2s;
+}
+
+a svg {
+	width: 24px;
+	height: 24px;
+	stroke-width: 1.5;
+	stroke: #000;
+	transition: stroke 0.2s;
+}
+
+li:hover svg {
+	stroke: #fff;
+}
+
+li:hover b {
+	color: #fff;
+}
+
+.container div.image-container {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+
+	& div.avatar {
+		background: #edebeb;
+		height: 40px;
+		width: 40px;
+		border-radius: 50px;
+		overflow: hidden;
+	}
+
+	& div.avatar img {
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+		border-radius: inherit;
+	}
+
+	h5 {
+		font-weight: 500;
+		font-size: 1rem;
+	}
+}
+
+div.sections {
+	flex-grow: 1;
+}
+
+.sections section {
+	display: none;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.sections section.show {
+	display: block;
+	opacity: 1;
+}
+
+.container ul li.active {
+	background: #000;
+}
+
+.container ul li.active b {
+	transition: color 0.2s;
+}
+
+.container ul li.active svg {
+	stroke: #fff;
+}
+
+.container ul li.active b {
+	color: #fff;
+}
+
+#personal-information form {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+#personal-information .form-input-container {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#personal-information .form-input-container .figure {
+	position: relative;
+}
+
+#personal-information .form-input-container .figure input,
+#personal-information .form-input-container .figure label {
+	height: 60px;
+	width: 60px;
+	min-width: 0;
+	border-radius: 50px;
+	padding: 0;
+}
+
+#personal-information .form-input-container .figure label {
+	background-color: #edebeb;
+	position: absolute;
+	top: 8px;
+	left: 0;
+	cursor: pointer;
+
+	& img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: inherit;
+	}
+}
+
+#personal-information .form-input-container input,
+#personal-information .form-input-container select {
+	box-sizing: border-box;
+	background: #f4f2f2;
+	padding-block: 1rem;
+	min-width: 0;
+	width: 25rem;
+	border-radius: 10px;
+	padding-inline: 0.5rem;
+	margin-block: 0.6rem;
+}
+
+#personal-information .form-input-container label {
+	display: block;
+}
+
+#personal-information .form-input-container .radio-gender {
+	display: inline-block;
+}
+
+#personal-information .form-input-container .radio-gender {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	margin-right: 1rem;
+}
+
+#personal-information .form-input-container .radio-gender input {
+	padding: 0;
+	min-width: 0;
+	width: 22px;
+	height: 22px;
+	accent-color: #000;
+	cursor: pointer;
+}
+
+#personal-information .form-input-container a.change-password {
+	background: #dcdada;
+	width: fit-content;
+	height: fit-content;
+	font-size: 0.8rem;
+	font-weight: 500;
+	padding: 0.6rem;
+	border-radius: 10px;
+}
+
+form #personal-information .form-input-container:first-child {
+	margin-bottom: 1rem;
+}
+
+form #personal-information .form-input-container:first-child figure {
+	height: 60px;
+	width: 60px;
+	border-radius: 60px;
+
+	& img {
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+	}
+}
+
+#personal-information .form-input-container:first-child button {
+	background: #000;
+	transition: background 0.5s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	height: fit-content;
+	width: fit-content;
+	padding: 0.7rem;
+	border-radius: 10px;
+	color: #fff;
+	font-weight: 500;
+	text-wrap: nowrap;
+}
+
+#personal-information .form-input-container input[type="submit"] {
+	background: #000;
+	color: #fff;
+}
+
+#personal-information .form-input-container input[type="submit"]:disabled {
+	background: #000000df;
+	color: #ffffffa8;
+}
+
+#manage-address {
+	width: 100%;
+}
+
+#manage-address .container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+#manage-address .container article {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 2rem;
+	border-radius: 10px;
+	box-shadow: 0px 0px 15px 0px #0000001a;
+	padding: 1rem;
+}
+
+#manage-address .container article div.buttons {
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	gap: 0.5rem;
+	flex-shrink: 0;
+
+	& button {
+		cursor: pointer;
+		background: #f6f6f6;
+		display: flex;
+		gap: 0.6rem;
+		align-items: center;
+		border-radius: 10px;
+		padding: 0.5rem;
+		min-width: 100px;
+		justify-content: center;
+	}
+
+	& b {
+		font-weight: 500;
+	}
+
+	& .delete {
+		background: #fff1ef;
+	}
+
+	& .delete b {
+		color: #ff7262;
+	}
+}
+
+#manage-address .container .content {
+	flex-grow: 1;
+}
+
+#manage-address .container .content h5 {
+	font-weight: 600;
+	font-size: 1.2rem;
+	margin-bottom: 1rem;
+}
+
+#manage-address .container .content p {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	color: #545151;
+	font-size: 0.9rem;
+	margin-bottom: 0.5rem;
+
+	& b {
+		color: inherit;
+		font-size: inherit;
+	}
+
+	& svg {
+		stroke: #545151;
+		width: 0.9rem;
+		height: 0.9rem;
+	}
+}
+
+#manage-address .add-new-address-btn {
+	cursor: pointer;
+	color: #fff;
+	background: #000;
+	padding: 0.8rem 3rem;
+	border-radius: 10px;
+	margin-block: 2rem;
+	width: fit-content;
+}
+
+#manage-address .overlay.active {
+	background: #00000048;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 1050;
+
+	display: flex;
+	padding-block: 2rem;
+	justify-content: center;
+	align-items: center;
+}
+
+#manage-address .overlay.active form {
+	background: #fff;
+	padding: 1.5rem;
+	width: min(90%, 500px);
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	max-height: 90vh;
+	overflow-y: auto;
+	scroll-behavior: smooth;
+	scrollbar-width: thin;
+	scrollbar-color: transparent transparent;
+
+	& h3 {
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+	}
+}
+
+#manage-address .overlay {
+	display: none;
+}
+
+#manage-address .overlay.active form label {
+	display: block;
+	font-size: 0.8rem;
+	font-weight: 500;
+	margin-bottom: 0.4rem;
+}
+
+#manage-address .overlay.active form input,
+#manage-address .overlay.active form select {
+	min-width: 0;
+	width: 100%;
+	background: #f4f2f2;
+	padding-inline-start: 1rem;
+	padding-block: 0.8rem;
+	border-radius: 10px;
+}
+
+#manage-address .overlay.active form div.form-buttons {
+	width: 100%;
+	display: flex;
+	gap: 1rem;
+	margin-top: 1rem;
+
+	& button {
+		cursor: pointer;
+		flex-grow: 1;
+		padding-block: 0.8rem;
+		border-radius: 10px;
+		background: #000;
+		color: #fff;
+		font-weight: 600;
+	}
+
+	& button:first-child {
+		color: #ff7262;
+		background: #f4dcd9;
+	}
+}
+
+#manage-address .overlay.active form::-webkit-scrollbar {
+	width: 8px;
+	background: transparent;
+}
+
+#manage-address .overlay.active form::-webkit-scrollbar-thumb {
+	background: transparent;
+	border-radius: 10px;
+	border: 2px solid transparent;
+}
+
+#manage-address .overlay.active form:hover {
+	scrollbar-color: rgba(0, 0, 0, 0.6) transparent;
+}
+
+#manage-address .overlay.active form:hover::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.6);
+}
+
+#manage-address .overlay.active form:hover::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 0, 0, 0.8);
+	transform: scaleX(1.2);
+}
+
+#manage-address .overlay.active form:hover::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+@media (max-width: 1230px) {
+	div.container {
+		gap: 3rem;
+	}
+
+	.container ul li a b {
+		font-size: 0.9rem;
+	}
+
+	#personal-information .form-input-container input,
+	#personal-information .form-input-container select {
+		width: 18rem;
+	}
+
+	#manage-address .container article {
+		gap: 1rem;
+		padding: 0.8rem;
+	}
+}
+
+@media (max-width: 950px) {
+	.account.wrapper {
+		padding-top: 8rem;
+	}
+
+	div.container {
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.container nav {
+		width: 100%;
+	}
+
+	.container ul {
+		flex-direction: row;
+		overflow-x: auto;
+		white-space: nowrap;
+		padding-bottom: 5px;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.container ul::-webkit-scrollbar {
+		display: none;
+	}
+
+	.container ul li {
+		display: inline-block;
+		flex-shrink: 0;
+		padding: 0.6rem 1rem;
+		font-size: 0.9rem;
+	}
+
+	.container ul li a i {
+		display: none;
+	}
+
+	.container ul li a b {
+		font-size: 0.8rem;
+	}
+
+	#personal-information .form-input-container {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	#personal-information .form-input-container:first-child {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+	}
+
+	#personal-information .form-input-container > div {
+		width: 100%;
+	}
+
+	#personal-information .form-input-container input,
+	#personal-information .form-input-container select {
+		width: 100%;
+		min-width: 0;
+	}
+
+	#personal-information .form-input-container:last-child {
+		flex-direction: column;
+		gap: 1.5rem;
+		align-items: stretch;
+	}
+
+	#personal-information .form-input-container a.change-password {
+		text-align: center;
+	}
+
+	#manage-address .container article {
+		flex-direction: column;
+		gap: 1rem;
+		padding: 1rem;
+	}
+
+	#manage-address .container article div.buttons {
+		flex-direction: row;
+		width: 100%;
+	}
+
+	#manage-address .add-new-address-btn {
+		width: 100%;
+		text-align: center;
+	}
+}
+
+@media (max-width: 480px) {
+	.container ul li a i {
+		display: inline-block;
+		margin-right: 0.3rem;
+	}
+
+	#manage-address .container article div.buttons button {
+		flex-grow: 1;
+		font-size: 0.8rem;
+	}
+
+	#manage-address .container article div.buttons button b {
+		display: none;
+	}
+}

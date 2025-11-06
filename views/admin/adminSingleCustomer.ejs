@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <title>Admin</title>
+  <style>
+    @import url("/style/adminPartials.css");
+    @import url("/style/admin.css");
+    @import url("/style/adminSingleCustomer.css");
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <section class="nav wrapper">
+    <div class="container">
+      <nav id="admin-nav">
+        <ul>
+          <li data-url="/admin"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> <b>Dashboard</b></a></li>
+          <li data-url="/admin/orders"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
+          <li data-url="/admin/products"><a href="#products"><i data-lucide="package"></i> <b>Products</b></a></li>
+          <li data-url="/admin/categories"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
+          <li class="active" data-url="/admin/customers"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li data-url="/admin/reports"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
+          <li data-url="/admin/coupons"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
+          <li data-url="/admin/inbox"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
+          <li data-url="/admin/transactions"><a href="#transactions"><i data-lucide="credit-card"></i> <b>Transactions</b></a></li>
+          <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
+        </ul>
+      </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
+      <div class="sections">
+        <section id="customers" class="show">
+          <header>
+            <h1>Customers Information</h1>
+            <button type="button">Export</button>
+          </header>
+          <section class="customer-details-container">
+            <div class="left">
+              <section class="details">
+                <% if (data.avatar) { %>
+                <figure class="avatar">
+                  <img src="<%= data.avatar %>" alt="avatar">
+                </figure>
+                <% }else{ %>
+                <figure class="avatar" style="background-color: aliceblue;"><i data-lucide="user"></i></figure>
+                <% } %>
+                <h3><%= data.name %></h3>
+              </section>
+              <section class="overview">
+                <h3>Overview</h3>
+
+                <h5>Address</h5>
+                <p>
+                  <%= `${data.address.houseName}` %> <br>
+                  <%= `${data.address.street}` %> <br>
+                  <%= `${data.address.city}` %> <br>
+                  <% 
+                    const countryObj = countries.find(c => c.isoCode === data.address.country); 
+                  %>
+                  <%= countryObj ? countryObj.name : data.address.country %></p>
+                </p>
+                <p>
+                <h5>Email Address</h5>
+                <p><%= data.email %></p>
+
+                <h5>Phone</h5>
+                <p><%= data.phone %></p>
+
+                <h5>Status</h5>
+                <p class="status <%= data.isBlocked ? 'inactive' : 'active' %>">
+                  <span class="dot"></span>
+                  <%= data.isBlocked ? "Blocked" : "Active" %>
+                </p>
+              </section>
+
+            </div>
+            <div class="right">
+              <section class="orders">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Order</th>
+                      <th>Date</th>
+                      <th>Order Status</th>
+                      <th>Price</th>
+                    </tr>
+                  </thead>
+                </table>
+              </section>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script src="/script/admin/adminNav.js"></script>
+
+</html>

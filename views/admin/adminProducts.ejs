@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <title>Admin</title>
+  <style>
+    @import url("/style/adminPartials.css");
+    @import url("/style/admin.css");
+    @import url("/style/adminproducts.css");
+    @import url("/style/search.css");
+    @import url("/style/swal.css");
+    @import url("/style/pagination.css");
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <section class="nav wrapper">
+    <div class="container">
+      <nav id="admin-nav">
+        <ul>
+          <li data-url="/admin"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> <b>Dashboard</b></a></li>
+          <li data-url="/admin/orders"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
+          <li class="active" data-url="/admin/products"><a href="#products"><i data-lucide="package"></i> <b>Products</b></a></li>
+          <li data-url="/admin/categories"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
+          <li data-url="/admin/customers"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li data-url="/admin/reports"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
+          <li data-url="/admin/coupons"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
+          <li data-url="/admin/inbox"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
+          <li data-url="/admin/transactions"><a href="#transactions"><i data-lucide="credit-card"></i> <b>Transactions</b></a></li>
+          <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
+        </ul>
+      </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
+      <div class="sections">
+        <section id="products" class="show">
+          <header>
+            <h1>Products</h1>
+            <button type="button"><i data-lucide="plus"></i> Add Products</button>
+          </header>
+
+          <section class="admin-search products-search">
+            <form>
+              <input type="text" name="adn-search" id="adn-search" placeholder="search">
+              <label for="adn-search"><i data-lucide="search"></i></label>
+            </form>
+            <div class="search-container">
+              <button class="up-down"><i data-lucide="arrow-down-up"></i></button>
+              <button class="active-block-filter"><i data-lucide="list-filter"></i>
+                <ul>
+                  <li>Filter By</li>
+                  <li class="active"><i data-lucide="chevrons-right"></i> Active Products</li>
+                  <li class="blocked"><i data-lucide="chevrons-right"></i> Blocked Products</li>
+                  <li class="sort-name"><i data-lucide="chevrons-right"></i>Sort by name : A &harr; Z</li>
+                  <li class="sort-variants"><i data-lucide="chevrons-right"></i>Sort by Products &harr; Variants</li>
+                  <li class="rating"><i data-lucide="chevrons-right"></i>Rating</li>
+                  <li class="stock"><i data-lucide="chevrons-right"></i>Stock</li>
+                  <li class="price"><i data-lucide="chevrons-right"></i>Price</li>
+                </ul>
+              </button>
+            </div>
+          </section>
+
+          <% if (data.length !== 0) { %>
+          <table class="product-list-table">
+            <thead>
+              <tr>
+                <th class="header-product">Product</th>
+                <th class="header-stock">Stock</th>
+                <th class="header-color">Color</th>
+                <th class="header-price">Price</th>
+                <th class="header-rating">Rating</th>
+                <th class="header-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% data.forEach(item => { %>
+              <tr class="product-row" data-product-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
+
+                <td colspan="2" class="product-info-cell-consolidated">
+                  <img src="<%= item.image %>" alt="<%= item.productName %>" class="product-thumbnail">
+                  <span class="product-name"><%= item.productName %></span>
+                </td>
+
+                <td class="stock-cell">
+                  <%= item.stock %>
+                </td>
+
+                <td class="color-cell">
+                  <%= item.color %>
+                </td>
+
+                <td class="price-cell">
+                  <%= item.price %>
+                </td>
+
+                <td class="rating-cell">
+                  <%= item.rating %>
+                </td>
+
+                <td class="action-cell">
+                  <button class="action-btn edit-btn" title="Edit" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
+                    <i data-lucide="edit"></i>
+                  </button>
+                  <% if (!item.isBlocked) { %>
+                  <button class="action-btn delete-btn" title="Delete" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
+                    <i data-lucide="trash-2"></i>
+                  </button>
+                  <% } else {%>
+                  <button class="action-btn unblock-btn" title="unblock" data-id="<%= item.prId %>" data-variant-id="<%= item.vrId %>">
+                    <i data-lucide="unlock"></i>
+                  </button>
+                  <% } %>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          <% }else{ %>
+          <p>No Products ....</p>
+          <% } %>
+
+          <div class="pagination">
+            <% if (page > 1) { %>
+            <a href="" class="pagination-btn" data-page="<%= page - 1 %>" data-limit="<%= limit %>"><i data-lucide="arrow-left"></i>Previous</a>
+            <% } else {%>
+            <a href="" style="visibility: hidden;"><i data-lucide="arrow-left"></i>Previous</a>
+            <% } %>
+
+            <span>
+              <% for(let i = 1; i <= totalPages; i++) { %>
+              <% if (i === page) { %>
+              <span class="btn disable"><%= i %></span>
+              <% } else { %>
+              <a class="btn pagination-btn" href="" data-page="<%= i %>" data-limit="<%= limit %>"><%= i %></a>
+              <% } %>
+              <% } %>
+            </span>
+
+            <% if (page < totalPages) { %>
+            <a href="" class="pagination-btn" data-page="<%= page + 1 %>" data-limit="<%= limit %>">Next<i data-lucide="arrow-right"></i></a>
+            <% } else {%>
+            <a href="" style="visibility: hidden;">Next<i data-lucide="arrow-right"></i></a>
+            <% } %>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </section>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script type="module" src="/script/admin/adminProducts.js"></script>
+  <script src="/script/admin/adminNav.js"></script>
+</body>
+
+</html>

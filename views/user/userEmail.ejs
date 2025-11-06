@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/swal.css">
+  <link rel="stylesheet" href="style/login.css">
+  <title>User Email</title>
+</head>
+
+<body>
+  <section class="login-container">
+    <figure>
+      <img src="images/images/forgotPassword.png" alt="loginimage">
+      <a href="/">
+        <h1>SHOP.CO</h1>
+      </a>
+    </figure>
+    <section>
+      <form method="post" action="/useremail" class="send-useremail">
+        <div>
+          <h1>Your Email</h1>
+          <% if(error) { %>
+          <small style="color: red;">
+            <%= error %>
+          </small>
+          <% } else { %>
+          <small>Enter your registered email address. we’ll send you a code to reset your password</small>
+          <% } %>
+        </div>
+        <div>
+          <label for="email">Email Address</label>
+          <input type="email" name="email" id="email" placeholder="Your Email">
+        </div>
+        <input type="submit" value="Send Email" class="submit">
+      </form>
+    </section>
+  </section>
+
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script type="module" src="/script/login.js"></script>
+</body>
+
+</html>

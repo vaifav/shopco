@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/partials.css">
+  <link rel="stylesheet" href="style/swal.css">
+  <link rel="stylesheet" href="style/home.css">
+  <title>Home</title>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+
+  <section class="wrapper home">
+    <section class="hero">
+      <section>
+        <h1>FIND CLOTHES THAT MATCHES YOUR STYLE</h1>
+        <p class="description">Browse through our diverse range of meticulously crafted garments, designed
+          to bring out your
+          individuality and cater to your sense of style.</p>
+        <a href="/products"><button>Shop Now</button></a>
+        <div class="container">
+          <div>
+            <h3>200+</h3>
+            <p>International Brands</p>
+          </div>
+          <div>
+            <h3>2,000+</h3>
+            <p>High-Quality Products</p>
+          </div>
+          <div>
+            <h3>30,000+</h3>
+            <p>Happy Customers</p>
+          </div>
+        </div>
+      </section>
+      <div class="image-container"><img src="images/images/rectangle_2_930464.jpg" alt="rec"></div>
+      <div class="icon-container">
+        <img src="images/icons/diamond.svg" alt="diamond">
+        <img class="diamond-large" src="images/icons/diamond.svg" alt="diamond">
+      </div>
+    </section>
+  </section>
+
+  <section class="wrapper brand">
+    <img src="images/images/calvin.svg" alt="calvin">
+    <img src="images/images/calvin.svg" alt="calvin">
+    <img src="images/images/calvin.svg" alt="calvin">
+    <img src="images/images/calvin.svg" alt="calvin">
+    <img src="images/images/calvin.svg" alt="calvin">
+  </section>
+
+  <% if (products && products.length !== 0) { %>
+  <section class="wrapper new-arraival">
+    <section class="home-product-collections">
+      <h1>NEW ARRAIVALS</h1>
+      <div class="container">
+
+        <% for( let i = 0; i < 4; i++ ) { %>
+        <article class="nav-to-product-detail-page" data-productid="<%= products[i].prId %>" data-variantid="<%= products[i].vrId %>">
+          <figure>
+            <img src="<%= products[i].image %>" alt="T-SHIRT">
+          </figure>
+          <div>
+            <h4><%= products[i].productName %></h4>
+            <div class="icons">
+              <div class="star">
+                <% for( let star = 1; star <= 5; star++ ) { %>
+                <% if (star <= products[i].rating) { %>
+                <i data-lucide="star" class="rating true"></i>
+                <% } else {%>
+                <i data-lucide="star" class="rating false"></i>
+                <% } %>
+                <% } %>
+                &nbsp;
+                <span><%= products[i].rating %> / 5</span>
+              </div>
+              <img src="images/icons/heart.svg" alt="heart">
+            </div>
+            <h3>
+              <i data-lucide="indian-rupee" class="ruppee-icon"></i>
+              <b><%= products[i].price %></b>
+              <del>
+                <i data-lucide="indian-rupee" class="ruppee-icon"></i>
+                <b><%= products[i].price + products[i].discountedPrice %></b>
+              </del>
+            </h3>
+          </div>
+        </article>
+        <% } %>
+      </div>
+      <a href="/products"><button>view all</button></a>
+    </section>
+  </section>
+
+  <section class="wrapper top-selling">
+    <section class="home-product-collections">
+      <h1>TOP SELLING</h1>
+      <div class="container">
+        <% for( let i = 2; i < 6; i++ ) { %>
+        <article class="nav-to-product-detail-page" data-productid="<%= products[i].prId %>" data-variantid="<%= products[i].vrId %>">
+          <figure>
+            <img src="<%= products[i].image %>" alt="T-SHIRT">
+          </figure>
+          <div>
+            <h4><%= products[i].productName %></h4>
+            <div class="icons">
+              <div class="star">
+                <% for( let star = 1; star <= 5; star++ ) { %>
+                <% if (star <= products[i].rating) { %>
+                <i data-lucide="star" class="rating true"></i>
+                <% } else {%>
+                <i data-lucide="star" class="rating false"></i>
+                <% } %>
+                <% } %>
+                &nbsp;
+                <span><%= products[i].rating %> / 5</span>
+              </div>
+              <img src="images/icons/heart.svg" alt="heart">
+            </div>
+            <h3><i data-lucide="indian-rupee" class="ruppee-icon"></i> <b><%= products[i].price %></b> <del><i data-lucide="indian-rupee" class="ruppee-icon"></i><b><%= products[i].price + products[i].discountedPrice %></b></del></h3>
+          </div>
+        </article>
+        <% } %>
+      </div>
+      <a href="/products"><button>view all</button></a>
+    </section>
+  </section>
+  <% } else {%>
+  <h1>No Products</h1>
+  <% } %>
+
+  <section class="wrapper category">
+    <section>
+      <% if (category && category.length !== 0) { %>
+      <h1>BROWSE BY CATEGORY</h1>
+      <div class="container">
+        <div class="top">
+          <% for( let t = 0; t <= 1; t++ ) { %>
+          <figure class="category-section" data-categoryid="<%= category[t]._id %>">
+            <img src="<%= category[t].categoryImage %>" alt="<%= category[t].categoryName %>">
+            <figcaption><%= category[t].categoryName%></figcaption>
+          </figure>
+          <% } %>
+        </div>
+        <div class="bottom">
+          <% for( let b = 2; b <= 3; b++ ) { %>
+          <figure class="category-section" data-categoryid="<%= category[b]._id %>">
+            <img src="<%= category[b].categoryImage %>" alt="<%= category[b].categoryName %>">
+            <figcaption><%= category[b].categoryName%></figcaption>
+          </figure>
+          <% } %>
+        </div>
+      </div>
+      <% } else {%>
+      <h1>No Category...</h1>
+      <%  }%>
+    </section>
+  </section>
+
+  <section class="wrapper review">
+    <section>
+      <h1>OUR HAPPY CUSTOMERS</h1>
+      <div class="container">
+        <article>
+          <div class="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+          </div>
+          <div class="name">
+            <h3>Sarah M</h3>
+            <img src="images/icons/verified.svg" alt="verified">
+          </div>
+          <p>"I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”</p>
+        </article>
+        <article>
+          <div class="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+          </div>
+          <div class="name">
+            <h3>Sarah M</h3>
+            <img src="images/icons/verified.svg" alt="verified">
+          </div>
+          <p>"I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”</p>
+        </article>
+        <article>
+          <div class="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+          </div>
+          <div class="name">
+            <h3>Sarah M</h3>
+            <img src="images/icons/verified.svg" alt="verified">
+          </div>
+          <p>"I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”</p>
+        </article>
+        <article>
+          <div class="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+            <img src="images/icons/star.svg" alt="star">
+          </div>
+          <div class="name">
+            <h3>Sarah M</h3>
+            <img src="images/icons/verified.svg" alt="verified">
+          </div>
+          <p>"I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”</p>
+        </article>
+      </div>
+    </section>
+  </section>
+
+  <%- include('./partials/footer.ejs') %>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script src="/script/home.js"></script>
+</body>
+
+</html>

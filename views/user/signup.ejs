@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/swal.css">
+  <link rel="stylesheet" href="style/login.css">
+  <title>Signup</title>
+</head>
+
+<body>
+  <section class="login-container">
+    <figure>
+      <img src="images/images/rectangle_3463272_3c1ace.jpg" alt="signupimage">
+      <a href="/">
+        <h1>SHOP.CO</h1>
+      </a>
+    </figure>
+    <section>
+      <form action="/signup" method="post">
+        <div>
+          <h1>Create New Account</h1>
+          <% if(error) { %>
+          <small style="color: red;">
+            <%= error %>
+          </small>
+          <% } else { %>
+          <small> Please enter the details </small>
+          <% } %>
+        </div>
+        <div>
+          <label for="username">Username</label>
+          <input type="username" name="username" id="username" placeholder="Username" value="<%= username ? username : '' %>">
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" placeholder="Email" value="<%= email ? email : '' %>">
+        </div>
+        <div class="password-container">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" placeholder="password" class="passwordField">
+          <img src="/images/icons/closedEye.png" class="toggle-password" alt="">
+        </div>
+        <input type="submit" value="Signup" class="submit">
+        <article>
+          <img src="images/icons/google.svg" alt="google" class="googleicon">
+          <a href="google/signup" class="submit google">signup with Google</a>
+          <!-- <input type="submit" name="googlesubmit" value="signup with Google" class="submit google"> -->
+        </article>
+        <div class="extra-details">
+          <a href="/login">Already have an account? <u>login</u></a>
+        </div>
+      </form>
+    </section>
+  </section>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script type="module" src="/script/login.js"></script>
+</body>
+
+</html>

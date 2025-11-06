@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/swal.css">
+  <link rel="stylesheet" href="/style/login.css">
+  <title>OTP</title>
+</head>
+
+<body>
+  <section class="login-container">
+    <figure>
+      <img src="/images/images/otp.png" alt="otpimage">
+      <a href="/">
+        <h1>SHOP.CO</h1>
+      </a>
+    </figure>
+    <section>
+      <form method="post" action="/verifyotp">
+        <div>
+          <h1>Enter OTP</h1>
+          <% if(error) { %>
+          <small style="color: red;">
+            <%= error %>
+          </small>
+          <% } else { %>
+          <small>We have share a code of your registered email address</small>
+          <% } %>
+        </div>
+        <div>
+        </div>
+        <div>
+          <label for="otp">OTP</label>
+          <input type="number" name="otp" id="otp" placeholder="Your OTP">
+        </div>
+        <div class="extra-details">
+          <a href="" class="forgot-password resend-otp" style="position: relative; top: 2px;">Resent OTP !</a>
+          <a href="" id="otp-timer">00:00:00</a>
+        </div>
+        <input type="submit" value="Verify" class="submit">
+      </form>
+    </section>
+  </section>
+
+  <script type="module" src="/script/otp.js"></script>
+</body>
+
+</html>

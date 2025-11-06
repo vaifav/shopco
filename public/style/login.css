@@ -1,0 +1,249 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	color: black;
+	list-style: none;
+	font-weight: 400;
+	text-decoration: none;
+	box-sizing: border-box;
+	background: transparent;
+	font-family: "Montserrat", sans-serif;
+}
+
+.login-container {
+	width: 100%;
+	height: 100dvh;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	gap: 2rem;
+}
+
+.login-container figure {
+	width: 50%;
+	height: inherit;
+	position: relative;
+	background: #f0f0f0;
+}
+
+.login-container figure img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 0 -70px;
+}
+
+.login-container figure h1 {
+	font-weight: 900;
+	position: fixed;
+	top: 0;
+	left: 0;
+	padding: 1rem;
+	color: #000;
+	background: transparent;
+	z-index: 10;
+}
+
+.login-container section {
+	width: 50%;
+	display: flex;
+	height: inherit;
+	justify-content: start;
+	align-items: center;
+}
+
+.login-container section form {
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+	padding-inline: 3rem;
+	gap: 1.2rem;
+}
+
+.login-container form h1 {
+	font-weight: 700;
+}
+
+.login-container form input:not(.submit),
+.login-container form article {
+	display: block;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	padding-block: 1rem;
+	width: 100%;
+	margin-top: 0.2rem;
+	padding-inline-start: 1rem;
+}
+
+.login-container form article {
+	padding-block: 0;
+}
+.login-container form article a.submit {
+	padding-block: 1rem;
+}
+.login-container form article img {
+	height: 18px;
+	width: auto;
+}
+
+.login-container form .submit {
+	padding-inline: 0;
+	background: #000;
+	color: #ffff;
+	margin: 0;
+	cursor: pointer;
+	border-radius: 10px;
+	padding-block: 1rem;
+}
+
+.login-container form label {
+	font-size: 0.7rem;
+	font-weight: 500;
+}
+
+.login-container form a {
+	font-size: 0.8rem;
+	text-align: right;
+	font-weight: 600;
+}
+
+u {
+	text-decoration: underline;
+}
+
+.extra-details {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.submit {
+	margin-top: 1.3rem !important;
+}
+
+.login-container form article {
+	background: #000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	margin: 0;
+}
+
+.login-container form article a.submit {
+	width: fit-content;
+	height: fit-content;
+	border: 0;
+	margin: 0 !important;
+	font-weight: normal;
+	background: transparent;
+}
+
+form div.password-container {
+	position: relative;
+}
+
+form div .toggle-password {
+	position: absolute;
+	right: 0;
+	top: 34px;
+	margin-inline: 1rem;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+@media (max-width: 1300px) {
+	.login-container section form {
+		width: 85%;
+		padding-inline: 1.5rem;
+	}
+}
+
+@media (max-width: 950px) {
+	.login-container {
+		flex-direction: column;
+		justify-content: start;
+		align-items: stretch;
+		height: auto;
+		min-height: 100dvh;
+		padding-bottom: 2rem;
+	}
+
+	.login-container figure {
+		display: block;
+		width: 100%;
+		height: 50px;
+		background: #fff;
+		position: static;
+	}
+
+	.login-container figure img {
+		display: none;
+	}
+
+	.login-container figure h1 {
+		position: fixed;
+		width: 100%;
+		background: #fff;
+		border-bottom: 1px solid #eee;
+		padding: 0.8rem 1rem;
+		height: 50px;
+	}
+
+	.login-container section {
+		width: 100%;
+		height: auto;
+		justify-content: center;
+
+		padding-top: 50px;
+	}
+
+	.login-container section form {
+		width: 90%;
+		padding-inline: 1rem;
+		margin: 0 auto;
+	}
+}
+
+@media (max-width: 480px) {
+	.login-container section {
+		padding-inline: 1rem;
+	}
+	.login-container section form {
+		width: 100%;
+		padding-inline: 0;
+		gap: 1rem;
+	}
+
+	.login-container form h1 {
+		font-size: 1.8rem;
+	}
+	.login-container form small {
+		font-size: 0.8rem;
+	}
+
+	form div .toggle-password {
+		top: 31px;
+		margin-inline: 0.8rem;
+	}
+
+	.extra-details {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.5rem;
+	}
+
+	.extra-details a {
+		text-align: left;
+		padding-top: 0;
+		font-size: 0.75rem;
+	}
+
+	.extra-details .forgot-password {
+		position: static;
+		align-self: flex-start;
+	}
+}

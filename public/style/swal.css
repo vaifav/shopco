@@ -1,0 +1,49 @@
+.swal2-icon.swal2-error {
+	border-color: #ff7262 !important;
+	color: #ff7262 !important;
+	background-color: #fff1ef !important;
+}
+
+.swal2-actions {
+	gap: 2rem !important;
+}
+
+.custom-confirm-btn {
+	background-color: #fff1ef !important;
+	color: #ff7262 !important;
+	font-weight: 700;
+	border-radius: 10px;
+	padding: 1rem 2rem !important;
+}
+
+.custom-confirm-btn:hover {
+	background-color: #fcdfda !important;
+}
+
+.custom-cancel-btn,
+.swal2-cancel {
+	background-color: #000 !important;
+	color: #fff !important;
+	border-radius: 10px;
+	padding: 1rem 2rem !important;
+}
+
+.custom-cancel-btn:hover {
+	background-color: #0e0d0d !important;
+}
+
+.swal2-icon.swal2-question.swal2-icon-show .swal2-icon-content {
+	color: #7c9fad;
+}
+
+div:where(.swal2-icon).swal2-warning {
+	& div {
+		color: #f8bb86 !important;
+	}
+}
+
+div:where(.swal2-icon).swal2-info {
+	& div {
+		color: dodgerblue !important;
+	}
+}

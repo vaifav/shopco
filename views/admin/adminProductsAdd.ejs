@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+  <title>Admin</title>
+  <style>
+    @import url("/style/adminPartials.css");
+    @import url("/style/admin.css");
+    @import url("/style/swal.css");
+    @import url("/style/adminProductsAdd.css");
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <section class="nav wrapper">
+    <div class="container">
+      <nav id="admin-nav">
+        <ul>
+          <li data-url="/admin"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> <b>Dashboard</b></a></li>
+          <li data-url="/admin/orders"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
+          <li class="active" data-url="/admin/products"><a href="#products"><i data-lucide="package"></i> <b>Products</b></a></li>
+          <li data-url="/admin/categories"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
+          <li data-url="/admin/customers"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li data-url="/admin/reports"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
+          <li data-url="/admin/coupons"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
+          <li data-url="/admin/inbox"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
+          <li data-url="/admin/transactions"><a href="#transactions"><i data-lucide="credit-card"></i> <b>Transactions</b></a></li>
+          <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
+        </ul>
+      </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
+      <div class="sections">
+        <section id="products" class="show add-or-edit-products-section">
+          <header>
+            <h1>Add products</h1>
+          </header>
+          <form class="overlay-form">
+            <div class="left">
+              <div class="input-container">
+                <label for="productName">Product Name</label>
+                <input type="text" name="productName" id="productName" placeholder="e.g., Slim Fit Cotton T-Shirt" value="">
+              </div>
+              <div class="input-container">
+                <label for="description">Description</label>
+                <input type="text" name="description" id="description" placeholder="A short summary of the product's key features and benefits." value="">
+              </div>
+              <div class="input-container">
+                <label for="brand">Brand</label>
+                <select name="brand" id="brand">
+                  <option value="" selected disabled>Select Brand (e.g., Nike, Levi's)</option>
+                </select>
+              </div>
+              <div class="input-container">
+                <label for="category">Category</label>
+                <select name="category" id="category">
+                  <option value="" selected disabled>Select Category (e.g., Apparel, Electronics, Home Goods)</option>
+                  <% categories.forEach(opt => { %>
+                  <option value="<%= opt._id %>"><%= opt.categoryName %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div class="input-container">
+                <label for="targetedAudience">Targeted Audience</label>
+                <input type="text" name="targetedAudience" id="targetedAudience" placeholder="e.g., Men, Women, Teens, Unisex (comma separated)" value="">
+              </div>
+              <div class="input-container">
+                <label for="tags">Tags</label>
+                <input type="text" name="tags" id="tags" placeholder="e.g., summer, casual, cotton, eco-friendly (comma separated)" value="">
+              </div>
+              <div class="input-container">
+                <label for="rating">Rating</label>
+                <input type="number" name="rating" id="rating" placeholder="Enter average rating (1 to 5)" value="" min="1" max="5">
+              </div>
+              <div class="input-container">
+                <input type="submit" value="Save">
+              </div>
+            </div>
+            <div class="right">
+              <div id="variantsContainer" class="variants">
+                <div class="variant-card" data-variant-index="0">
+                  <h1>Variant <span class="variant-index-display">1</span></h1>
+                  <button type="button" class="remove-variant-btn" data-variant-index="0">
+                    <i data-lucide="trash-2"></i>
+                  </button>
+                  <div class="variant-input-container">
+                    <div class="input-container preview-container">
+                      <label for="variants[0][image]">Images <span>( Only 4 Images are allowed )</span></label>
+                      <input type="file" name="variants[0][image]" id="variants[0][image]" multiple accept="image/*" class="variant-image-input" style="display: none;">
+
+                      <label for="variants[0][image]" class="preview upload-trigger">
+                        <i data-lucide="circle-plus "></i>
+                      </label>
+
+                      <label class="manual-upload-trigger">
+                        <i data-lucide="plus"></i>
+                      </label>
+                    </div>
+
+                    <div class="input-container">
+                      <label for="variants[0][price]">Price</label>
+                      <input type="number" name="variants[0][price]" id="variants[0][price]" placeholder="e.g., 50.00" value="" min="0" required>
+                    </div>
+
+                    <div class="input-container">
+                      <label for="variants[0][discountedPrice]">Discounted Price <span class="optional">(Optional)</span></label>
+                      <input type="number" name="variants[0][discountedPrice]" id="variants[0][discountedPrice]" placeholder="e.g., 40.00" value="" min="0">
+                    </div>
+
+                    <div class="input-container">
+                      <label for="variants[0][color]">Color</label>
+                      <input type="text" name="variants[0][color]" id="variants[0][color]" placeholder="e.g., Red or #FF0000" value="" required>
+                    </div>
+
+                    <div class="input-container">
+                      <label for="variants[0][sizes]">Sizes</label>
+                      <input type="text" name="variants[0][sizes]" id="variants[0][sizes]" placeholder="e.g., S, M, L, XL (comma separated)" value="" required>
+                    </div>
+
+                    <div class="input-container">
+                      <label for="variants[0][stock]">Stock Quantity</label>
+                      <input type="number" name="variants[0][stock]" id="variants[0][stock]" placeholder="Enter number of units in stock" value="" min="0" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="imageCropperModal" class="cropper-modal-overlay">
+                <div class="cropper-modal-content">
+                  <header class="modal-header">
+                    <h2>Crop Image</h2>
+                  </header>
+                  <div class="img-container">
+                    <img id="cropperImage">
+                  </div>
+                  <footer class="modal-footer">
+                    <button type="button" id="cropSaveBtn" class="btn btn-primary">Save Crop</button>
+                    <button type="button" id="cropCancelBtn" class="btn btn-secondary">Cancel</button>
+                  </footer>
+                </div>
+              </div>
+
+              <div class="input-container">
+                <button type="button" id="addVariantBtn"><i data-lucide="plus"></i> <b>Add Variant</b></button>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </section>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script src="/script/admin/adminNav.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <script type="module" src="/script/admin/adminProductsAdd.js"></script>
+</body>
+
+</html>

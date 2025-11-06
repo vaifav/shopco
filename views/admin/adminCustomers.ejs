@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <title>Admin</title>
+  <style>
+    @import url("/style/adminPartials.css");
+    @import url("/style/admin.css");
+    @import url("/style/adminCustomers.css");
+    @import url("/style/pagination.css");
+    @import url("/style/search.css");
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <section class="nav wrapper">
+    <div class="container">
+      <nav id="admin-nav">
+        <ul>
+          <li data-url="/admin"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> <b>Dashboard</b></a></li>
+          <li data-url="/admin/orders"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
+          <li data-url="/admin/products"><a href="#products"><i data-lucide="package"></i> <b>Products</b></a></li>
+          <li data-url="/admin/categories"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
+          <li class="active" data-url="/admin/customers"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li data-url="/admin/reports"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
+          <li data-url="/admin/coupons"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
+          <li data-url="/admin/inbox"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
+          <li data-url="/admin/transactions"><a href="#transactions"><i data-lucide="credit-card"></i> <b>Transactions</b></a></li>
+          <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
+        </ul>
+      </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
+      <div class="sections">
+        <section id="customers" class="show">
+          <header>
+            <h1>Customers</h1>
+            <button type="button">Export</button>
+          </header>
+          <section class="customer-number">
+            <article>
+              <div>
+                <h5>Total Customers</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3><%= totalCustomers %></h3>
+              <!-- <p>Last 7 days</p> -->
+            </article>
+            <article>
+              <div>
+                <h5>New Customers</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3><%= newCustomers %></h3>
+              <!-- <p>Last 7 days</p> -->
+            </article>
+            <article>
+              <div>
+                <h5>Visitors</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3><%= visitors %></h3>
+              <!-- <p>Last 7 days</p> -->
+            </article>
+          </section>
+          <section class="admin-search customer-search">
+            <form>
+              <input type="text" name="adn-search" id="adn-search" placeholder="search">
+              <label for="adn-search"><i data-lucide="search"></i></label>
+            </form>
+            <div class="search-container">
+              <button class="up-down"><i data-lucide="arrow-down-up"></i></button>
+              <button class="active-block-filter"><i data-lucide="list-filter"></i>
+                <ul>
+                  <li>Filter By</li>
+                  <li class="total"><i data-lucide="chevrons-right"></i> Total Customers</li>
+                  <li class="sort-by-name"><i data-lucide="chevrons-right"></i> Sort Name A &harr; Z</li>
+                  <li class="active"><i data-lucide="chevrons-right"></i> Active Customers</li>
+                  <li class="blocked"><i data-lucide="chevrons-right"></i> Blocked Customers</li>
+                </ul>
+              </button>
+              <button class="active-block-details"><i data-lucide="chart-no-axes-column"></i>
+                <ul>
+                  <li> <i data-lucide="users"></i>Total Customers <i data-lucide="arrow-big-right-dash"></i><%= totalCustomers  %></li>
+                  <li class="active"> <i data-lucide="user-round-check"></i> Active Customers <i data-lucide="arrow-big-right-dash"></i><%= activeUser %></li>
+                  <li class="blocked"> <i data-lucide="user-round-x"></i> Blocked Customers <i data-lucide="arrow-big-right-dash"></i><%= blockedUser  %></li>
+                </ul>
+              </button>
+
+            </div>
+          </section>
+          <section class="customer-list">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer Id</th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% customers.forEach(cust => { %>
+                <tr data-id="<%= cust.id %>">
+                  <td class="<%= cust.id %>-td" data-label="Customer Id"><%= `${cust.id.toString().slice(0,3).toUpperCase()}...${cust.id.toString().slice(-4).toUpperCase()}` %></td>
+                  <td class="<%= cust.id %>-td" data-label="Name"><%= cust.name %></td>
+                  <td class="<%= cust.id %>-td" data-label="Phone"><%= cust.phone %></td>
+                  <td class="<%= cust.id %>-td status <%= cust.isBlocked ? 'inactive' : 'active' %>" data-label="Status">
+                    <span class="dot"></span>
+                    <%= cust.isBlocked ? "Blocked" : "Active" %>
+                  </td>
+                  <td class="actions" data-label="Action">
+                    <% if (!cust.isBlocked) { %>
+                    <i data-lucide="trash-2" data-toggle-block-id="<%= cust.id %>" data-isblocked="<%= cust.isBlocked %>" class="block-svg"></i>
+                    <% } else {%>
+                    <i data-lucide="shield-check" data-toggle-block-id="<%= cust.id %>" data-isblocked="<%= cust.isBlocked %>" class="active-svg"></i>
+                    <% } %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+
+            <div class="pagination">
+              <% if (page > 1) { %>
+              <a href="" class="pagination-btn" data-page="<%= page - 1 %>" data-limit="<%= limit %>"><i data-lucide="arrow-left"></i>Previous</a>
+              <% } else {%>
+              <a href="" style="visibility: hidden;"><i data-lucide="arrow-left"></i>Previous</a>
+              <% } %>
+
+              <span>
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                <% if (i === page) { %>
+                <span class="btn"><%= i %></span>
+                <% } else { %>
+                <a class="btn pagination-btn" href="" data-page="<%= i %>" data-limit="<%= limit %>"><%= i %></a>
+                <% } %>
+                <% } %>
+              </span>
+
+              <% if (page < totalPages) { %>
+              <a href="" class="pagination-btn" data-page="<%= page + 1 %>" data-limit="<%= limit %>">Next<i data-lucide="arrow-right"></i></a>
+              <% } else {%>
+              <a href="" style="visibility: hidden;">Next<i data-lucide="arrow-right"></i></a>
+              <% } %>
+            </div>
+
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script type="module" src="/script/admin/adminCustomers.js"></script>
+  <script src="/script/admin/adminNav.js"></script>
+</body>
+
+</html>

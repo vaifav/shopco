@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | SHOP.CO</title>
+    <style>
+        /* CSS styles for the 404 page */
+        :root {
+            /* Define colors based on the SHOP.CO aesthetic */
+            --primary-text: #000;
+            --secondary-text: #666;
+            --background-color: #fff;
+            --button-bg: #000;
+            --button-text: #fff;
+        }
+
+        body {
+            font-family: Arial, sans-serif; /* A clean, universal font */
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--primary-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 90%;
+            padding: 40px;
+            width: 50%;
+        }
+
+        /* Large, bold 404 number */
+        .error-code {
+            font-size: 8em;
+            font-weight: 700;
+            margin-bottom: 0.1em;
+            letter-spacing: -3px; /* A touch of modern styling */
+        }
+
+        /* Main heading (H1) */
+        h1 {
+            font-size: 2.5em;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        /* Sub-text */
+        p {
+            font-size: 1.1em;
+            color: var(--secondary-text);
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* Call-to-action button */
+        .home-button {
+            display: inline-block;
+            padding: 1.3rem 30px;
+            font-size: 1em;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--button-text);
+            background-color: var(--button-bg);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 10px;
+        }
+
+        .home-button:hover {
+            background-color: #333; /* Slightly lighter on hover */
+        }
+
+        /* Logo/Branding - simple text based on the image */
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--primary-text);
+            text-transform: uppercase;
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 600px) {
+            .error-code {
+                font-size: 6em;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1>Oops! Page Not Found.</h1>
+        <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Let's get you back to shopping!</p>
+        <a href="/" class="home-button">Go Back To Homepage</a>
+    </div>
+</body>
+</html>
