@@ -30,12 +30,12 @@ div.container {
 	padding: 1rem 1rem;
 	border-radius: 10px;
 	cursor: pointer;
+}
 
-	& a {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
+.container ul li a {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
 }
 
 .container ul li:hover {
@@ -66,26 +66,26 @@ li:hover b {
 	display: flex;
 	align-items: center;
 	gap: 1rem;
+}
 
-	& div.avatar {
-		background: #edebeb;
-		height: 40px;
-		width: 40px;
-		border-radius: 50px;
-		overflow: hidden;
-	}
+.container div.image-container div.avatar {
+	background: #edebeb;
+	height: 40px;
+	width: 40px;
+	border-radius: 50px;
+	overflow: hidden;
+}
 
-	& div.avatar img {
-		height: 100%;
-		width: 100%;
-		object-fit: cover;
-		border-radius: inherit;
-	}
+.container div.image-container div.avatar img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	border-radius: inherit;
+}
 
-	h5 {
-		font-weight: 500;
-		font-size: 1rem;
-	}
+.container div.image-container h5 {
+	font-weight: 500;
+	font-size: 1rem;
 }
 
 div.sections {
@@ -147,17 +147,14 @@ div.sections {
 
 #personal-information .form-input-container .figure label {
 	background-color: #edebeb;
-	position: absolute;
-	top: 8px;
-	left: 0;
 	cursor: pointer;
+}
 
-	& img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		border-radius: inherit;
-	}
+#personal-information .form-input-container .figure label img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: inherit;
 }
 
 #personal-information .form-input-container input,
@@ -214,12 +211,12 @@ form #personal-information .form-input-container:first-child figure {
 	height: 60px;
 	width: 60px;
 	border-radius: 60px;
+}
 
-	& img {
-		height: 100%;
-		width: 100%;
-		object-fit: cover;
-	}
+form #personal-information .form-input-container:first-child figure img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
 }
 
 #personal-information .form-input-container:first-child button {
@@ -276,30 +273,30 @@ form #personal-information .form-input-container:first-child figure {
 	justify-content: start;
 	gap: 0.5rem;
 	flex-shrink: 0;
+}
 
-	& button {
-		cursor: pointer;
-		background: #f6f6f6;
-		display: flex;
-		gap: 0.6rem;
-		align-items: center;
-		border-radius: 10px;
-		padding: 0.5rem;
-		min-width: 100px;
-		justify-content: center;
-	}
+#manage-address .container article div.buttons button {
+	cursor: pointer;
+	background: #f6f6f6;
+	display: flex;
+	gap: 0.6rem;
+	align-items: center;
+	border-radius: 10px;
+	padding: 0.5rem;
+	min-width: 100px;
+	justify-content: center;
+}
 
-	& b {
-		font-weight: 500;
-	}
+#manage-address .container article div.buttons b {
+	font-weight: 500;
+}
 
-	& .delete {
-		background: #fff1ef;
-	}
+#manage-address .container article div.buttons .delete {
+	background: #fff1ef;
+}
 
-	& .delete b {
-		color: #ff7262;
-	}
+#manage-address .container article div.buttons .delete b {
+	color: #ff7262;
 }
 
 #manage-address .container .content {
@@ -319,17 +316,17 @@ form #personal-information .form-input-container:first-child figure {
 	color: #545151;
 	font-size: 0.9rem;
 	margin-bottom: 0.5rem;
+}
 
-	& b {
-		color: inherit;
-		font-size: inherit;
-	}
+#manage-address .container .content p b {
+	color: inherit;
+	font-size: inherit;
+}
 
-	& svg {
-		stroke: #545151;
-		width: 0.9rem;
-		height: 0.9rem;
-	}
+#manage-address .container .content p svg {
+	stroke: #545151;
+	width: 0.9rem;
+	height: 0.9rem;
 }
 
 #manage-address .add-new-address-btn {
@@ -370,11 +367,11 @@ form #personal-information .form-input-container:first-child figure {
 	scroll-behavior: smooth;
 	scrollbar-width: thin;
 	scrollbar-color: transparent transparent;
+}
 
-	& h3 {
-		font-weight: 600;
-		margin-bottom: 0.5rem;
-	}
+#manage-address .overlay.active form h3 {
+	font-weight: 600;
+	margin-bottom: 0.5rem;
 }
 
 #manage-address .overlay {
@@ -403,21 +400,21 @@ form #personal-information .form-input-container:first-child figure {
 	display: flex;
 	gap: 1rem;
 	margin-top: 1rem;
+}
 
-	& button {
-		cursor: pointer;
-		flex-grow: 1;
-		padding-block: 0.8rem;
-		border-radius: 10px;
-		background: #000;
-		color: #fff;
-		font-weight: 600;
-	}
+#manage-address .overlay.active form div.form-buttons button {
+	cursor: pointer;
+	flex-grow: 1;
+	padding-block: 0.8rem;
+	border-radius: 10px;
+	background: #000;
+	color: #fff;
+	font-weight: 600;
+}
 
-	& button:first-child {
-		color: #ff7262;
-		background: #f4dcd9;
-	}
+#manage-address .overlay.active form div.form-buttons button:first-child {
+	color: #ff7262;
+	background: #f4dcd9;
 }
 
 #manage-address .overlay.active form::-webkit-scrollbar {
@@ -575,4 +572,108 @@ form #personal-information .form-input-container:first-child figure {
 	#manage-address .container article div.buttons button b {
 		display: none;
 	}
+}
+
+#cropper-modal {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	background: rgba(0, 0, 0, 0.4);
+	z-index: 1000;
+	justify-content: center;
+	align-items: center;
+}
+
+#cropper-modal > div {
+	background: white;
+	padding: 20px;
+	border-radius: 10px;
+	width: 90%;
+	max-width: 500px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+	box-sizing: border-box;
+}
+
+#cropper-container {
+	display: none;
+
+	max-height: 70vw;
+	height: min(300px, 70vw);
+	overflow: hidden;
+	margin-bottom: 15px;
+}
+
+.cropper-actions {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 15px;
+	gap: 10px;
+}
+
+.cropper-actions button {
+	padding: 0.8rem 1.5rem;
+	border-radius: 10px;
+	cursor: pointer;
+	border: none;
+	font-weight: 500;
+	background-color: #f4f2f2;
+	color: #000;
+
+	flex-grow: 1;
+	text-align: center;
+}
+
+#save-crop-btn {
+	background-color: #000;
+	color: #fff;
+	padding: 0.8rem 1.5rem;
+	font-weight: 600;
+	flex-grow: 2;
+}
+
+#cancel-crop-btn {
+	background-color: #f4dcd9;
+	color: #ff7262;
+	padding: 0.8rem 1.5rem;
+	font-weight: 600;
+	flex-grow: 1;
+}
+
+@media (max-width: 480px) {
+	.cropper-actions {
+		flex-direction: column;
+	}
+
+	.cropper-actions button {
+		width: 100%;
+		margin-top: 5px;
+	}
+}
+
+.figure .profile-label img {
+	border-radius: 50%;
+	object-fit: cover;
+	width: 100px;
+	height: 100px;
+	display: block;
+}
+
+.cropper-view-box,
+.cropper-face {
+	border-radius: 50%;
+}
+
+.cropper-view-box {
+	outline: 0;
+	box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+}
+
+.cropper-face {
+	background-color: transparent !important;
 }

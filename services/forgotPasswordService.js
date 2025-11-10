@@ -1,4 +1,4 @@
-import { hashPassword } from "../auth/passwordAuth.js";
+import { hashPassword, verifyPassword } from "../auth/passwordAuth.js";
 import { sendForgotPasswordToken } from "../config/otp.js";
 import userModel from "../models/signupModel.js";
 import crypto from "crypto";
@@ -57,4 +57,29 @@ const verifyTokenFromEmail = async (token, newPassword, confirmPassword) => {
 	}
 };
 
-export { sendTokenToEmail, verifyTokenFromEmail };
+const checkChangedPassword = async (_id, currentPassword, newPassword) => {
+	try {
+		const user = await userModel.findOne({ _id });
+		if (!user) throw new Error("User not found...");
+
+		const isGoogleUser = await userModel.exists({ _id, googleId: { $exists: true } });
+		if (isGoogleUser) {
+			throw new Error("You signed up using Google, so changing password is not allowed.");
+		}
+
+		const isValidPassword = await verifyPassword(user.password, currentPassword);
+		if (!isValidPassword) throw new Error("Invalid Password");
+
+		const hashNewPassword = await hashPassword(newPassword);
+		const userPasswordChanged = await userModel.findOneAndUpdate(
+			{ _id },
+			{ password: hashNewPassword }
+		);
+		return userPasswordChanged;
+	} catch (error) {
+		console.log(error);
+		throw new Error(error.message);
+	}
+};
+
+export { sendTokenToEmail, verifyTokenFromEmail, checkChangedPassword };

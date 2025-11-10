@@ -6,10 +6,12 @@ const generateOTP = () => {
 	return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-const createUser = async ({ username, email, password }) => {
+const createUser = async ({ username, email, password, confirmPassword }) => {
 	try {
 		const isEmailExists = await userModel.findOne({ email, isVerified: true });
 		if (isEmailExists) throw new Error("Email Already Exists");
+		if (password.trim() !== confirmPassword.trim()) throw new Error("Both Passwords should be same");
+
 		const hashedPassword = await hashPassword(password);
 
 		const tenMinutes = 10 * 60 * 1000;

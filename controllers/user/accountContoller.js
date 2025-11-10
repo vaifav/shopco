@@ -1,5 +1,5 @@
 import { City, Country, State } from "country-state-city";
-import { getAddress, getSingleAddress} from "../../services/addressService.js";
+import { getAddress, getSingleAddress } from "../../services/addressService.js";
 import { getPersonalInfo } from "../../services/personalInfoService.js";
 
 const countries = Country.getAllCountries();
@@ -10,14 +10,23 @@ const account = async (req, res) => {
 	try {
 		const userId = req.session.user.userId;
 		const address = await getAddress(userId);
-		const personalInfo = await getPersonalInfo(userId)
+		const personalInfo = await getPersonalInfo(userId);
 
 		let singleAddress = null;
 		if (req.params.id) {
 			singleAddress = await getSingleAddress(req.params.id, userId);
 		}
 
-		return res.render("user/account", { username: "", email: req.session.user.email, countries, state, city, address, singleAddress , personalInfo});
+		return res.render("user/account", {
+			username: "",
+			countries,
+			state,
+			city,
+			address,
+			singleAddress,
+			personalInfo: personalInfo.personalInfo,
+			email: personalInfo.email,
+		});
 	} catch (error) {
 		console.error("Error rendering account page:", error.message);
 		return res.status(500).render("user/pagenotfound", { error });

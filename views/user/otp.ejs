@@ -21,7 +21,7 @@
       </a>
     </figure>
     <section>
-      <form method="post" action="/verifyotp">
+      <form method="post" action='<%= resetEmail ? "/verifyotp?resetemailotp=true" : "/verifyotp" %>'>
         <div>
           <h1>Enter OTP</h1>
           <% if(error) { %>
@@ -37,6 +37,7 @@
         <div>
           <label for="otp">OTP</label>
           <input type="number" name="otp" id="otp" placeholder="Your OTP">
+          <input type="text" name="emailReset" id="emailReset" value="<%= resetEmail ? resetEmail : 'false' %>" hidden style="display: none;">
         </div>
         <div class="extra-details">
           <a href="" class="forgot-password resend-otp" style="position: relative; top: 2px;">Resent OTP !</a>

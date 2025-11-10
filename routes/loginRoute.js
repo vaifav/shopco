@@ -15,6 +15,7 @@ import {
 	sendToken,
 	verifyToken,
 } from "../controllers/user/forgotPasswordController.js";
+import { changePassword, getChangePasswordPage } from "../controllers/user/personalInfoController.js";
 
 const authenticate = Router();
 
@@ -31,6 +32,8 @@ authenticate
 authenticate.route("/verifyotp").get(getOtpPage).post(sendOtp);
 authenticate.route("/useremail").get(getUserEmailPage).post(sendToken);
 authenticate.route("/forgotpassword").get(getForgotPasswordPage).post(verifyToken);
+authenticate.route("/changepassword").get(getChangePasswordPage).post(changePassword);
+authenticate.route("/changepassword/forgotpassword").post(sendToken);
 
 authenticate.get(
 	"/google/signup",

@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
   <link rel="stylesheet" href="style/partials.css">
   <link rel="stylesheet" href="style/swal.css">
   <link rel="stylesheet" href="style/account.css">
@@ -46,8 +46,10 @@
           <form class="overlay-form" enctype="multipart/form-data">
             <div class="form-input-container">
               <div class="figure">
-                <label for="profile" class="profile-label"><img src="<%= personalInfo?.avatar ? `${personalInfo.avatar}`: 'images/icons/account.svg' %>" alt="avatar"></label>
-                <input type="file" name="profile" id="profile">
+                <label class="profile-label">
+                  <img src="<%= personalInfo?.avatar ? `${personalInfo.avatar}`: 'images/icons/account.svg' %>" alt="avatar">
+                </label>
+                <input type="file" name="profile" id="profile" style="display: none;">
               </div>
               <button type="button"><img src="images/icons/edit.svg" alt="edit">Edit Profile</button>
             </div>
@@ -68,7 +70,7 @@
               </div>
               <div>
                 <label for="email">Email</label>
-                <input type="email" name="email" id="email" placeholder="Email" value="<%= email %>">
+                <input type="email" name="email" id="email" placeholder="Email" value="<%= email ? email : '' %>">
               </div>
             </div>
             <div class="form-input-container">
@@ -95,10 +97,28 @@
               </div>
             </div>
             <div class="form-input-container">
-              <a href="" class="change-password">Need to change your password? click here</a>
+              <a href="/changepassword" class="change-password">Need to change your password? click here</a>
               <input type="submit" disabled value="Save">
             </div>
           </form>
+          <div id="cropper-modal">
+            <div>
+              <h3>Crop Your Profile Picture</h3>
+              <div id="image-prompt">
+                <p>Please select an image to begin cropping.</p>
+              </div>
+              <div id="cropper-container">
+                <img id="crop-image" src="" alt="Image to be cropped">
+              </div>
+              <div class="cropper-actions">
+                <button type="button" id="select-new-btn">Select Image</button>
+                <div style="display: flex; gap: 10px;">
+                  <button type="button" id="cancel-crop-btn">Cancel</button>
+                  <button type="button" id="save-crop-btn" style="display: none;">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
         <section id="my-orders">My Orders Content</section>
         <section id="my-reviews">My Reviews Content</section>
@@ -129,8 +149,7 @@
                   <img src="images/icons/edit-black.svg" alt="edit">
                   <b>Edit</b>
                 </button>
-                <button type="button" class="delete" data-addressid=" <%=a._id%> "> <img src="images/icons/delete.svg"
-                    alt="delete"> <b>Delete</b> </button>
+                <button type="button" class="delete" data-addressid=" <%=a._id%> "> <img src="images/icons/delete.svg" alt="delete"> <b>Delete</b> </button>
               </div>
             </article>
             <% }) %>
@@ -203,18 +222,19 @@
   </section>
 
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
   <script>
     window.accountData = {
       states: <%- JSON.stringify(state) %>,
       cities: <%- JSON.stringify(city) %>,
       addresses: <%- JSON.stringify(address) %>,
     };
-    
+
     lucide.createIcons();
   </script>
-  <script src="script/account.js" type="module"></script>
-  <script src="script/address.js" type="module"></script>
-  <script src="script/personalInfo.js" type="module"></script>
+  <script src="/script/account.js" type="module"></script>
+  <script src="/script/address.js" type="module"></script>
+  <script src="/script/personalInfo.js" type="module"></script>
   <%- include('./partials/footer.ejs') %>
 </body>
 
