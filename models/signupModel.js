@@ -10,14 +10,21 @@ const userSchema = new mongoose.Schema(
 			lowercase: true,
 			match: [/^\S+@\S+\.\S+$/, "Please provide a valid email address"],
 		},
+		tempEmail: {
+			type: String,
+			unique: true,
+			sparse: true,
+			trim: true,
+			lowercase: true,
+			match: [/^\S+@\S+\.\S+$/, "Please provide a valid email address"],
+		},
 		username: {
 			type: String,
 			trim: true,
 		},
 		password: {
 			type: String,
-			minlength: [6, "Password must be at least 6 characters long"],
-			select: false,
+			minlength: [6, "Password must be at least 6 characters long"]
 		},
 		googleId: {
 			type: String,
@@ -51,6 +58,12 @@ const userSchema = new mongoose.Schema(
 			type: String,
 		},
 		changePasswordTokenExpires: {
+			type: Date,
+		},
+		changeEmailOtp: {
+			type: String,
+		},
+		changeEmailOtpExpires: {
 			type: Date,
 		},
 	},

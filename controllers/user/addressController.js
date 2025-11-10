@@ -1,4 +1,42 @@
 import { createAddress, updateAddress, deleteAddress } from "../../services/addressService.js";
+import { City, Country, State } from "country-state-city";
+import { getAddress, getSingleAddress } from "../../services/addressService.js";
+import { getPersonalInfo } from "../../services/personalInfoService.js";
+
+const getAddressPage = async (req, res) => {
+	const countries = Country.getAllCountries();
+	const state = State.getAllStates();
+	const city = City.getAllCities();
+
+	try {
+		const userId = req.session.user.userId;
+		const address = await getAddress(userId);
+		const personalInfo = await getPersonalInfo(userId);
+
+		let singleAddress = null;
+		if (req.params.id) {
+			singleAddress = await getSingleAddress(req.params.id, userId);
+		}
+
+		return res.render("user/address", {
+			username: "",
+			countries,
+			state,
+			city,
+			address,
+			singleAddress,
+			personalInfo: {
+				avatar: personalInfo.personalInfo.avatar,
+				fname: personalInfo.personalInfo.fname,
+			},
+			email: personalInfo.email,
+		});
+	} catch (error) {
+		console.error("Error rendering account page:", error.message);
+		return res.status(500).render("user/pagenotfound", { error });
+	}
+};
+
 
 const addAddress = async (req, res) => {
 	try {
@@ -71,4 +109,4 @@ const removeAddress = async (req, res) => {
 	}
 };
 
-export { addAddress, editAddress, removeAddress };
+export { getAddressPage, addAddress, editAddress, removeAddress };

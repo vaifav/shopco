@@ -1,5 +1,6 @@
 import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
 const resendOtp = document.querySelector(".resend-otp");
+const emailResetInputValue = document.querySelector("#emailReset");
 
 resendOtp.addEventListener("click", async (e) => {
 	e.preventDefault();
@@ -14,8 +15,17 @@ resendOtp.addEventListener("click", async (e) => {
 		},
 	});
 	try {
+		let body = {};
+		if (emailResetInputValue.value.trim() === "true") {
+			body = { emailReset: true };
+		} else {
+			body = { emailReset: false };
+		}
+
 		const res = await fetch("/resentotp", {
 			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(body),
 		});
 
 		const result = await res.json();
@@ -44,7 +54,11 @@ resendOtp.addEventListener("click", async (e) => {
 		});
 
 		if (swalResult.isConfirmed || swalResult.isDismissed) {
-			window.location.href = "/verifyotp";
+			if (emailResetInputValue.value.trim() === "true") {
+				window.location.href = "/verifyotp?resetemailotp=true";
+			} else {
+				window.location.href = "/verifyotp";
+			}
 		}
 	} catch (err) {
 		console.error("Error :", err);
@@ -105,7 +119,13 @@ async function fetchOtpExpireTime() {
 
 		const data = await res.json();
 		console.log("Server response data:", data);
-		const expirationDateString = data.date;
+		let expirationDateString = "";
+
+		if (emailResetInputValue.value.trim() === "true") {
+			expirationDateString = data.emailOtpDate;
+		} else {
+			expirationDateString = data.otpDate;
+		}
 
 		if (expirationDateString) {
 			startOtpTimer(expirationDateString, "otp-timer");

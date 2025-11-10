@@ -1,4 +1,7 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
 	service: "Gmail",
@@ -86,4 +89,41 @@ const sendForgotPasswordToken = async (email, token) => {
 	}
 };
 
-export { sendOtpVerification, sendForgotPasswordToken };
+const sendChangeEmailOtp = async (newEmail, otp) => {
+	const mailOptions = {
+		from: process.env.NODEMAILER_EMAIL,
+		to: newEmail,
+		subject: "SHOP.CO: Confirm Your New Email Address",
+		html: `
+            <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 5px; max-width: 600px; margin: auto;">
+                <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">Email Address Change Confirmation</h2>
+                
+                <p>You recently requested to update your email address associated with your SHOP.CO account to:</p>
+                <p style="font-weight: bold; color: #333;">${newEmail}</p>
+
+                <p>To confirm this change and secure your account, please enter the following One-Time Password (OTP):</p>
+                
+                <p style="font-size: 30px; font-weight: bold; color: #007bff; letter-spacing: 5px; margin: 20px 0; padding: 10px; background-color: #f4f4f4; border-radius: 5px; text-align: center;">
+                    ${otp}
+                </p>
+                
+                <p style="color: #dc3545;"><strong>Security Notice:</strong> This code is valid for a short period. Do not share it with anyone.</p>
+                <p>If you did not request to change your email address, please ignore this email or contact customer support immediately to secure your account.</p>
+                <p>Thank you,<br/>The SHOP.CO Team</p>
+            </div>
+        `,
+	};
+
+	try {
+		await transporter.sendMail(mailOptions);
+		console.log(`Change Email OTP sent successfully to: ${newEmail}`);
+		return true;
+	} catch (error) {
+		console.error("Error sending change email OTP:", error);
+		throw new Error(
+			"Failed to send the confirmation email. Please check the email address and try again."
+		);
+	}
+};
+
+export { sendOtpVerification, sendForgotPasswordToken, sendChangeEmailOtp };

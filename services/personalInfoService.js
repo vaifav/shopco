@@ -1,3 +1,4 @@
+import { sendChangeEmailOtp } from "../config/otp.js";
 import personalInfoModel from "../models/personalInfoModel.js";
 import userModel from "../models/signupModel.js";
 
@@ -5,7 +6,8 @@ const getPersonalInfo = async (userId) => {
 	try {
 		if (!userId) throw new Error("User ID is required");
 		const personalInfo = await personalInfoModel.findOne({ userId });
-		return personalInfo;
+		const user = await userModel.findOne({ _id: userId });
+		return { personalInfo, email: user.email };
 	} catch (error) {
 		console.error("Error fetching Personal Info:", error.message);
 		throw new Error(error.message);
@@ -28,7 +30,8 @@ const createPersonalInfo = async (data, userId, file = "") => {
 		await userModel.findByIdAndUpdate(userId, { isVisitors: false });
 		return personalInfo;
 	} catch (error) {
-		console.error("Error creating personal Info:", error.message);
+		console.error(error);
+		if (error.errorResponse.code === 11000) throw new Error(`${data.email} already exists`);
 		throw new Error(error.message);
 	}
 };
@@ -43,10 +46,46 @@ const updatePersonalInfo = async (data, userId, file = "") => {
 			return newInfo;
 		}
 		if (data.email && info.email !== data.email) {
+			const isEmailExists = await userModel.findOne({ email: data.email });
+			if (isEmailExists) throw new Error(`${data.email} already exists`);
+
+			await personalInfoModel.findOneAndUpdate(
+				{ userId },
+				{
+					$set: {
+						fname: data?.fname,
+						lname: data?.lname,
+						phone: data?.phone,
+						avatar: data?.avatar,
+						gender: data?.gender,
+						address: data?.address,
+					},
+				},
+				{ new: true, runValidators: true }
+			);
+
 			const isGoogleUser = await userModel.exists({ _id: userId, googleId: { $exists: true } });
-			if (isGoogleUser)
+			if (isGoogleUser) {
 				throw new Error("You signed up using Google, so changing email is not allowed.");
-			await userModel.findByIdAndUpdate(userId, { email: data.email });
+			}
+
+			const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+			const tenMinutes = 10 * 60 * 1000;
+			const changeEmailOtp = generateOTP();
+			const changeEmailOtpExpires = new Date(Date.now() + tenMinutes);
+
+			await userModel.findByIdAndUpdate(userId, {
+				changeEmailOtp,
+				changeEmailOtpExpires,
+				tempEmail: data.email,
+			});
+			await sendChangeEmailOtp(data.email, changeEmailOtp);
+
+			return {
+				isChangeEmailOtpSend: true,
+				message: "Check your email we have send the verification code",
+			};
 		}
 		if (data.fname) {
 			await userModel.findByIdAndUpdate(userId, { username: data.fname });
@@ -54,7 +93,16 @@ const updatePersonalInfo = async (data, userId, file = "") => {
 
 		const personalInfo = await personalInfoModel.findOneAndUpdate(
 			{ userId },
-			{ $set: data },
+			{
+				$set: {
+					fname: data.fname,
+					lname: data.lname,
+					phone: data.phone,
+					avatar: data.avatar,
+					gender: data.gender,
+					address: data.address,
+				},
+			},
 			{ new: true, runValidators: true }
 		);
 		if (!personalInfo) throw new Error("Personal Information not found");
@@ -66,4 +114,3 @@ const updatePersonalInfo = async (data, userId, file = "") => {
 };
 
 export { getPersonalInfo, createPersonalInfo, updatePersonalInfo };
-// zod
