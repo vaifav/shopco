@@ -1,4 +1,4 @@
-const navItems = document.querySelectorAll(".container nav ul li");
+const navElement = document.querySelector(".container nav ul");
 const sections = document.querySelectorAll(".sections section");
 
 function showSection(id) {
@@ -7,22 +7,13 @@ function showSection(id) {
 	});
 }
 
-navItems.forEach((item) => {
-	item.addEventListener("click", (e) => {
+navElement.addEventListener("click", function (e) {
+	
+	const listItem = e.target.closest("li");
+	if (listItem && listItem.dataset.url) {
 		e.preventDefault();
-
-		navItems.forEach((i) => i.classList.remove("active"));
-		item.classList.add("active");
-
-		const link = item.querySelector("a");
-		const targetId = link.getAttribute("href").substring(1);
-
-		showSection(targetId);
-	});
+		window.location.href = listItem.dataset.url;
+	}
 });
-
-if (sections.length > 0) {
-	showSection(sections[0].id);
-}
 
 lucide.createIcons();

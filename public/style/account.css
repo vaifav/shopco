@@ -93,12 +93,6 @@ div.sections {
 }
 
 .sections section {
-	display: none;
-	opacity: 0;
-	transition: opacity 0.3s ease;
-}
-
-.sections section.show {
 	display: block;
 	opacity: 1;
 }

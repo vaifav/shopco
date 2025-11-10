@@ -1,3 +1,5 @@
+import { getAddress, getSingleAddress } from "../../services/addressService.js";
+import { getPersonalInfo } from "../../services/personalInfoService.js";
 import { createPersonalInfo, updatePersonalInfo } from "../../services/personalInfoService.js";
 import { uploadSingleImage } from "../../services/cloudinaryService.js";
 import { checkChangedPassword } from "../../services/forgotPasswordService.js";
@@ -88,4 +90,30 @@ const editPersonlInfo = async (req, res) => {
 	}
 };
 
-export { addPersonalInfo, editPersonlInfo, getChangePasswordPage, changePassword };
+const getPersonalInfoPage = async (req, res) => {
+	try {
+		const userId = req.session.user.userId;
+		const address = await getAddress(userId);
+		const personalInfo = await getPersonalInfo(userId);
+
+		let singleAddress = null;
+		if (req.params.id) {
+			singleAddress = await getSingleAddress(req.params.id, userId);
+		}
+
+		return res.render("user/personalInfo", {
+			username: "",
+			address,
+			singleAddress,
+			personalInfo: personalInfo.personalInfo,
+			email: personalInfo.email,
+		});
+	} catch (error) {
+		console.error("Error rendering account page:", error.message);
+		return res.status(500).render("user/pagenotfound", { error });
+	}
+};
+
+
+
+export {getPersonalInfoPage, addPersonalInfo, editPersonlInfo, getChangePasswordPage, changePassword };
