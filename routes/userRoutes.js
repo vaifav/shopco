@@ -18,6 +18,7 @@ import {
 	singleProductByColor,
 } from "../controllers/user/productController.js";
 import { baseAuth, isVerified, requireAuth } from "../middleware/authMiddleware.js";
+import { addToCart, getCartPage, removeItemFromCart } from "../controllers/user/cartContoller.js";
 
 const user = Router();
 
@@ -32,6 +33,9 @@ user.get("/", baseAuth, home);
 user.get("/products", baseAuth, products);
 user.get("/products/:id/:varId", baseAuth, singleProduct);
 user.get("/products/:id/:varId/:color", baseAuth, singleProductByColor);
+user.get("/cart", baseAuth, getCartPage);
+user.post("/cart", baseAuth, addToCart);
+user.delete("/cart", baseAuth, removeItemFromCart);
 
 user.get("/account", requireAuth, isVerified, getPersonalInfoPage);
 user.get("/address", requireAuth, isVerified, getAddressPage);

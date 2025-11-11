@@ -108,7 +108,14 @@
                   &nbsp;
                   <span><%= product.rating %> / 5</span>
                 </div>
-                <img src="images/icons/heart.svg" alt="heart">
+                <div>
+                  <span class="cart-icon" data-variantid="<%= product.vrId %>" data-color="<%= product.color %>" data-size="<%= product.sizes[0] %>" data-count="1">
+                    <i data-lucide="shopping-cart"></i>
+                  </span>
+                  <span class="favorite-icon">
+                    <i data-lucide="heart"></i>
+                  </span>
+                </div>
               </div>
               <h3 class="price">
                 <i data-lucide="indian-rupee" class="ruppee-icon"></i>
@@ -152,7 +159,7 @@
 
   <%- include('./partials/footer.ejs') %>
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
-  <script src="/script/product.js"></script>
+  <script src="/script/product.js" type="module"></script>
 </body>
 
 </html>

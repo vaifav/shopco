@@ -61,8 +61,9 @@
             <span class="colors">
               <% product.colors.forEach(color => { %>
               <label class="color-option">
-                <input type="radio" name="color" value="<%= color %>" checked>
-                <span class="item" data-color="<%= color.toLowerCase() %>" data-productid="<%= product.prId %>" data-variantid="<%= product.vrId %>"></span>
+                <input type="radio" name="color" value="<%= color %>" <%= (product.variantColor && color.toLowerCase() === product.variantColor.toLowerCase()) ? 'checked' : '' %>>
+                <span class="item" data-color="<%= color.toLowerCase() %>" data-productid="<%= product.prId %>" data-variantid="<%= product.vrId %>">
+                </span>
               </label>
               <% }) %>
             </span>
@@ -84,7 +85,7 @@
             <label for="count" class="count-container">
               <input type="number" name="count" id="count" value="1" min="1" max="10">
             </label>
-            <button type="button">Add to Cart</button>
+            <button type="button" class="add-to-cart" data-variantid="<%= product.vrId %>" data-color="" data-size="" data-count="">Add to Cart</button>
             <button type="submit">Buy Now</button>
           </div>
         </form>
@@ -131,7 +132,7 @@
 
   <%- include('./partials/footer.ejs') %>
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
-  <script src="/script/singleProduct.js"></script>
+  <script src="/script/singleProduct.js" type="module"></script>
 </body>
 
 </html>

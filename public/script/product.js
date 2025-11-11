@@ -1,3 +1,5 @@
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
+
 const mobileSearchForm = document.querySelector(".mobile-search-form");
 const mobileFilterBtn = document.querySelector(".mobile-filter-btn");
 const closeFilterBtn = document.querySelector(".close-filter-btn");
@@ -260,8 +262,73 @@ clearFilterBtn.addEventListener("click", () => {
 navToProductDetailPage.forEach((article) => {
 	const id = article.getAttribute("data-productid").trim();
 	const variantid = article.getAttribute("data-variantid").trim();
-	article.addEventListener("click", () => {
+
+	article.addEventListener("click", async (e) => {
+		const addToCart = e.target.closest("span.cart-icon");
+
+		if (addToCart) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			const variantId = addToCart.dataset.variantid;
+			const color = addToCart.dataset.color;
+			const size = addToCart.dataset.size;
+			const count = addToCart.dataset.count;
+
+			const productData = {
+				variantId: variantId,
+				color: color,
+				size: size,
+				count: count,
+			};
+
+			try {
+				const res = await fetch("/cart", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						productData,
+					}),
+				});
+
+				const result = await res.json();
+
+				if (!res.ok || !result.success) {
+					await Swal.fire({
+						icon: "error",
+						title: "Failed!",
+						text: result.message || "An unknown error occurred.",
+						confirmButtonColor: "#d33",
+					});
+					return;
+				}
+
+				await Swal.fire({
+					icon: "success",
+					title: "Item Added to cart",
+					text: result.message,
+					showConfirmButton: false,
+					timer: 1500,
+				});
+
+				console.log("Product added:", productData);
+				return;
+			} catch (error) {
+				console.error("Fetch error:", error);
+				await Swal.fire({
+					icon: "error",
+					title: "Failed!",
+					text: "Could not connect to the server or process the request.",
+					confirmButtonColor: "#d33",
+				});
+				return;
+			}
+		}
+
 		window.location.href = `/products/${id}/${variantid}`;
 	});
 });
+
 lucide.createIcons();
