@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/cart.css">
+  <title>Checkout</title>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <section class="body">
+    <main>
+    <h1 class="main-heading">Checkout</h1>
+
+    <section class="cart-page-layout">
+      <% if (cart && cart.length!==0) { %>
+      <section class="cart-container" aria-labelledby="cart-heading">
+        <% cart.forEach(item => { %>
+        <article class="cart-item <%= Number(item.item.variant.stock) === 0 ||  Number(item.item.variant.stock) < Number(item.item.count)? 'out-of-stock': '' %>">
+          <img src="<%= item.item.variant.images[0] %>" alt="<%= item.item.product.productName %>" class="item-image">
+          <div class="item-details">
+            <h3 class="item-name"><%= item.item.product.productName %></h3>
+            <ul>
+              <li class="item-variant">Size: <%= item.item.size.toUpperCase() %> </li>
+              <li class="item-variant">Color: <%= item.item.variant.color %></li>
+            </ul>
+            <p class="item-price"> <i data-lucide="indian-rupee"></i> <b><%= item.item.variant.price %></b></p>
+          </div>
+          <div class="item-actions">
+            <button class="remove-item" aria-label="Remove Gradient Graphic T-shirt" data-variantid="<%= item.item.variantId %>" data-size="<%= item.item.size %>">
+              <i data-lucide="trash-2" class="lucide-icon"></i>
+            </button>
+            <div class="quantity-control">
+              <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
+              <span class="quantity-display" role="status"><%= item.item.count %></span>
+              <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+            </div>
+          </div>
+        </article>
+        <% }) %>
+      </section>
+      <section class="order-summary-container" aria-labelledby="summary-heading">
+        <h2 id="summary-heading" class="visually-hidden">Order Summary</h2>
+
+        <div class="summary-line">
+          <span class="summary-label">Subtotal</span>
+          <span class="summary-value"><i data-lucide="indian-rupee"></i> <b></b></span>
+        </div>
+        <hr class="summary-divider">
+        <div class="summary-line total-line">
+          <span class="summary-label">Total</span>
+          <span class="summary-value"><i data-lucide="indian-rupee"></i> <b></b></span>
+        </div>
+
+        <div class="promo-code-section">
+          <div class="promo-input-group">
+            <i data-lucide="tag" class="lucide-icon promo-icon"></i>
+            <input type="text" placeholder="Add promo code" class="promo-input" aria-label="Promo code input">
+          </div>
+          <button type="button" class="apply-promo-btn">Apply</button>
+        </div>
+
+        <button type="button" class="checkout-btn">
+          Proceed
+          <i data-lucide="arrow-right" class="lucide-icon checkout-arrow"></i>
+        </button>
+      </section>
+      <% } else {%>
+      <p style="text-align: center; width: 100dvw;">No Items in Cart</p>
+      <% } %>
+
+    </section>
+  </main>
+  </section>
+  <%- include('./partials/footer.ejs') %>
+</body>
+
+</html>
