@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+  <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/swal.css">
+  <link rel="stylesheet" href="/style/account.css">
+  <title>My Orders</title>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+
+  <section class="order wrapper">
+    <h1 class="main-heading">My Orders</h1>
+    <div class="container">
+      <nav>
+        <div class="image-container">
+          <div class="avatar">
+            <img src="<%= personalInfo?.avatar ? `${personalInfo.avatar}`: '/images/icons/account.svg' %>" alt="avatar">
+          </div>
+          <h5>Hello👋 <%= personalInfo ? personalInfo.fname: '' %></h5>
+        </div>
+        <ul>
+          <li data-url="/account"><a href="/account"><i data-lucide="user"></i><b>Personal Information</b></a></li>
+          <li class="active" data-url="/myorders"><a href="/myorders"><i data-lucide="shopping-bag"></i> <b>My Orders</b></a></li>
+          <li data-url="/myreviews"><a href="/myreviews"><i data-lucide="star"></i> <b>My Reviews</b></a></li>
+          <li data-url="/mywishlist"><a href="/mywishlist"><i data-lucide="heart"></i> <b>My Wishlist</b></a></li>
+          <li data-url="/address"><a href="/address"><i data-lucide="map-pin"></i> <b>Manage Address</b></a></li>
+          <li data-url="/savedcards"><a href="/savedcards"><i data-lucide="credit-card"></i> <b>Saved Cards</b></a></li>
+          <li data-url="/mywallet"><a href="/mywallet"><i data-lucide="wallet"></i> <b>My Wallet</b></a></li>
+          <li data-url="/notification"><a href="/notification"><i data-lucide="bell"></i> <b>Notification</b></a></li>
+          <li data-url="/settings"><a href="/settings"><i data-lucide="settings"></i> <b>Settings</b></a></li>
+        </ul>
+      </nav>
+      <div class="sections">
+        <section id="orders">
+          <% if (orders && orders.length > 0) { %>
+          <div class="orders-list">
+            <% orders.forEach(order => { %>
+            <div class="order-card">
+              <div class="order-header">
+                <h3>Order <%= `#${order._id.toString().slice(0,3).toUpperCase()}...${order._id.toString().slice(-4).toUpperCase()}` %></h3>
+                <p class="order-date">
+                  Placed on: <b><%= new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></b>
+                </p>
+              </div>
+
+              <div class="order-summary-details">
+                <div class="summary-item">
+                  <span class="label">Status:</span>
+                  <span class="value order-status status-<%= order.orderStatus.toLowerCase() %>">
+                    <b><%= order.orderStatus %></b>
+                  </span>
+                </div>
+                <div class="summary-item">
+                  <span class="label">Total Paid:</span>
+                  <span class="value price">
+                    <i data-lucide="indian-rupee" class="rupee-icon"></i>
+                    <b><%= order.totalAmount.toFixed(2) %></b>
+                  </span>
+                </div>
+                <div class="summary-item">
+                  <span class="label">Items:</span>
+                  <span class="value"><%= order.items.length %> Product(s)</span>
+                </div>
+              </div>
+
+              <a href="/myorders/<%= order._id %>" class="view-details-btn primary-btn">
+                View Order Details
+              </a>
+            </div>
+            <% }); %>
+          </div>
+          <% } else { %>
+          <div class="empty-state">
+            <i data-lucide="shopping-bag" class="empty-icon"></i>
+            <h2>No Orders Found</h2>
+            <p>It looks like you haven't placed any orders yet. Let's fix that!</p>
+            <a href="/products" class="primary-btn">Continue Shopping</a>
+          </div>
+          <% } %>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+
+  <script src="/script/account.js" type="module"></script>
+  <%- include('./partials/footer.ejs') %>
+</body>
+
+</html>

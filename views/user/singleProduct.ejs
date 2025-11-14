@@ -2,137 +2,141 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style/partials.css">
-  <link rel="stylesheet" href="/style/swal.css">
-  <link rel="stylesheet" href="/style/singleProduct.css">
-  <title>Products</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style/partials.css">
+    <link rel="stylesheet" href="/style/swal.css">
+    <link rel="stylesheet" href="/style/singleProduct.css">
+    <title>Products</title>
 </head>
 
 <body>
-  <%- include('./partials/header.ejs') %>
+    <%- include('./partials/header.ejs') %>
 
-  <section class="wrapper single-product">
+    <section class="wrapper single-product">
 
-    <section class="product-container">
-      <section class="product-images">
-        <aside>
-          <% if (product.images.length > 1) { %>
-          <% for( let imageIndex = 0; imageIndex < product.images.length; imageIndex++ ) { %>
-          <figure> <img src="<%= product.images[imageIndex] %>" alt="<%= product.productName %>"> </figure>
-          <% } %>
-          <% } %>
-        </aside>
-        <figure class="main-image-display"> <img src="<%= product.images[0] %>" alt="<%= product.productName %>"> </figure>
-      </section>
-      <section class="product-details">
-        <section class="text-details">
+        <section class="product-container">
+            <section class="product-images">
+                <aside>
+                    <% if (product.images.length > 1) { %>
+                    <% for( let imageIndex = 0; imageIndex < product.images.length; imageIndex++ ) { %>
+                    <figure> <img src="<%= product.images[imageIndex] %>" alt="<%= product.productName %>"> </figure>
+                    <% } %>
+                    <% } %>
+                </aside>
+                <figure class="main-image-display"> <img src="<%= product.images[0] %>" alt="<%= product.productName %>"> </figure>
+            </section>
+            <section class="product-details">
+                <section class="text-details">
 
-          <h1><%= product.productName.toUpperCase() %></h1>
-          <div class="star">
-            <% for( let star = 1; star <= 5; star++ ) { %>
-            <% if (star <= product.rating) { %>
-            <i data-lucide="star" class="rating true"></i>
-            <% } else {%>
-            <i data-lucide="star" class="rating false"></i>
-            <% } %>
-            <% } %>
-            &nbsp;
-            <span><%= product.rating %> / 5</span>
-          </div>
-          <h3 class="price">
-            <i data-lucide="indian-rupee" class="ruppee-icon"></i>
-            <b><%= product.price %></b>
-            <del>
-              <i data-lucide="indian-rupee" class="ruppee-icon"></i>
-              <b><%= product.price + product.discountedPrice %></b>
-            </del>
-          </h3>
-          <p class="description"><%= product.description %></p>
+                    <h1><%= product.productName.toUpperCase() %></h1>
+                    <div class="star">
+                        <% for( let star = 1; star <= 5; star++ ) { %>
+                        <% if (star <= product.rating) { %>
+                        <i data-lucide="star" class="rating true"></i>
+                        <% } else {%>
+                        <i data-lucide="star" class="rating false"></i>
+                        <% } %>
+                        <% } %>
+                        &nbsp;
+                        <span><%= product.rating %> / 5</span>
+                    </div>
+                    <h3 class="price">
+                        <i data-lucide="indian-rupee" class="ruppee-icon"></i>
+                        <b><%= product.price %></b>
+                        <del>
+                            <i data-lucide="indian-rupee" class="ruppee-icon"></i>
+                            <b><%= product.price + product.discountedPrice %></b>
+                        </del>
+                    </h3>
+                    <p class="description"><%= product.description %></p>
+                </section>
+
+                <form action="/checkout/buy-now" method="POST"> 
+                    <div class="for-colors">
+                        <label>Choose Color</label>
+                        <span class="colors">
+                            <% product.colors.forEach(color => { %>
+                            <label class="color-option">
+                                <input type="radio" name="color" value="<%= color %>" <%= (product.variantColor && color.toLowerCase() === product.variantColor.toLowerCase()) ? 'checked' : '' %>>
+                                <span class="item" data-color="<%= color.toLowerCase() %>" data-productid="<%= product.prId %>" data-variantid="<%= product.vrId %>">
+                                </span>
+                            </label>
+                            <% }) %>
+                        </span>
+                    </div>
+
+                    <div class="for-size">
+                        <label>Choose Size</label>
+                        <span class="sizes">
+                            <% product.sizes.forEach(size => { %>
+                            <label class="size-option">
+                                <input type="radio" name="size" value="<%= size %>" checked>
+                                <span class="items"><%= size.toUpperCase() %></span>
+                            </label>
+                            <% }) %>
+                        </span>
+                    </div>
+                    
+                    <input type="hidden" name="productId" value="<%= product.prId %>">
+                    <input type="hidden" name="variantId" value="<%= product.vrId %>">
+
+
+                    <div class="btns">
+                        <label for="count" class="count-container">
+                            <input type="number" name="count" id="count" value="1" min="1" max="10">
+                        </label>
+                        <button type="button" class="add-to-cart" data-variantid="<%= product.vrId %>" data-color="" data-size="" data-count="">Add to Cart</button>
+                        <button type="submit">Buy Now</button>
+                    </div>
+                </form>
+            </section>
         </section>
 
-        <form>
-          <div class="for-colors">
-            <label>Choose Color</label>
-            <span class="colors">
-              <% product.colors.forEach(color => { %>
-              <label class="color-option">
-                <input type="radio" name="color" value="<%= color %>" <%= (product.variantColor && color.toLowerCase() === product.variantColor.toLowerCase()) ? 'checked' : '' %>>
-                <span class="item" data-color="<%= color.toLowerCase() %>" data-productid="<%= product.prId %>" data-variantid="<%= product.vrId %>">
-                </span>
-              </label>
-              <% }) %>
-            </span>
-          </div>
-
-          <div class="for-size">
-            <label>Choose Size</label>
-            <span class="sizes">
-              <% product.sizes.forEach(size => { %>
-              <label class="size-option">
-                <input type="radio" name="size" value="<%= size %>" checked>
-                <span class="items"><%= size.toUpperCase() %></span>
-              </label>
-              <% }) %>
-            </span>
-          </div>
-
-          <div class="btns">
-            <label for="count" class="count-container">
-              <input type="number" name="count" id="count" value="1" min="1" max="10">
-            </label>
-            <button type="button" class="add-to-cart" data-variantid="<%= product.vrId %>" data-color="" data-size="" data-count="">Add to Cart</button>
-            <button type="submit">Buy Now</button>
-          </div>
-        </form>
-      </section>
-    </section>
-
-    <section class="category-section">
-      <% if (relatedProducts.length !== 0) { %>
-      <h1>YOU MIGHT ALSO LIKE</h1>
-      <div class="container">
-        <% relatedProducts.forEach(product => { %>
-        <article class="nav-to-product-detail-page" data-productid="<%= product.prId %>" data-variantid="<%= product.vrId %>">
-          <figure>
-            <img src="<%= product.images[0] %>" alt="T-SHIRT">
-          </figure>
-          <div>
-            <h4><%= product.productName %></h4>
-            <div class="icons">
-              <div class="star">
-                <% for( let star = 1; star <= 5; star++ ) { %>
-                <% if (star <= product.rating) { %>
-                <i data-lucide="star" class="rating true"></i>
-                <% } else {%>
-                <i data-lucide="star" class="rating false"></i>
-                <% } %>
-                <% } %>
-                &nbsp;
-                <span><%= product.rating %> / 5</span>
-              </div>
-              <img src="/images/icons/heart.svg" alt="heart">
+        <section class="category-section">
+            <% if (relatedProducts.length !== 0) { %>
+            <h1>YOU MIGHT ALSO LIKE</h1>
+            <div class="container">
+                <% relatedProducts.forEach(product => { %>
+                <article class="nav-to-product-detail-page" data-productid="<%= product.prId %>" data-variantid="<%= product.vrId %>">
+                    <figure>
+                        <img src="<%= product.images[0] %>" alt="T-SHIRT">
+                    </figure>
+                    <div>
+                        <h4><%= product.productName %></h4>
+                        <div class="icons">
+                            <div class="star">
+                                <% for( let star = 1; star <= 5; star++ ) { %>
+                                <% if (star <= product.rating) { %>
+                                <i data-lucide="star" class="rating true"></i>
+                                <% } else {%>
+                                <i data-lucide="star" class="rating false"></i>
+                                <% } %>
+                                <% } %>
+                                &nbsp;
+                                <span><%= product.rating %> / 5</span>
+                            </div>
+                            <img src="/images/icons/heart.svg" alt="heart">
+                        </div>
+                        <h3><i data-lucide="indian-rupee" class="ruppee-icon"></i> <b><%= product.price %></b> <del><i data-lucide="indian-rupee" class="ruppee-icon"></i><b><%= product.price + product.discountedPrice %></b></del></h3>
+                    </div>
+                </article>
+                <% }) %>
             </div>
-            <h3><i data-lucide="indian-rupee" class="ruppee-icon"></i> <b><%= product.price %></b> <del><i data-lucide="indian-rupee" class="ruppee-icon"></i><b><%= product.price + product.discountedPrice %></b></del></h3>
-          </div>
-        </article>
-        <% }) %>
-      </div>
-      <% } else {%>
-      <h1>No Recommented Products....</h1>
-      <% } %>
+            <% } else {%>
+            <h1>No Recommented Products....</h1>
+            <% } %>
+        </section>
+
     </section>
 
-  </section>
 
-
-  <%- include('./partials/footer.ejs') %>
-  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
-  <script src="/script/singleProduct.js" type="module"></script>
+    <%- include('./partials/footer.ejs') %>
+    <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+    <script src="/script/singleProduct.js" type="module"></script>
 </body>
 
 </html>

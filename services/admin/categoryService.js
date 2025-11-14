@@ -43,7 +43,15 @@ const createCategory = async (data, createdBy) => {
 };
 
 const updateCategory = async (data, categoryId, updatedBy) => {
+	const categoryNamePattern = new RegExp(`^${data.categoryName.trim()}$`, "i");
 	try {
+		const categoryNameExists = await categoryModel.findOne({
+			$and: [
+				{ categoryName: categoryNamePattern },
+				{ _id: { $ne: new mongoose.Types.ObjectId(categoryId) } },
+			],
+		});
+		if (categoryNameExists) throw new Error(`${data.categoryName} category exists`);
 		const category = await categoryModel.findOne({ _id: new mongoose.Types.ObjectId(categoryId) });
 		if (!category) throw new Error("Category Not Found");
 

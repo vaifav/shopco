@@ -16,69 +16,78 @@
   <%- include('./partials/header.ejs') %>
   <section class="body">
     <main>
-    <h1 class="main-heading">Checkout</h1>
+      <div class="cart-header-actions">
+        <h1 class="main-heading">Checkout</h1>
+      </div>
 
-    <section class="cart-page-layout">
-      <% if (cart && cart.length!==0) { %>
-      <section class="cart-container" aria-labelledby="cart-heading">
-        <% cart.forEach(item => { %>
-        <article class="cart-item <%= Number(item.item.variant.stock) === 0 ||  Number(item.item.variant.stock) < Number(item.item.count)? 'out-of-stock': '' %>">
-          <img src="<%= item.item.variant.images[0] %>" alt="<%= item.item.product.productName %>" class="item-image">
-          <div class="item-details">
-            <h3 class="item-name"><%= item.item.product.productName %></h3>
-            <ul>
-              <li class="item-variant">Size: <%= item.item.size.toUpperCase() %> </li>
-              <li class="item-variant">Color: <%= item.item.variant.color %></li>
-            </ul>
-            <p class="item-price"> <i data-lucide="indian-rupee"></i> <b><%= item.item.variant.price %></b></p>
-          </div>
-          <div class="item-actions">
-            <button class="remove-item" aria-label="Remove Gradient Graphic T-shirt" data-variantid="<%= item.item.variantId %>" data-size="<%= item.item.size %>">
-              <i data-lucide="trash-2" class="lucide-icon"></i>
-            </button>
-            <div class="quantity-control">
-              <button class="quantity-btn minus" aria-label="Decrease quantity">-</button>
-              <span class="quantity-display" role="status"><%= item.item.count %></span>
-              <button class="quantity-btn plus" aria-label="Increase quantity">+</button>
+      <section class="cart-page-layout">
+        <% if (checkout && checkout.cartItems.length > 0) { %>
+        <section class="cart-container" aria-labelledby="cart-heading">
+          <% checkout.cartItems.forEach(item => { %>
+          <article class="cart-item">
+            <img src="<%= item.imageUrl %>" alt="<%= item.name %>" class="item-image">
+            <div class="item-details">
+              <h3 class="item-name"><%= item.name %></h3>
+              <ul>
+                <li class="item-variant">Size: <%= item.size.toUpperCase() %> </li>
+                <li class="item-variant">Color: <%= item.color %></li>
+              </ul>
+              <p class="item-price"> <i data-lucide="indian-rupee"></i> <b><%= item.price %></b></p>
             </div>
+            <div class="item-actions">
+              <p class="quantity-display">Qty: <%= item.quantity %></p>
+            </div>
+          </article>
+          <% }) %>
+        </section>
+
+        <section class="order-summary-container" aria-labelledby="summary-heading">
+          <h2 id="summary-heading" class="visually-hidden">Order Summary</h2>
+
+          <% 
+                        const DELIVERY_FEE = 15;
+                        const subtotal = checkout.totalAmount - DELIVERY_FEE;
+                    %>
+
+          <div class="summary-line">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value"><i data-lucide="indian-rupee"></i> <b><%= subtotal.toFixed(2) %></b></span>
           </div>
-        </article>
-        <% }) %>
-      </section>
-      <section class="order-summary-container" aria-labelledby="summary-heading">
-        <h2 id="summary-heading" class="visually-hidden">Order Summary</h2>
-
-        <div class="summary-line">
-          <span class="summary-label">Subtotal</span>
-          <span class="summary-value"><i data-lucide="indian-rupee"></i> <b></b></span>
-        </div>
-        <hr class="summary-divider">
-        <div class="summary-line total-line">
-          <span class="summary-label">Total</span>
-          <span class="summary-value"><i data-lucide="indian-rupee"></i> <b></b></span>
-        </div>
-
-        <div class="promo-code-section">
-          <div class="promo-input-group">
-            <i data-lucide="tag" class="lucide-icon promo-icon"></i>
-            <input type="text" placeholder="Add promo code" class="promo-input" aria-label="Promo code input">
+          <div class="summary-line">
+            <span class="summary-label">Delivery Fee</span>
+            <span class="summary-value"><i data-lucide="indian-rupee"></i> <b><%= DELIVERY_FEE.toFixed(2) %></b></span>
           </div>
-          <button type="button" class="apply-promo-btn">Apply</button>
-        </div>
 
-        <button type="button" class="checkout-btn">
-          Proceed
-          <i data-lucide="arrow-right" class="lucide-icon checkout-arrow"></i>
-        </button>
+          <hr class="summary-divider">
+          <div class="summary-line total-line">
+            <span class="summary-label">Total</span>
+            <span class="summary-value"><i data-lucide="indian-rupee"></i> <b><%= checkout.totalAmount.toFixed(2) %></b></span>
+          </div>
+
+          <div class="promo-code-section">
+            <div class="promo-input-group">
+              <i data-lucide="tag" class="lucide-icon promo-icon"></i>
+              <input type="text" placeholder="Add promo code" class="promo-input" aria-label="Promo code input">
+            </div>
+            <button type="button" class="apply-promo-btn">Apply</button>
+          </div>
+
+          <button type="button" class="checkout-btn">
+            <a href="/checkout/address">Proceed to Address</a>
+            <i data-lucide="arrow-right" class="lucide-icon checkout-arrow"></i>
+          </button>
+        </section>
+        <% } else {%>
+        <p style="text-align: center; width: 100dvw;">No Items selected for Checkout. Please go to your cart or product page.</p>
+        <% } %>
       </section>
-      <% } else {%>
-      <p style="text-align: center; width: 100dvw;">No Items in Cart</p>
-      <% } %>
-
-    </section>
-  </main>
+    </main>
   </section>
   <%- include('./partials/footer.ejs') %>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 
 </html>

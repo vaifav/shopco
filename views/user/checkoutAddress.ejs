@@ -9,136 +9,110 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/partials.css">
   <link rel="stylesheet" href="/style/checkoutAddress.css">
-  <title>Checkout</title>
+  <title>Checkout - Address</title>
 </head>
 
 <body>
   <%- include('./partials/header.ejs') %>
   <main>
-    <h1>Shipping Address</h1>
+    <h1 class="main-heading">Shipping Address</h1>
     <section class="checkout-container">
       <div class="content-area">
-        <div class="address-grid">
-          <label class="address-card">
-            <input type="radio" name="shipping-address" value="robert" checked>
-            <div class="card-content">
-              <h2>Robert Wills</h2>
-              <!-- Using <br> for mock multi-line address formatting -->
-              <p class="address-details">4517 Washinton Ave, Manchester,<br>Kentucky , 394967</p>
-              <p class="phone-number">
-                <i data-lucide="phone"></i> <span>(206) 5557398213</span>
-              </p>
-            </div>
-            <div class="actions">
-              <button class="edit"><i data-lucide="square-pen"></i> <b>Edit</b></button>
-              <button class="delete"><i data-lucide="trash-2"></i> <b>Delete</b></button>
-            </div>
-            <div class="custom-radio-checkmark">
-              <i data-lucide="check"></i>
-            </div>
-          </label>
 
-          <label class="address-card">
-            <input type="radio" name="shipping-address" value="john">
-            <div class="card-content">
-              <h2>John Caleb</h2>
-              <p class="address-details">6575 California, Silver Lake,<br>Kentucky , 26967</p>
-              <p class="phone-number">
-                <i data-lucide="phone"></i> <span>(206) 5557398213</span>
-              </p>
-            </div>
-            <div class="actions">
-              <button class="edit"><i data-lucide="square-pen"></i> <b>Edit</b></button>
-              <button class="delete"><i data-lucide="trash-2"></i> <b>Delete</b></button>
-            </div>
-            <div class="custom-radio-checkmark">
-              <i data-lucide="check"></i>
-            </div>
-          </label>
+        <form action="/checkout/address" method="POST" id="address-selection-form">
+          <div class="address-grid">
+            <% if (address && address.length !== 0) { %>
+            <% address.forEach(a => { %>
 
-          <label class="address-card">
-            <input type="radio" name="shipping-address" value="william">
-            <div class="card-content">
-              <h2>William Mark</h2>
-              <p class="address-details">7890 Elm St, Apartment 3B,<br>Miami, Florida, 33101</p>
-              <p class="phone-number">
-                <i data-lucide="phone"></i> <span>(305) 1234567890</span>
-              </p>
-            </div>
-            <div class="actions">
-              <button class="edit"><i data-lucide="square-pen"></i> <b>Edit</b></button>
-              <button class="delete"><i data-lucide="trash-2"></i> <b>Delete</b></button>
-            </div>
-            <div class="custom-radio-checkmark">
-              <i data-lucide="check"></i>
-            </div>
-          </label>
+            <label class="address-card">
+              <input type="radio" name="addressId" value="<%= a._id %>" <%= a.isDefault ? 'checked' : '' %>>
+              <div class="card-content">
+                <h2><%= a.fullName %></h2>
+                <p class="address-details"><%= `${a.houseName}, ${a.street}, ${a.city}, ${a.pin}` %></p>
+                <p class="phone-number">
+                  <i data-lucide="phone"></i> <span><%= a.phone %></span>
+                </p>
+              </div>
+              <div class="actions">
+                <a href="/address" class="edit"><i data-lucide="square-pen"></i> <b>Edit</b></a>
+                <a href="/address" class="delete"><i data-lucide="trash-2"></i> <b>Delete</b></a>
+              </div>
+              <div class="custom-radio-checkmark">
+                <i data-lucide="check"></i>
+              </div>
+            </label>
+            <% }) %>
+            <% } else { %>
+            <p class="no-address">No saved addresses found. Please add a new one.</p>
+            <% } %>
+          </div>
 
-          <label class="address-card">
-            <input type="radio" name="shipping-address" value="luke">
-            <div class="card-content">
-              <h2>Luke Wain</h2>
-              <p class="address-details">4517 Washinton Ave, Manchester,<br>Kentucky , 394967</p>
-              <p class="phone-number">
-                <i data-lucide="phone"></i> <span>(206) 5557398213</span>
-              </p>
-            </div>
-            <div class="actions">
-              <button class="edit"><i data-lucide="square-pen"></i> <b>Edit</b></button>
-              <button class="delete"><i data-lucide="trash-2"></i> <b>Delete</b></button>
-            </div>
-            <div class="custom-radio-checkmark">
-              <i data-lucide="check"></i>
-            </div>
-          </label>
-        </div>
-
-        <div class="bottom-actions">
-          <button class="deliver-here-btn">Deliver Here</button>
-          <button class="add-new-btn"><i data-lucide="plus"></i> Add New Address</button>
-        </div>
+          <div class="bottom-actions">
+            <a href="/address" class="add-new-btn"><i data-lucide="plus"></i> Add New Address</a>
+            <button type="submit" class="deliver-here-btn" <%= address && address.length === 0 ? 'disabled' : '' %>>
+              Proceed to Payment
+            </button>
+          </div>
+        </form>
       </div>
 
       <aside class="summary-area">
+        <% 
+                    const DELIVERY_FEE = 15;
+                    const totalAmount = checkout.totalAmount; 
+                    const subtotal = totalAmount - DELIVERY_FEE; 
+                %>
+
+        <h3 class="summary-heading">Order Total</h3>
         <div class="summary-item">
-          <span class="label">Subtotal</span>
-          <span class="value">$565</span>
+          <span class="label">Subtotal (<%= checkout.cartItems.length %> items)</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= subtotal.toFixed(2) %></b>
+          </span>
         </div>
         <div class="summary-item">
           <span class="label">Delivery Fee</span>
-          <span class="value">$15</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= DELIVERY_FEE.toFixed(2) %></b>
+          </span>
         </div>
         <div class="summary-item discount">
           <span class="label">Discount</span>
-          <span class="value">-$50</span>
+          <span class="value">-<i data-lucide="indian-rupee"></i> <b>0.00</b></span>
         </div>
         <hr>
         <div class="summary-item total">
           <span class="label">Total</span>
-          <span class="value">$530</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= totalAmount.toFixed(2) %></b>
+          </span>
         </div>
       </aside>
     </section>
   </main>
 
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
   <script>
-    document.querySelectorAll('input[name="shipping-address"]').forEach(radio => {
-      radio.addEventListener('change', (e) => {
-        document.querySelectorAll('.address-card').forEach(card => {
-          card.classList.remove('selected');
+    document.addEventListener('DOMContentLoaded', () => {
+      const addressCards = document.querySelectorAll('.address-card');
+
+      addressCards.forEach(card => {
+        const radio = card.querySelector('input[name="addressId"]');
+
+        radio.addEventListener('change', () => {
+          addressCards.forEach(c => c.classList.remove('selected'));
+          if (radio.checked) {
+            card.classList.add('selected');
+          }
         });
-        if (e.target.checked) {
-          e.target.closest('.address-card').classList.add('selected');
+
+        if (radio.checked) {
+          card.classList.add('selected');
         }
       });
+
+      lucide.createIcons();
     });
-
-    const initiallyChecked = document.querySelector('input[name="shipping-address"]:checked');
-    if (initiallyChecked) {
-      initiallyChecked.closest('.address-card').classList.add('selected');
-    }
-
-    lucide.createIcons();
   </script>
   <%- include('./partials/footer.ejs') %>
 </body>

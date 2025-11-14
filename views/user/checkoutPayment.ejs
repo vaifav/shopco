@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/checkoutPayment.css">
+  <title>Checkout - Payment</title>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <main>
+    <h1 class="main-heading">Payment Method</h1>
+    <section class="checkout-container">
+      <div class="content-area payment-area">
+        <form action="/checkout/payment" method="POST" id="payment-selection-form">
+          <div class="payment-options">
+
+            <div class="radio-option">
+              <input type="radio" id="googlepay" name="paymentMethod" value="Google Pay">
+              <label for="googlepay">Google Pay</label>
+            </div>
+
+            <div class="radio-option">
+              <input type="radio" id="paypal" name="paymentMethod" value="PayPal">
+              <label for="paypal">PayPal</label>
+            </div>
+
+            <div class="radio-option selected">
+              <input type="radio" id="cod" name="paymentMethod" value="COD" checked>
+              <label for="cod">Cash On Delivery</label>
+            </div>
+
+            <div class="radio-option card-option">
+             <div class="radio-option-div-debit-card">
+               <input type="radio" id="card" name="paymentMethod" value="Card">
+              <label for="card">Debit card / Credit card</label>
+             </div>
+
+              <div class="card-details-form" style="display: none;">
+                <label for="cardType" class="input-label">Card</label>
+                <select id="cardType" name="cardType">
+                  <option value="Visa">Visa</option>
+                  <option value="Mastercard">Mastercard</option>
+                  <option value="Amex">American Express</option>
+                </select>
+
+                <label for="pin" class="input-label">Pin</label>
+                <input type="text" id="pin" name="pin" placeholder="623 XX XX 874 XX 675">
+
+                <button type="button" class="add-card-btn">ADD CARD</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom-actions">
+            <button type="submit" class="deliver-here-btn continue-btn">
+              Continue
+            </button>
+          </div>
+        </form>
+      </div>
+
+
+      <aside class="summary-area">
+        <% 
+                    const DELIVERY_FEE = 15;
+                    const totalAmount = checkout.totalAmount; 
+                    const subtotal = totalAmount - DELIVERY_FEE; 
+                %>
+
+        <h3 class="summary-heading">Order Total</h3>
+        <div class="summary-item">
+          <span class="label">Subtotal (<%= checkout.cartItems.length %> items)</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= subtotal.toFixed(2) %></b>
+          </span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Delivery Fee</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= DELIVERY_FEE.toFixed(2) %></b>
+          </span>
+        </div>
+        <div class="summary-item discount">
+          <span class="label">Discount</span>
+          <span class="value">-<i data-lucide="indian-rupee"></i> <b>0.00</b></span>
+        </div>
+        <hr>
+        <div class="summary-item total">
+          <span class="label">Total</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= totalAmount.toFixed(2) %></b>
+          </span>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const radioOptions = document.querySelectorAll('.radio-option input[type="radio"]');
+    const cardDetailsForm = document.querySelector('.card-details-form');
+    const cardOption = document.querySelector('.card-option');
+
+    const updateCardFormVisibility = (radio) => {
+      if (radio.value === 'Card' && radio.checked) {
+        cardDetailsForm.style.display = 'block';
+        cardOption.classList.add('selected');
+      } else {
+        cardDetailsForm.style.display = 'none';
+        cardOption.classList.remove('selected');
+      }
+    };
+
+    radioOptions.forEach(radio => {
+      if (radio.checked) {
+        radio.closest('.radio-option').classList.add('selected');
+        updateCardFormVisibility(radio);
+      }
+
+      radio.addEventListener('change', () => {
+        document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+        if (radio.checked) {
+          radio.closest('.radio-option').classList.add('selected');
+        }
+        updateCardFormVisibility(radio);
+      });
+    });
+  </script>
+  <%- include('./partials/footer.ejs') %>
+</body>
+
+</html>

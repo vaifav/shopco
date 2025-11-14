@@ -671,3 +671,164 @@ form #personal-information .form-input-container:first-child figure img {
 .cropper-face {
 	background-color: transparent !important;
 }
+#orders {
+	width: 100%;
+	padding-top: 5rem;
+}
+
+#orders .orders-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	width: 100%;
+}
+
+#orders .order-card {
+	background-color: var(--color-background-white, #ffffff);
+	padding: 25px;
+	border-radius: 10px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--color-border-light, #f0f0f0);
+	display: flex;
+	flex-direction: column;
+}
+
+#orders .order-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid var(--color-border, #eee);
+	padding-bottom: 15px;
+	margin-bottom: 15px;
+}
+
+#orders .order-header h3 {
+	font-size: 1.35rem;
+	font-weight: 700;
+	color: var(--color-text-primary, #1a1a1a);
+}
+
+#orders .order-date {
+	font-size: 0.9rem;
+	color: var(--color-text-secondary, #545151);
+	text-align: right;
+	white-space: nowrap;
+}
+
+#orders .order-summary-details {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	margin-bottom: 20px;
+	border-top: 1px solid var(--color-border, #eee);
+}
+
+#orders .summary-item {
+	font-size: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: var(--color-text-secondary, #545151);
+	padding: 10px 0;
+	border-bottom: 1px dashed var(--color-border-light, #f0f0f0);
+}
+
+#orders .order-summary-details .summary-item:last-child {
+	border-bottom: none;
+}
+
+#orders .summary-item .label {
+	font-weight: 500;
+}
+
+#orders .summary-item .value {
+	color: var(--color-text-primary, #1a1a1a);
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	text-align: right;
+}
+
+#orders .summary-item .value b {
+	color: inherit;
+	font-weight: 700;
+}
+
+#orders .rupee-icon {
+	width: 14px;
+	height: 14px;
+	stroke-width: 3px;
+	margin-right: 4px;
+	position: relative;
+	top: -1px;
+}
+
+#orders .order-status {
+	padding: 4px 10px;
+	border-radius: 6px;
+	font-size: 0.85rem;
+	font-weight: 700 !important;
+	text-transform: uppercase;
+}
+
+#orders .status-pending {
+	background-color: #fff8e1;
+	color: #ffc107;
+}
+
+#orders .status-shipped {
+	background-color: #e3f2fd;
+	color: #2196f3;
+}
+
+#orders .status-delivered {
+	background-color: #e8f5e9;
+	color: #4caf50;
+}
+
+#orders .status-cancelled,
+#orders .status-failed {
+	background-color: var(--color-danger-bg, #fff1ef);
+	color: var(--color-danger-text, #ff7262);
+}
+
+#orders .view-details-btn {
+	display: inline-block;
+	padding: 12px 25px;
+	font-weight: 600;
+	border-radius: 10px;
+	background-color: var(--color-accent, #000);
+	color: var(--color-background-white, #fff);
+	text-decoration: none;
+	transition: background-color 0.2s;
+	text-align: center;
+	margin-top: 15px;
+	align-self: flex-start;
+}
+
+#orders .view-details-btn:hover {
+	background-color: #333333;
+}
+
+@media (max-width: 600px) {
+	#orders .order-card {
+		padding: 15px;
+	}
+
+	#orders .order-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 5px;
+	}
+
+	#orders .order-date {
+		text-align: left;
+		white-space: normal;
+	}
+
+	#orders .view-details-btn {
+		width: 100%;
+		margin-top: 15px;
+		align-self: stretch;
+	}
+}
