@@ -25,6 +25,7 @@ import {
 	softDeleteProduct,
 } from "../controllers/admin/productContoller.js";
 import { isVerified } from "../middleware/authMiddleware.js";
+import { getAdminOrders ,getAdminOrderDetailPage} from "../controllers/admin/orderController.js";
 
 const admin = Router();
 
@@ -32,6 +33,8 @@ admin.get("/", dashboard);
 admin.get("/categories", category);
 admin.get("/customers", getCustomers);
 admin.get("/products", productListPage);
+admin.get("/orders", getAdminOrders);
+admin.get("/orders/:orderId", getAdminOrderDetailPage);
 
 admin.route("/products/action").get(getProductAdd).post(uploadMultipleVariantImages, addProduct);
 

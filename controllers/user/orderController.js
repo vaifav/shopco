@@ -28,23 +28,15 @@ const getOrderDetailPage = async (req, res) => {
 	const { orderId } = req.params;
 	const userId = req.session.user.userId;
 
-	if (!userId) {
-		return res.status(401).render("error", {
-			message: "Authentication required to view this page.",
-		});
-	}
+	if (!userId) throw new Error("User Not found");
 
 	try {
 		const order = await getOrderDetails(orderId, userId);
 		console.log(order);
 
-		if (!order) {
-			return res.status(404).render("error", {
-				message: "Order not found or access denied.",
-			});
-		}
+		if (!order) throw new Error("Order not found");
 
-		res.render("user/orderDetail", {
+		return res.render("user/orderDetail", {
 			order: order,
 		});
 	} catch (error) {
@@ -81,4 +73,4 @@ const cancelOrder = async (req, res, next) => {
 	}
 };
 
-export { getOrderDetailPage, getOrdersPage,cancelOrder };
+export { getOrderDetailPage, getOrdersPage, cancelOrder };

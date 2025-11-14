@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <title>Admin - Orders</title>
+  <style>
+    @import url("/style/adminPartials.css");
+    @import url("/style/admin.css");
+    @import url("/style/adminOrder.css");
+    @import url("/style/pagination.css");
+    @import url("/style/search.css");
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <section class="nav wrapper">
+    <div class="container">
+      <nav id="admin-nav">
+        <ul>
+          <li data-url="/admin"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> <b>Dashboard</b></a></li>
+          <li class="active" data-url="/admin/orders"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
+          <li data-url="/admin/products"><a href="#products"><i data-lucide="package"></i> <b>Products</b></a></li>
+          <li data-url="/admin/categories"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
+          <li data-url="/admin/customers"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li data-url="/admin/reports"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
+          <li data-url="/admin/coupons"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
+          <li data-url="/admin/inbox"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
+          <li data-url="/admin/transactions"><a href="#transactions"><i data-lucide="credit-card"></i> <b>Transactions</b></a></li>
+          <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
+        </ul>
+      </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
+      <div class="sections">
+        <section id="orders" class="show">
+          <header>
+            <h1>Orders</h1>
+            <button type="button">Export Orders</button>
+          </header>
+            <section class="admin-search order-search">
+            <form>
+              <input type="text" name="adn-search" id="adn-search" placeholder="search">
+              <label for="adn-search"><i data-lucide="search"></i></label>
+            </form>
+            <div class="search-container">
+              <button class="up-down"><i data-lucide="arrow-down-up"></i></button>
+              <button class="active-block-filter"><i data-lucide="list-filter"></i>
+                <ul></ul>
+              </button>
+              <button class="active-block-details"><i data-lucide="chart-no-axes-column"></i>
+                <ul></ul>
+              </button>
+
+            </div>
+          </section>
+          <section class="order-list">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order Id</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Payment</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% orders.forEach(order => { %>
+                <tr data-id="<%= order.id %>">
+                  <td data-label="Order Id">
+                    <%= `${order.id.toString().slice(0,3).toUpperCase()}...${order.id.toString().slice(-4).toUpperCase()}` %>
+                  </td>
+                  <td data-label="Customer"><%= order.customerName %></td>
+                  <td data-label="Date"><%= order.date.toLocaleDateString() %></td>
+                  <td data-label="Amount">₹<%= order.totalAmount.toFixed(2) %></td>
+                  <td data-label="Status" class="status <%= order.orderStatus.toLowerCase() %>">
+                    <span class="dot"></span>
+                    <%= order.orderStatus %>
+                  </td>
+                  <td data-label="Payment"><%= order.paymentMethod %></td>
+                  <td class="actions" data-label="Action">
+                    <a href="/admin/orders/<%= order.id %>" title="View Details">
+                      <i data-lucide="eye"></i>
+                    </a>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+
+             <div class="pagination">
+              <% if (page > 1) { %>
+              <a href="" class="pagination-btn" data-page="<%= page - 1 %>" data-limit="<%= limit %>"><i data-lucide="arrow-left"></i>Previous</a>
+              <% } else {%>
+              <a href="" style="visibility: hidden;"><i data-lucide="arrow-left"></i>Previous</a>
+              <% } %>
+
+              <span>
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                <% if (i === page) { %>
+                <span class="btn"><%= i %></span>
+                <% } else { %>
+                <a class="btn pagination-btn" href="" data-page="<%= i %>" data-limit="<%= limit %>"><%= i %></a>
+                <% } %>
+                <% } %>
+              </span>
+
+              <% if (page < totalPages) { %>
+              <a href="" class="pagination-btn" data-page="<%= page + 1 %>" data-limit="<%= limit %>">Next<i data-lucide="arrow-right"></i></a>
+              <% } else {%>
+              <a href="" style="visibility: hidden;">Next<i data-lucide="arrow-right"></i></a>
+              <% } %>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script type="module" src="/script/admin/adminOrders.js"></script>
+  <script src="/script/admin/adminNav.js"></script>
+</body>
+
+</html>
