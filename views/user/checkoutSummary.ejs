@@ -130,6 +130,7 @@ const subtotal = totalAmount - DELIVERY_FEE;
     import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
     const urlParams = new URLSearchParams(window.location.search);
     const errorMessage = urlParams.get('error');
+    const successMessage = urlParams.get('success');
 
     if (errorMessage) {
         const decodedMessage = decodeURIComponent(errorMessage);
@@ -142,6 +143,18 @@ const subtotal = totalAmount - DELIVERY_FEE;
         }).then(() => {
             const newUrl = window.location.pathname;
             window.history.replaceState({}, document.title, newUrl);
+        });
+    }
+
+    if (successMessage) {
+        const decodedMessage = decodeURIComponent(successMessage);
+        Swal.fire({
+            icon: 'success',
+            title: 'Order placed successfully',
+            text: `${decodedMessage}`,
+            confirmButtonText: 'View Order',
+        }).then(() => {
+            window.location.href = "/myorders"
         });
     }
 

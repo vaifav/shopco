@@ -96,7 +96,7 @@ quantityControls.forEach((control) => {
 
 		let initialQuantity = parseInt(displaySpan.textContent, 10);
 		if (initialQuantity <= 1) minusBtn.disabled = true;
-		if ( initialQuantity >= maxQuantity) plusBtn.disabled = true;
+		if (initialQuantity >= maxQuantity) plusBtn.disabled = true;
 
 		minusBtn.addEventListener("click", async () => {
 			let currentQuantity = parseInt(displaySpan.textContent, 10);
@@ -281,6 +281,20 @@ if (clearCartBtn) {
 			}
 		}
 	});
+}
+
+const urlParams = new URLSearchParams(window.location.search);
+const errorMessage = urlParams.get("error");
+
+if (errorMessage) {
+	const decodedMessage = decodeURIComponent(errorMessage);
+	Swal.fire({
+		icon: "error",
+		title: "Order Failed",
+		text: `We couldn't place your order. Reason: ${decodedMessage}`,
+		confirmButtonText: "Review Order Details",
+		confirmButtonColor: "#d33",
+	})
 }
 
 lucide.createIcons();

@@ -34,8 +34,8 @@
                 </p>
               </div>
               <div class="actions">
-                <a href="/address" class="edit"><i data-lucide="square-pen"></i> <b>Edit</b></a>
-                <a href="/address" class="delete"><i data-lucide="trash-2"></i> <b>Delete</b></a>
+                <a href="/address?isFromCheckout=true" class="edit"><i data-lucide="square-pen"></i> <b>Edit</b></a>
+                <a href="/address?isFromCheckout=true" class="delete"><i data-lucide="trash-2"></i> <b>Delete</b></a>
               </div>
               <div class="custom-radio-checkmark">
                 <i data-lucide="check"></i>
@@ -48,7 +48,7 @@
           </div>
 
           <div class="bottom-actions">
-            <a href="/address" class="add-new-btn"><i data-lucide="plus"></i> Add New Address</a>
+            <a href="/address?isFromCheckout=true" class="add-new-btn"><i data-lucide="plus"></i> Add New Address</a>
             <button type="submit" class="deliver-here-btn" <%= address && address.length === 0 ? 'disabled' : '' %>>
               Proceed to Payment
             </button>

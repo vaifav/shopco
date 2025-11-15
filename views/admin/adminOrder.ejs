@@ -15,6 +15,7 @@
     @import url("/style/pagination.css");
     @import url("/style/search.css");
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -44,7 +45,7 @@
             <h1>Orders</h1>
             <button type="button">Export Orders</button>
           </header>
-            <section class="admin-search order-search">
+          <section class="admin-search order-search">
             <form>
               <input type="text" name="adn-search" id="adn-search" placeholder="search">
               <label for="adn-search"><i data-lucide="search"></i></label>
@@ -74,6 +75,9 @@
                 </tr>
               </thead>
               <tbody>
+                <% 
+  const allStatuses = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled", "Returned"];
+  %>
                 <% orders.forEach(order => { %>
                 <tr data-id="<%= order.id %>">
                   <td data-label="Order Id">
@@ -82,22 +86,31 @@
                   <td data-label="Customer"><%= order.customerName %></td>
                   <td data-label="Date"><%= order.date.toLocaleDateString() %></td>
                   <td data-label="Amount">₹<%= order.totalAmount.toFixed(2) %></td>
-                  <td data-label="Status" class="status <%= order.orderStatus.toLowerCase() %>">
-                    <span class="dot"></span>
-                    <%= order.orderStatus %>
+                  <td data-label="Status" class="status-cell">
+                    <span class="status <%= order.orderStatus.toLowerCase() %>" id="status-display-<%= order.id %>">
+                      <span class="dot"></span>
+                      <span><%= order.orderStatus %></span>
+                    </span>
                   </td>
                   <td data-label="Payment"><%= order.paymentMethod %></td>
                   <td class="actions" data-label="Action">
                     <a href="/admin/orders/<%= order.id %>" title="View Details">
                       <i data-lucide="eye"></i>
                     </a>
+                    <select class="status-select-in-table" data-order-id="<%= order.id %>" onchange="updateOrderStatus(this.value, this.getAttribute('data-order-id'), this)">
+                      <% allStatuses.forEach(status => { %>
+                      <option value="<%= status %>" <%= status === order.orderStatus ? 'selected' : '' %>>
+                        <%= status %>
+                      </option>
+                      <% }); %>
+                    </select>
                   </td>
                 </tr>
                 <% }) %>
               </tbody>
             </table>
 
-             <div class="pagination">
+            <div class="pagination">
               <% if (page > 1) { %>
               <a href="" class="pagination-btn" data-page="<%= page - 1 %>" data-limit="<%= limit %>"><i data-lucide="arrow-left"></i>Previous</a>
               <% } else {%>
@@ -126,8 +139,8 @@
     </div>
   </section>
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
-  <script type="module" src="/script/admin/adminOrders.js"></script>
   <script src="/script/admin/adminNav.js"></script>
+  <script src="/script/admin/adminOrder.js"></script>
 </body>
 
 </html>

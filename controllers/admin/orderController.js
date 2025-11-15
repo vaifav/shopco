@@ -1,4 +1,8 @@
-import { getAdminSingleOrderDetails, orderDetails } from "../../services/admin/orderService.js";
+import {
+	getAdminSingleOrderDetails,
+	orderDetails,
+	updateOrderStatus,
+} from "../../services/admin/orderService.js";
 
 async function getAdminOrders(req, res) {
 	const page = parseInt(req.query.page) || 1;
@@ -9,6 +13,7 @@ async function getAdminOrders(req, res) {
 
 	try {
 		const orderData = await orderDetails(page, limit, date, status, search);
+		
 
 		res.render("admin/adminOrder", {
 			orders: orderData.data,
@@ -25,18 +30,16 @@ async function getAdminOrders(req, res) {
 			currentDateSort: date,
 		});
 	} catch (error) {
-		console.log(error);
+		console.error("Controller Error (getAdminOrders):", error);
+		res.status(500).send("Failed to load orders.");
 	}
 }
 
 const getAdminOrderDetailPage = async (req, res) => {
 	const { orderId } = req.params;
-    console.log(req.para);
-    
 
 	try {
 		const order = await getAdminSingleOrderDetails(orderId);
-		console.log(order);
 
 		if (!order) throw new Error("Order not found");
 
@@ -44,9 +47,34 @@ const getAdminOrderDetailPage = async (req, res) => {
 			order: order,
 		});
 	} catch (error) {
-		console.error("Controller Error:");
-		return res.status(500).render("user/pagenotfound", { error });
+		console.error("Controller Error (getAdminOrderDetailPage):", error);
+		return res.status(404).render("user/pagenotfound", { error });
 	}
 };
 
-export { getAdminOrders ,getAdminOrderDetailPage};
+const updateAdminOrderStatus = async (req, res) => {
+	const { orderId } = req.params;
+	const { newStatus } = req.body;
+
+	if (!newStatus || !orderId) {
+		return res.status(400).json({ success: false, message: "Missing Order ID or Status." });
+	}
+
+	try {
+		const result = await updateOrderStatus(orderId, newStatus);
+
+		return res.status(200).json({
+			success: true,
+			message: `Order status updated to ${result.newStatus}.`,
+			newStatus: result.newStatus,
+		});
+	} catch (error) {
+		console.error("Controller Error (updateAdminOrderStatus):", error.message);
+		return res.status(500).json({
+			success: false,
+			message: error.message || "Internal server error. Failed to update status.",
+		});
+	}
+};
+
+export { getAdminOrders, getAdminOrderDetailPage, updateAdminOrderStatus };

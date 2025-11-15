@@ -16,6 +16,11 @@
   <%- include('./partials/header.ejs') %>
 
   <section class="order-detail-page wrapper">
+    <ol style="display: flex; gap: 1rem; margin-block: 1rem; ">
+          <li><a href="/">Home &raquo;</a></li>
+          <li><a href="/myorders">Orders &raquo;</a></li>
+          <li>Order <%= `#${order._id.toString().slice(0,3).toUpperCase()}...${order._id.toString().slice(-4).toUpperCase()}` %></li>
+        </ol>
     <div class="container">
       <a href="/myorders" class="back-link">
         <i data-lucide="arrow-left"></i> Back to My Orders

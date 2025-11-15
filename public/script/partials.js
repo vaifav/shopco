@@ -1,10 +1,30 @@
 import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
 
 const account = document.querySelector(".header .icons .account");
+const accountPart = document.querySelector(".header .accountPart");
 const loginText = document.querySelector(".header .userLoggin span");
 const loginImage = document.querySelector(".header .userLoggin img");
 const accountDropdown = document.querySelector(".header .account-dropdown");
 const createaccount = document.querySelector(".header .account-dropdown .create-account");
+const clearSearch = document.querySelector(".header .clear-search");
+const search = document.querySelector(".header form input");
+
+function searchParams() {
+	const url = new URL(window.location.href);
+	if (url.searchParams.has("search")) {
+		search.value = url.searchParams.get("search");
+	}
+}
+
+searchParams();
+
+clearSearch.addEventListener("click", (e) => {
+	const url = new URL(window.location.href);
+	if (url.searchParams.has("search")) {
+		url.searchParams.set("search", "");
+		window.location.href = url.toString();
+	}
+});
 
 account.addEventListener("click", () => {
 	accountDropdown.classList.toggle("deactive");
@@ -48,9 +68,11 @@ const fetchUsername = async () => {
 		accountDropdown.querySelector("h2.username").innerHTML = `Hello, ${data.username}`;
 		loginText.textContent = "Logout";
 		loginImage.style.transform = "rotate(360deg)";
+		accountPart.style.display = "block";
 	} else {
 		loginImage.style.transform = "rotate(180deg)";
 		loginText.textContent = "LogIn";
+		accountPart.style.display = "none";
 	}
 };
 fetchUsername();

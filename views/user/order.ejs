@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
   <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/pagination.css">
   <link rel="stylesheet" href="/style/swal.css">
   <link rel="stylesheet" href="/style/account.css">
   <title>My Orders</title>
@@ -41,6 +42,10 @@
       </nav>
       <div class="sections">
         <section id="orders">
+          <ol style="display: flex; gap: 1rem; margin-block: 1rem; ">
+          <li><a href="/">Home &raquo;</a></li>
+          <li>Orders</li>
+        </ol>
           <% if (orders && orders.length > 0) { %>
           <div class="orders-list">
             <% orders.forEach(order => { %>
@@ -78,6 +83,31 @@
             </div>
             <% }); %>
           </div>
+
+          <div class="pagination">
+            <% if (page > 1) { %>
+            <a href="" class="pagination-btn" data-page="<%= page - 1 %>" data-limit="<%= limit %>"><i data-lucide="arrow-left"></i>Previous</a>
+            <% } else {%>
+            <a href="" style="visibility: hidden;"><i data-lucide="arrow-left"></i>Previous</a>
+            <% } %>
+
+            <span>
+              <% for(let i = 1; i <= totalPages; i++) { %>
+              <% if (i === page) { %>
+              <span class="btn disable"><%= i %></span>
+              <% } else { %>
+              <a class="btn pagination-btn" href="" data-page="<%= i %>" data-limit="<%= limit %>"><%= i %></a>
+              <% } %>
+              <% } %>
+            </span>
+
+            <% if (page < totalPages) { %>
+            <a href="" class="pagination-btn" data-page="<%= page + 1 %>" data-limit="<%= limit %>">Next<i data-lucide="arrow-right"></i></a>
+            <% } else {%>
+            <a href="" style="visibility: hidden;">Next<i data-lucide="arrow-right"></i></a>
+            <% } %>
+          </div>
+
           <% } else { %>
           <div class="empty-state">
             <i data-lucide="shopping-bag" class="empty-icon"></i>
@@ -92,7 +122,30 @@
   </section>
 
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script>
+    function addOrUpdateQueryParams(params) {
+      const url = new URL(window.location.href);
+      for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+          url.searchParams.set(key, params[key]);
+        }
+      }
+      window.history.pushState({}, "", url.toString());
+      window.location.reload();
+    }
 
+    document.querySelectorAll(".pagination .pagination-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const page = btn.getAttribute("data-page");
+        const limit = btn.getAttribute("data-limit");
+        addOrUpdateQueryParams({
+          page,
+          limit,
+        });
+      });
+    });
+  </script>
   <script src="/script/account.js" type="module"></script>
   <%- include('./partials/footer.ejs') %>
 </body>

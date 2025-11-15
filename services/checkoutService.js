@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import OrderModel from "../models/orderModel.js";
 import VariantModel from "../models/variantModel.js";
 import CartModel from "../models/cartModel.js";
+import userModel from "../models/signupModel.js";
+import personalInfoModel from "../models/personalInfoModel.js";
 
 const createBuyNowSnapshot = async (variantId, size, color, quantity) => {
 	try {
@@ -113,8 +115,6 @@ const createCartSnapshot = async (userId) => {
 
 const createNewOrder = async (userId, checkoutSnapshot, isFromCart) => {
 	try {
-        console.log(checkoutSnapshot);
-        
 		const stockUpdatePromises = [];
 
 		for (const item of checkoutSnapshot.cartItems) {
@@ -158,6 +158,23 @@ const createNewOrder = async (userId, checkoutSnapshot, isFromCart) => {
 			await CartModel.findOneAndUpdate({ userId: userId }, { $set: { items: [] } }, { new: true });
 		}
 
+		if ((await OrderModel.countDocuments({ user: new mongoose.Types.ObjectId(userId) })) === 1) {
+			const user = await userModel.findByIdAndUpdate(userId, { isVisitors: false });
+			const personalInfo = await personalInfoModel.findOne({ userId });
+			if (!personalInfo.phone) {
+				await personalInfoModel.findOneAndUpdate(
+					{ userId },
+					{ $set: { phone: checkoutSnapshot.shippingAddress.phone } }
+				);
+			}
+
+			if (!personalInfo.address) {
+				await personalInfoModel.findOneAndUpdate(
+					{ userId },
+					{ $set: { address: new mongoose.Types.ObjectId(checkoutSnapshot.shippingAddress.addressId) } }
+				);
+			}
+		}
 		return newOrder;
 	} catch (error) {
 		throw new Error(error.message);

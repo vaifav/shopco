@@ -93,6 +93,18 @@
                       <th>Price</th>
                     </tr>
                   </thead>
+                  <tbody>
+                    <% if (data.orders && data.orders!==0) { %>
+                    <% data.orders.forEach((order,index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td><%= new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+                      <td class="<%= order.orderStatus.toLowerCase() %>"><%= order.orderStatus %></td>
+                      <td>&#8377; <%= order.totalAmount %></td>
+                    </tr>
+                    <% }) %>
+                    <% } %>
+                  </tbody>
                 </table>
               </section>
             </div>

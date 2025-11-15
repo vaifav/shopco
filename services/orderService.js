@@ -1,12 +1,30 @@
 import OrderModel from "../models/orderModel.js";
 import Variant from "../models/variantModel.js";
 
-const getOrdersByUserId = async (userId) => {
+const getOrdersByUserId = async (userId, page = 1, limit = 5) => {
 	try {
-		const orders = await OrderModel.find({ user: userId }).sort({ createdAt: -1 }).lean();
-		return orders;
+		const total = await OrderModel.countDocuments({ user: userId });
+		const totalPages = Math.ceil(total / limit);
+		if (page < 1) page = 1;
+		if (page > totalPages) page = totalPages || 1;
+		let skip = (page - 1) * limit;
+
+		const orders = await OrderModel.find({ user: userId })
+			.sort({ createdAt: -1 })
+			.skip(skip)
+			.limit(limit)
+			.lean();
+
+		return {
+			orders,
+			page,
+			limit,
+			totalPages,
+			total,
+		};
 	} catch (err) {
 		console.log(err);
+		throw new Error("Failed to fetch user orders.");
 	}
 };
 
@@ -65,4 +83,4 @@ const updateOrderStatus = async (orderId, newStatus) => {
 	}
 };
 
-export { getOrderDetails, getOrdersByUserId ,updateOrderStatus};
+export { getOrderDetails, getOrdersByUserId, updateOrderStatus };

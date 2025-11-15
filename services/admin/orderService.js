@@ -1,4 +1,5 @@
 import OrderModel from "../../models/orderModel.js";
+import mongoose from "mongoose";
 
 async function orderDetails(page = 1, limit = 10, date, status, search = "") {
 	const data = {};
@@ -42,7 +43,7 @@ async function orderDetails(page = 1, limit = 10, date, status, search = "") {
 		data.pendingOrders = await OrderModel.countDocuments({ orderStatus: "Pending" });
 
 		data.data = orders.map((order) => {
-			const customerIdentifier = order.user.username || order.user.email;
+			const customerIdentifier = order?.user?.username || order?.user?.email;
 			return {
 				id: order._id,
 				customerName: order.user ? customerIdentifier : "Guest User",
@@ -73,4 +74,34 @@ const getAdminSingleOrderDetails = async (orderId) => {
 	}
 };
 
-export { orderDetails, getAdminSingleOrderDetails };
+const updateOrderStatus = async (orderId, newStatus) => {
+	if (!mongoose.Types.ObjectId.isValid(orderId)) {
+		throw new Error(`Invalid Order ID format: ${orderId}`);
+	}
+
+	try {
+		const validStatuses = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled", "Returned"];
+		if (!validStatuses.includes(newStatus)) {
+			throw new Error(
+				`Invalid order status: ${newStatus}. Must be one of: ${validStatuses.join(", ")}`
+			);
+		}
+
+		const updatedOrder = await OrderModel.findByIdAndUpdate(
+			orderId,
+			{ orderStatus: newStatus },
+			{ new: true }
+		);
+
+		if (!updatedOrder) {
+			throw new Error(`Order with ID ${orderId} not found.`);
+		}
+
+		return { success: true, newStatus: updatedOrder.orderStatus };
+	} catch (error) {
+		console.error("Error updating order status:", error);
+		throw new Error(error.message || "Failed to update order status in database.");
+	}
+};
+
+export { orderDetails, getAdminSingleOrderDetails, updateOrderStatus };

@@ -17,8 +17,8 @@ const getCheckOutPage = async (req, res) => {
 			checkout: checkoutData,
 		});
 	} catch (error) {
-		console.log("Error rendering checkout page:", error);
-		return res.status(500).send("Server error on checkout page.");
+		console.log(error);
+		return res.status(500).render("user/pagenotfound", { error });
 	}
 };
 
@@ -104,7 +104,7 @@ const startCartCheckout = async (req, res) => {
 		return res.redirect("/checkout");
 	} catch (error) {
 		console.log(error.message);
-		return res.status(500).send("Server error during cart checkout.");
+		return res.status(500).redirect(`/cart?error=${encodeURIComponent(error.message)}`);
 	}
 };
 
@@ -124,7 +124,13 @@ const buyNowAndStartCheckout = async (req, res) => {
 		return res.redirect("/checkout/address");
 	} catch (error) {
 		console.log(error);
-		return res.status(500).send("Server error during checkout.");
+		return res
+			.status(500)
+			.redirect(
+				`/products/${productId.toString()}/${variantId.toString()}?error=${encodeURIComponent(
+					error.message
+				)}`
+			);
 	}
 };
 
@@ -154,6 +160,7 @@ const saveShippingAddressSnapshot = async (req, res) => {
 			state: address.state,
 			country: address.country,
 			pin: address.pin,
+			addressId: addressId,
 		};
 
 		req.session.checkout.shippingAddress = addressSnapshot;
@@ -195,21 +202,24 @@ const placeOrder = async (req, res) => {
 	const userId = req.session.user.userId;
 	const isFromCart = checkout.isFromCart === true;
 
-	if (
-		!checkout ||
-		!checkout.shippingAddress ||
-		!checkout.paymentMethod ||
-		checkout.cartItems.length === 0
-	) {
-		console.log("Incomplete checkout session......");
-		return res.redirect("/cart");
-	}
-
 	try {
-		const newOrder = await createNewOrder(userId, checkout, isFromCart);
-		delete req.session.checkout;
+		if (
+			!checkout ||
+			!checkout.shippingAddress ||
+			!checkout.paymentMethod ||
+			checkout.cartItems.length === 0
+		) {
+			console.log("Incomplete checkout session......");
+			return res.redirect("/cart");
+		}
 
-		return res.redirect(`/myorders`);
+		const newOrder = await createNewOrder(userId, checkout, isFromCart);
+
+		req.session.order = {};
+		req.session.order.id = newOrder._id;
+		req.session.order.totalAmount = newOrder.totalAmount;
+		res.redirect(`/order/success`);
+		return;
 	} catch (error) {
 		console.log(error);
 		return res.status(500).redirect(`/checkout/summary?error=${encodeURIComponent(error.message)}`);

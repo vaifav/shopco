@@ -26,8 +26,8 @@ const getAddressPage = async (req, res) => {
 			address,
 			singleAddress,
 			personalInfo: {
-				avatar: personalInfo.personalInfo.avatar,
-				fname: personalInfo.personalInfo.fname,
+				avatar: personalInfo?.personalInfo?.avatar,
+				fname: personalInfo?.personalInfo?.fname,
 			},
 			email: personalInfo.email,
 		});

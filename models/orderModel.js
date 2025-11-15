@@ -24,6 +24,7 @@ const ShippingAddressSchema = new mongoose.Schema(
 		street: { type: String, required: true },
 		houseName: { type: String, required: true },
 		pin: { type: String, required: true },
+		addressId: { type: mongoose.Schema.Types.ObjectId, ref: "address" },
 	},
 	{ _id: false }
 );

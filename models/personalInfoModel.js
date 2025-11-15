@@ -8,32 +8,30 @@ const personalInfoSchema = new mongoose.Schema(
 			required: true,
 			index: true,
 			unique: true,
+			required: true,
 		},
 		fname: {
 			type: String,
-			required: true,
 			trim: true,
 			minlength: 2,
 			maxlength: 50,
 		},
 		lname: {
 			type: String,
-			required: true,
 			trim: true,
 			minlength: 1,
 			maxlength: 50,
 		},
 		email: {
 			type: String,
-			required: true,
 			trim: true,
 			lowercase: true,
 			unique: true,
+			required: true,
 			match: [/^\S+@\S+\.\S+$/, "Please provide a valid email address"],
 		},
 		phone: {
 			type: String,
-			required: true,
 			trim: true,
 			match: [/^\+?[0-9]{7,15}$/, "Please enter a valid phone number"],
 			maxlength: [10, "Phone number cannot exceed 10 characters"],
@@ -47,12 +45,10 @@ const personalInfoSchema = new mongoose.Schema(
 		gender: {
 			type: String,
 			enum: ["male", "female"],
-			required: true,
 		},
 		address: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "address",
-			required: true,
 		},
 		isBlocked: {
 			type: Boolean,

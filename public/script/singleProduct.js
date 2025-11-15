@@ -162,4 +162,22 @@ addToCartButton.addEventListener("click", async (event) => {
 	console.log(productData);
 });
 
+
+const urlParams = new URLSearchParams(window.location.search);
+const errorMessage = urlParams.get("error");
+
+if (errorMessage) {
+	const decodedMessage = decodeURIComponent(errorMessage);
+	Swal.fire({
+		icon: "error",
+		title: "Order Failed",
+		text: `We couldn't place your order. Reason: ${decodedMessage}`,
+		confirmButtonText: "OK",
+		confirmButtonColor: "#d33",
+	}).then(() => {
+		const newUrl = window.location.pathname;
+		window.history.replaceState({}, document.title, newUrl);
+	});
+}
+
 lucide.createIcons();

@@ -187,6 +187,23 @@
 	height: 20px;
 }
 
+#customers .pending {
+	color: #facc15;
+}
+#customers .delivered {
+	color: #22c55e;
+}
+#customers .processing {
+	color: #2291c5;
+}
+#customers .shipped {
+	color: #1d15fa;
+}
+#customers .cancelled,
+#customers .returned {
+	color: #ef4444;
+}
+
 @media (max-width: 1280px) {
 	#customers .customer-details-container {
 		flex-direction: column;

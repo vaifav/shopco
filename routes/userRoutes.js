@@ -41,6 +41,7 @@ import {
 	cancelOrder,
 	getOrderDetailPage,
 	getOrdersPage,
+	getOrderSuccessPage,
 } from "../controllers/user/orderController.js";
 
 const user = Router();
@@ -104,8 +105,8 @@ user
 	.post(...checkoutMiddleware, savePaymentMethodAndRedirect);
 
 user.get("/checkout/summary", ...checkoutMiddleware, getCheckoutSummaryPage);
-
 user.post("/order/place", requireAuth, isVerified, placeOrder);
+user.get("/order/success", requireAuth, isVerified, getOrderSuccessPage);
 
 user.get("/myorders/:orderId", requireAuth, isVerified, getOrderDetailPage);
 user.patch("/order/cancel/:orderId", requireAuth, isVerified, cancelOrder);

@@ -8,19 +8,27 @@ import { getPersonalInfo } from "../../services/personalInfoService.js";
 const getOrdersPage = async (req, res) => {
 	const userId = req.session.user.userId;
 
+	let page = parseInt(req.query.page) || 1;
+	let limit = parseInt(req.query.limit) || 5;
+
 	try {
 		const personalInfo = await getPersonalInfo(userId);
-		const orders = await getOrdersByUserId(userId);
+		const orderData = await getOrdersByUserId(userId, page, limit);
+
 		return res.render("user/order", {
-			orders,
+			orders: orderData.orders,
+			page: orderData.page,
+			limit: orderData.limit,
+			totalPages: orderData.totalPages,
+			totalOrders: orderData.total,
 			personalInfo: {
-				avatar: personalInfo.personalInfo.avatar,
-				fname: personalInfo.personalInfo.fname,
+				avatar: personalInfo?.personalInfo?.avatar,
+				fname: personalInfo?.personalInfo?.fname,
 			},
 		});
 	} catch (error) {
 		console.error("Error fetching user orders:", error.message);
-		return res.status(500).render("user/pagenotfound", { error });
+		return res.status(500).render("user/pagenotfound", { error: error.message });
 	}
 };
 
@@ -40,7 +48,20 @@ const getOrderDetailPage = async (req, res) => {
 			order: order,
 		});
 	} catch (error) {
-		console.error("Controller Error:", error.message);
+		console.error(error.message);
+		return res.status(500).render("user/pagenotfound", { error });
+	}
+};
+
+const getOrderSuccessPage = async (req, res) => {
+	const orderId = req?.session?.order?.id || "";
+	const totalAmount = req?.session?.order?.totalAmount || 90;
+
+	try {
+		delete req.session.checkout;
+		return res.render("user/orderSuccess", { orderId, totalAmount });
+	} catch (error) {
+		console.error(error.message);
 		return res.status(500).render("user/pagenotfound", { error });
 	}
 };
@@ -73,4 +94,4 @@ const cancelOrder = async (req, res, next) => {
 	}
 };
 
-export { getOrderDetailPage, getOrdersPage, cancelOrder };
+export { getOrderDetailPage, getOrdersPage, getOrderSuccessPage, cancelOrder };
