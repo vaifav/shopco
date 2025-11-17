@@ -121,7 +121,7 @@ const buyNowAndStartCheckout = async (req, res) => {
 		req.session.checkout.shippingAddress = null;
 		req.session.checkout.paymentMethod = null;
 
-		return res.redirect("/checkout/address");
+		return res.redirect("/checkout");
 	} catch (error) {
 		console.log(error);
 		return res
