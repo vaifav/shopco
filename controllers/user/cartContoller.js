@@ -23,7 +23,6 @@ const getCartPage = async (req, res) => {
 		return res.render("user/cart", { cart });
 	} catch (error) {
 		console.log(error);
-
 		return res.render("user/cart", { cart: [] });
 	}
 };

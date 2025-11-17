@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/wishlist.css">
+  <title>Wishlist</title>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+
+  <section class="body">
+    <main>
+      <div class="wishlist-header-actions">
+        <h1 class="main-heading">Your Wishlist</h1>
+        <button id="clear-wishlist-btn" class="clear-wishlist-btn">
+          <i data-lucide="trash-2" class="lucide-icon"></i> Clear All
+        </button>
+      </div>
+
+      <section class="wishlist-page-layout">
+        <section class="wishlist-container" aria-labelledby="wishlist-heading">
+
+          <article class="wishlist-item">
+            <img src="/images/static_product_image_1.jpg" alt="Stylish Summer Shirt" class="item-image">
+            <div class="item-details">
+              <h3 class="item-name">Stylish Summer Shirt</h3>
+              <ul>
+                <li class="item-variant">Size: L </li>
+                <li class="item-variant">Color: Teal</li>
+              </ul>
+              <p class="item-price"> <i data-lucide="indian-rupee"></i> <b>1599</b></p>
+            </div>
+            <div class="item-actions">
+              <button class="remove-item" aria-label="Remove Stylish Summer Shirt" data-variantid="wish_001">
+                <i data-lucide="x" class="lucide-icon"></i> Remove
+              </button>
+              <button class="add-to-cart-btn" data-variantid="wish_001" data-price="1599">
+                Add to Cart
+              </button>
+            </div>
+          </article>
+
+          <article class="wishlist-item out-of-stock">
+            <img src="/images/another_static_image_2.jpg" alt="Premium Leather Wallet" class="item-image">
+            <div class="item-details">
+              <h3 class="item-name">Premium Leather Wallet</h3>
+              <ul>
+                <li class="item-variant">Variant: Standard </li>
+                <li class="item-variant">Color: Black</li>
+              </ul>
+              <p class="item-price"> <i data-lucide="indian-rupee"></i> <b>2499</b></p>
+            </div>
+            <div class="item-actions">
+              <button class="remove-item" aria-label="Remove Premium Leather Wallet" data-variantid="wish_002">
+                <i data-lucide="x" class="lucide-icon"></i> Remove
+              </button>
+              <button class="add-to-cart-btn disabled" disabled title="Item is currently out of stock">
+                Out of Stock
+              </button>
+            </div>
+          </article>
+
+        </section>
+      </section>
+    </main>
+  </section>
+
+  <%- include('./partials/footer.ejs') %>
+  <script src="/script/wishlist.js" type="module"></script>
+</body>
+
+</html>

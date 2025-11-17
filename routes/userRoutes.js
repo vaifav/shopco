@@ -44,6 +44,7 @@ import {
 	getOrderSuccessPage,
 } from "../controllers/user/orderController.js";
 import { downloadOrderInvoice } from "../controllers/admin/orderController.js";
+import { getWishListPage } from "../controllers/user/wishlistController.js";
 
 const user = Router();
 
@@ -112,5 +113,7 @@ user.get("/order/success", requireAuth, isVerified, getOrderSuccessPage);
 user.get("/myorders/:orderId", requireAuth, isVerified, getOrderDetailPage);
 user.patch("/order/cancel/:orderId", requireAuth, isVerified, cancelOrder);
 user.get("/orders/invoice/:orderId", downloadOrderInvoice);
+
+user.get("/wishlist", ...authVerified, getWishListPage);
 
 export default user;
