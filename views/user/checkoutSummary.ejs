@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/checkoutSummary.css">
+  <title>Checkout - Order Summary</title>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <main>
+    <h1 class="main-heading">Order Summary</h1>
+    <section class="checkout-container">
+      <div class="content-area summary-content">
+
+        <section class="product-list-section">
+          <h2 class="section-heading">Products</h2>
+          <div class="product-list">
+            <% if (checkout.cartItems && checkout.cartItems.length > 0) { %>
+            <% checkout.cartItems.forEach(item => { %>
+            <div class="product-item">
+              <div class="item-details">
+                <img src="<%= item.imageUrl %>" alt="<%= item.name %>" class="product-image">
+                <span class="product-name">
+                  <%= item.name %>
+                  (Qty: <%= item.quantity %>, Size: <%= item.size %>)
+                </span>
+              </div>
+              <span class="product-price">₹<%= (item.price * item.quantity).toFixed(2) %></span>
+            </div>
+            <% }) %>
+            <% } else { %>
+            <p class="no-items">No items found in cart.</p>
+            <% } %>
+          </div>
+        </section>
+
+        <hr class="summary-divider">
+
+        <section class="shipping-address-section">
+          <h2 class="section-heading">Shipping Address</h2>
+          <% 
+const a = checkout.shippingAddress; 
+%>
+          <div class="summary-detail-block">
+            <p class="name-line">
+              <b><%= a.fullName %></b>
+            </p>
+            <p class="address-line">
+              <%= `${a.houseName}, ${a.street}, ${a.city}, ${a.state} - ${a.pin}` %>
+            </p>
+            <p class="phone-line">
+              <i data-lucide="phone"></i> <span><%= a.phone %></span>
+            </p>
+            <a href="/checkout/address" class="edit-icon-btn">
+              <i data-lucide="square-pen"></i>
+            </a>
+          </div>
+        </section>
+
+        <hr class="summary-divider">
+
+        <section class="payment-method-section">
+          <h2 class="section-heading">Payment Method</h2>
+          
+          <div class="summary-detail-block">
+            <p class="payment-line">
+              <b><%= checkout.paymentMethod.method === "COD" ? 'Cash on delivery' : checkout.paymentMethod.method %></b>
+            </p>
+            <a href="/checkout/payment" class="edit-icon-btn">
+              <i data-lucide="square-pen"></i>
+            </a>
+          </div>
+        </section>
+
+        <hr class="summary-divider">
+
+        <form action="/order/place" method="POST" class="place-order-form">
+          <p class="final-notice">By clicking "Place Order", you agree to the terms and conditions.</p>
+          <button type="submit" class="place-order-btn">
+            Place Order (₹<%= checkout.totalAmount.toFixed(2) %>)
+          </button>
+        </form>
+
+      </div>
+
+      <aside class="summary-area">
+        <% 
+const DELIVERY_FEE = 15;
+const totalAmount = checkout.totalAmount; 
+const subtotal = totalAmount - DELIVERY_FEE; 
+%>
+
+        <h3 class="summary-heading">Order Total</h3>
+        <div class="summary-item">
+          <span class="label">Subtotal (<%= checkout.cartItems.length %> items)</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= subtotal.toFixed(2) %></b>
+          </span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Delivery Fee</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= DELIVERY_FEE.toFixed(2) %></b>
+          </span>
+        </div>
+        <div class="summary-item discount">
+          <span class="label">Discount</span>
+          <span class="value">-<i data-lucide="indian-rupee"></i> <b>0.00</b></span>
+        </div>
+        <hr>
+        <div class="summary-item total">
+          <span class="label">Total</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= totalAmount.toFixed(2) %></b>
+          </span>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script type="module">
+    import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorMessage = urlParams.get('error');
+    const successMessage = urlParams.get('success');
+
+    if (errorMessage) {
+        const decodedMessage = decodeURIComponent(errorMessage);
+        Swal.fire({
+            icon: 'error',
+            title: 'Order Failed',
+            text: `We couldn't place your order. Reason: ${decodedMessage}`,
+            confirmButtonText: 'Review Order Details',
+            confirmButtonColor: "#d33",
+        }).then(() => {
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+        });
+    }
+
+    if (successMessage) {
+        const decodedMessage = decodeURIComponent(successMessage);
+        Swal.fire({
+            icon: 'success',
+            title: 'Order placed successfully',
+            text: `${decodedMessage}`,
+            confirmButtonText: 'View Order',
+        }).then(() => {
+            window.location.href = "/myorders"
+        });
+    }
+
+    lucide.createIcons();
+  </script>
+  <%- include('./partials/footer.ejs') %>
+</body>
+
+</html>

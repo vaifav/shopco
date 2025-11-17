@@ -119,7 +119,7 @@ const editCategory = async (req, res) => {
 			message: "Category Updated SucccessFully",
 		});
 	} catch (error) {
-		console.error("Error updating category:", error.message);
+		console.error(error);
 		return res.status(500).json({
 			success: false,
 			message: error.message,
@@ -136,7 +136,7 @@ const removeCategory = async (req, res) => {
 			message: "Category Removed SucccessFully",
 		});
 	} catch (error) {
-		console.error("Error updating category:", error.message);
+		console.error(error);
 		return res.status(500).json({
 			success: false,
 			message: error.message,

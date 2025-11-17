@@ -115,7 +115,11 @@ searchForm.addEventListener("submit", (e) => {
 	let search = searchForm.querySelector("input#adn-search").value;
 	addOrUpdateQueryParams({ search: search });
 });
+const searchClear = document.querySelector(".adn-clear-label");
 
+searchClear.addEventListener("click", () => {
+	addOrUpdateQueryParams({ search: "" });
+});
 edit.forEach((btn) => {
 	btn.addEventListener("click", () => {
 		const id = btn.getAttribute("data-id").trim();
@@ -195,7 +199,7 @@ unblock.forEach((btn) => {
 
 		try {
 			const res = await fetch(`/admin/products/action/${id}`, {
-				method: "PATCH",
+				method: "PUT",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ isBlocked: false }),
 			});

@@ -184,6 +184,8 @@ const getProductData = async (
 				},
 			},
 		]);
+		console.log(data);
+		
 		return data;
 	} catch (error) {
 		console.log(error);
@@ -233,6 +235,7 @@ const getSingleProduct = async (_id, varId) => {
 					rating: "$rating",
 					description: "$description",
 					sizes: "$allVariants.sizes",
+					variantColor: "$allVariants.color",
 				},
 			},
 		]);
@@ -287,6 +290,7 @@ const getSingleProduct = async (_id, varId) => {
 					rating: "$rating",
 					description: "$description",
 					sizes: "$allVariants.sizes",
+					variantColor: "$allVariants.color",
 				},
 			},
 		]);
@@ -345,6 +349,7 @@ const getSingleProductByColor = async (_id, varId, color) => {
 					rating: "$rating",
 					description: "$description",
 					sizes: "$allVariants.sizes",
+					variantColor: "$allVariants.color",
 				},
 			},
 		]);
@@ -399,6 +404,7 @@ const getSingleProductByColor = async (_id, varId, color) => {
 					rating: "$rating",
 					description: "$description",
 					sizes: "$allVariants.sizes",
+					variantColor: "$allVariants.color",
 				},
 			},
 		]);

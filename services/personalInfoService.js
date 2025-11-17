@@ -2,6 +2,29 @@ import { sendChangeEmailOtp } from "../config/otp.js";
 import personalInfoModel from "../models/personalInfoModel.js";
 import userModel from "../models/signupModel.js";
 
+function isNotValidUserName(username, msgName) {
+	if (!username) {
+		return `${msgName} is required.`;
+	}
+
+	const minLength = 3;
+	const maxLength = 20;
+	if (username.length < minLength || username.length > maxLength) {
+		return `${msgName} must be between ${minLength} and ${maxLength} characters long.`;
+	}
+
+	const validCharsRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.-]+$/;
+	if (!validCharsRegex.test(username)) {
+		return `${msgName} must contain at least one letter and can only contain letters, numbers, periods (.), hyphens (-), and underscores (_).`;
+	}
+
+	if (username.trim() !== username) {
+		return `${msgName} cannot contain leading or trailing spaces.`;
+	}
+
+	return null;
+}
+
 const getPersonalInfo = async (userId) => {
 	try {
 		if (!userId) throw new Error("User ID is required");
@@ -23,6 +46,11 @@ const createPersonalInfo = async (data, userId, file = "") => {
 			if (!data[field]) throw new Error(`Field "${field}" is required`);
 		}
 
+		const notValidFname = isNotValidUserName(data.fname, "First name");
+		if (notValidFname) throw new Error(notValidFname);
+		const notValidLname = isNotValidUserName(data.lname, "Last name");
+		if (notValidLname) throw new Error(notValidLname);
+
 		const exists = await personalInfoModel.findOne({ userId });
 		if (exists) throw new Error("Personal info already exists for this user");
 
@@ -39,6 +67,10 @@ const createPersonalInfo = async (data, userId, file = "") => {
 const updatePersonalInfo = async (data, userId, file = "") => {
 	try {
 		if (!userId) throw new Error("userId required");
+		const notValidFname = isNotValidUserName(data.fname, "First name");
+		if (notValidFname) throw new Error(notValidFname);
+		const notValidLname = isNotValidUserName(data.lname, "Last name");
+		if (notValidLname) throw new Error(notValidLname);
 
 		const info = await personalInfoModel.findOne({ userId });
 		if (!info) {

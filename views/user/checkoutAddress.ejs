@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/checkoutAddress.css">
+  <title>Checkout - Address</title>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <main>
+    <h1 class="main-heading">Shipping Address</h1>
+    <section class="checkout-container">
+      <div class="content-area">
+
+        <form action="/checkout/address" method="POST" id="address-selection-form">
+          <div class="address-grid">
+            <% if (address && address.length !== 0) { %>
+            <% address.forEach(a => { %>
+
+            <label class="address-card">
+              <input type="radio" name="addressId" value="<%= a._id %>" <%= a.isDefault ? 'checked' : '' %>>
+              <div class="card-content">
+                <h2><%= a.fullName %></h2>
+                <p class="address-details"><%= `${a.houseName}, ${a.street}, ${a.city}, ${a.pin}` %></p>
+                <p class="phone-number">
+                  <i data-lucide="phone"></i> <span><%= a.phone %></span>
+                </p>
+              </div>
+              <div class="actions">
+                <a href="/address?isFromCheckout=true" class="edit"><i data-lucide="square-pen"></i> <b>Edit</b></a>
+                <a href="/address?isFromCheckout=true" class="delete"><i data-lucide="trash-2"></i> <b>Delete</b></a>
+              </div>
+              <div class="custom-radio-checkmark">
+                <i data-lucide="check"></i>
+              </div>
+            </label>
+            <% }) %>
+            <% } else { %>
+            <p class="no-address">No saved addresses found. Please add a new one.</p>
+            <% } %>
+          </div>
+
+          <div class="bottom-actions">
+            <a href="/address?isFromCheckout=true" class="add-new-btn"><i data-lucide="plus"></i> Add New Address</a>
+            <button type="submit" class="deliver-here-btn" <%= address && address.length === 0 ? 'disabled' : '' %>>
+              Proceed to Payment
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <aside class="summary-area">
+        <% 
+                    const DELIVERY_FEE = 15;
+                    const totalAmount = checkout.totalAmount; 
+                    const subtotal = totalAmount - DELIVERY_FEE; 
+                %>
+
+        <h3 class="summary-heading">Order Total</h3>
+        <div class="summary-item">
+          <span class="label">Subtotal (<%= checkout.cartItems.length %> items)</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= subtotal.toFixed(2) %></b>
+          </span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Delivery Fee</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= DELIVERY_FEE.toFixed(2) %></b>
+          </span>
+        </div>
+        <div class="summary-item discount">
+          <span class="label">Discount</span>
+          <span class="value">-<i data-lucide="indian-rupee"></i> <b>0.00</b></span>
+        </div>
+        <hr>
+        <div class="summary-item total">
+          <span class="label">Total</span>
+          <span class="value">
+            <i data-lucide="indian-rupee"></i> <b><%= totalAmount.toFixed(2) %></b>
+          </span>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const addressCards = document.querySelectorAll('.address-card');
+
+      addressCards.forEach(card => {
+        const radio = card.querySelector('input[name="addressId"]');
+
+        radio.addEventListener('change', () => {
+          addressCards.forEach(c => c.classList.remove('selected'));
+          if (radio.checked) {
+            card.classList.add('selected');
+          }
+        });
+
+        if (radio.checked) {
+          card.classList.add('selected');
+        }
+      });
+
+      lucide.createIcons();
+    });
+  </script>
+  <%- include('./partials/footer.ejs') %>
+</body>
+
+</html>

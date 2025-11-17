@@ -28,7 +28,7 @@ block.forEach((btn) => {
 				showCancelButton: true,
 				confirmButtonColor: "#d33",
 				cancelButtonColor: "#3085d6",
-				confirmButtonText: "Yes, block",
+				confirmButtonText: isBlocked ? "Yes, Unblock" : "Yes, block",
 				cancelButtonText: "Cancel",
 			});
 			if (!confirmResult.isConfirmed) return;
@@ -132,7 +132,11 @@ searchForm.addEventListener("submit", (e) => {
 	let search = searchForm.querySelector("input#adn-search").value;
 	addOrUpdateQueryParams({ search: search });
 });
+const searchClear = document.querySelector(".adn-clear-label");
 
+searchClear.addEventListener("click", () => {
+	addOrUpdateQueryParams({ search: "" });
+});
 const sortToggle = (field, element, initVal) => {
 	const fieldArr = ["createdAt", "fname"];
 	let index = fieldArr.indexOf(field);

@@ -5,6 +5,7 @@ const getAllData = async () => {
 	const data = {};
 	try {
 		const products = await productModel.aggregate([
+			{ $match: { isBlocked: false } },
 			{
 				$lookup: {
 					from: "variants",

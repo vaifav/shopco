@@ -11,6 +11,13 @@ const deleteAddress = document.querySelectorAll("#manage-address article button.
 
 const { states, cities, addresses } = window.accountData;
 
+function isFromCheckout() {
+	const urlParams = new URLSearchParams(window.location.search);
+	const checkout = urlParams.get("isFromCheckout");
+	const value = checkout === "true" ? true : false;
+	return value;
+}
+
 function populateStates(countryCode, statesArray, stateSelectElement) {
 	stateSelectElement.innerHTML = '<option value="" disabled selected>Select State</option>';
 	statesArray
@@ -65,7 +72,7 @@ function handleAddressSubmit(form, url, method, overlay) {
 					text: result.message || "Something went wrong. Please try again.",
 					confirmButtonColor: "#d33",
 				});
-				window.location.href = "/account#manage-address";
+				window.location.href = "/address";
 				return;
 			}
 
@@ -76,7 +83,7 @@ function handleAddressSubmit(form, url, method, overlay) {
 				showConfirmButton: false,
 				timer: 1500,
 			});
-			window.location.href = "/account";
+			window.location.href = isFromCheckout() ? "/checkout/address" :"/account";
 		} catch (err) {
 			console.error("Error submitting form:", err);
 			await Swal.fire({
@@ -131,7 +138,8 @@ editAddress.forEach((btn) => {
 		});
 
 		document.getElementById("fullName").value = address.fullName;
-		(document.getElementById("address-phone").value = address.phone), (document.getElementById("pin").value = address.pin);
+		(document.getElementById("address-phone").value = address.phone),
+			(document.getElementById("pin").value = address.pin);
 		document.getElementById("houseName").value = address.houseName;
 		document.getElementById("street").value = address.street;
 
@@ -183,7 +191,7 @@ deleteAddress.forEach((btn) => {
 				timer: 1500,
 			});
 
-			window.location.href = "/account";
+			window.location.href = isFromCheckout() ? "/checkout/address" :"/account";
 		} catch (err) {
 			console.error("Error submitting form:", err);
 			await Swal.fire({

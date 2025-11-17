@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import categoryModel from "../../models/categoryModel.js";
+import productModel from "../../models/productModel.js";
 
 const getParentCategories = async () => {
 	try {
@@ -43,12 +44,28 @@ const createCategory = async (data, createdBy) => {
 };
 
 const updateCategory = async (data, categoryId, updatedBy) => {
+	const categoryNamePattern = data.categoryName
+		? new RegExp(`^${data.categoryName.trim()}$`, "i")
+		: "";
+	console.log(data);
+
 	try {
+		const categoryNameExists = await categoryModel.findOne({
+			$and: [
+				{ categoryName: categoryNamePattern },
+				{ _id: { $ne: new mongoose.Types.ObjectId(categoryId) } },
+			],
+		});
+		if (categoryNameExists) throw new Error(`${data.categoryName} category exists`);
 		const category = await categoryModel.findOne({ _id: new mongoose.Types.ObjectId(categoryId) });
 		if (!category) throw new Error("Category Not Found");
 
 		if (data.createdBy && category.createdBy !== data.createdBy) {
 			throw new Error("Not allowed to modify !");
+		}
+
+		if (data.isBlocked === false) {
+			await productModel.updateMany({ category: category._id }, { isBlocked: false });
 		}
 
 		const update = await categoryModel.findOneAndUpdate(
@@ -70,9 +87,12 @@ const deleteCategory = async (_id) => {
 		if (!category) throw new Error("Category Not Found !");
 
 		const softDel = await categoryModel.findOneAndUpdate({ _id }, { $set: { isBlocked: true } });
+		const product = await productModel.updateMany({ category: softDel._id }, { isBlocked: true });
+		console.log(product);
+
 		return softDel;
 	} catch (error) {
-		console.log(error.message);
+		console.log(error);
 		throw new Error(error.message);
 	}
 };

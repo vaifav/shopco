@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/orderDetails.css">
+  <title>Order <%= `#${order._id.toString().slice(0,3).toUpperCase()}...${order._id.toString().slice(-4).toUpperCase()}` %></title>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+
+  <section class="order-detail-page wrapper">
+    <ol style="display: flex; gap: 1rem; margin-block: 1rem; ">
+      <li><a href="/">Home &raquo;</a></li>
+      <li><a href="/myorders">Orders &raquo;</a></li>
+      <li>Order <%= `#${order._id.toString().slice(0,3).toUpperCase()}...${order._id.toString().slice(-4).toUpperCase()}` %></li>
+    </ol>
+    <div class="container">
+      <a href="/myorders" class="back-link">
+        <i data-lucide="arrow-left"></i> Back to My Orders
+      </a>
+
+      <% if (order) { %>
+      <h1 class="main-heading">Order <%= `#${order._id.toString().slice(0,3).toUpperCase()}...${order._id.toString().slice(-4).toUpperCase()}` %></h1>
+
+      <div class="status-action-bar card">
+        <div class="status-group">
+          <span class="label">Current Status:</span>
+          <span class="order-status status-<%= order.orderStatus.toLowerCase() %>">
+            <b><%= order.orderStatus %></b>
+          </span>
+        </div>
+
+        <div class="action-buttons">
+          <% if (order.orderStatus === 'Pending' || order.orderStatus === 'Shipped') { %>
+          <button class="cancel-btn secondary-btn" data-order-id="<%= order._id %>">
+            <i data-lucide="x-circle"></i> Cancel Order
+          </button>
+          <% } else if (order.orderStatus === 'Delivered') { %>
+          <button class="return-btn secondary-btn" data-order-id="<%= order._id %>">
+            <i data-lucide="rotate-ccw"></i> Request Return
+          </button>
+          <% } %>
+          <button class="secondary-btn"><a href="/orders/invoice/<%= order.id %>" title="Download Invoice">
+              Download Invoice
+            </a></button>
+        </div>
+      </div>
+
+      <div class="order-detail-grid">
+
+        <div class="items-list-box card">
+          <h2><i data-lucide="package"></i> Order Items (<%= order.items.length %>)</h2>
+
+          <table class="order-items-table">
+            <thead>
+              <tr>
+                <th class="col-product">Product</th>
+                <th class="col-qty">Qty</th>
+                <th class="col-price">Price</th>
+                <th class="col-total">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% order.items.forEach(item => { %>
+              <tr>
+                <td class="item-details-cell">
+                  <div class="item-product-info">
+                    <div class="item-image">
+                      <img src="<%= item.imageUrl %>" alt="<%= item.name %>">
+                    </div>
+                    <div class="item-text-info">
+                      <a href="/products/<%= item.productId %>/<%= item.variantId %>" class="item-name">
+                        <%= item.name %>
+                      </a>
+                      <p class="variant">
+                        <%= item.color %> | Size: <%= item.size.toUpperCase() %>
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td class="item-qty-cell">
+                  <span class="desktop-qty"><%= item.quantity %></span>
+                </td>
+                <td class="item-price-cell">
+                  <span class="item-price-unit">
+                    <i data-lucide="indian-rupee" class="rupee-icon sm-icon"></i>
+                    <%= item.price.toFixed(2) %>
+                  </span>
+                </td>
+                <td class="item-total-cell">
+                  <span class="item-total">
+                    <i data-lucide="indian-rupee" class="rupee-icon"></i>
+                    <%= (item.price * item.quantity).toFixed(2) %>
+                  </span>
+                </td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="side-detail-column">
+
+          <div class="shipping-info card">
+            <h2><i data-lucide="map-pin"></i> Shipping Address</h2>
+            <p><b><%= order.shippingAddress.fullName %></b></p>
+            <p><%= order.shippingAddress.houseName %>, <%= order.shippingAddress.street %>, <%= order.shippingAddress.city %></p>
+            <p><%= order.shippingAddress.pin %></p>
+            <p>Phone: <%= order.shippingAddress.phone %></p>
+            <p class="order-placed-date">
+              Order Placed: <b><%= new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></b>
+            </p>
+          </div>
+
+          <div class="price-breakdown-box card">
+            <h2><i data-lucide="receipt"></i> Price Summary</h2>
+
+            <% 
+                            let subtotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                            const deliveryFee = 15.00; // Example fixed fee
+                        %>
+
+            <div class="price-line">
+              <span>Items Subtotal</span>
+              <span class="value">
+                <i data-lucide="indian-rupee" class="rupee-icon"></i> <%= subtotal.toFixed(2) %>
+              </span>
+            </div>
+
+            <div class="price-line">
+              <span>Delivery Fee</span>
+              <span class="value">
+                <i data-lucide="indian-rupee" class="rupee-icon"></i> <%= deliveryFee.toFixed(2) %>
+              </span>
+            </div>
+
+            <% if (order.discount && order.discount > 0) { %>
+            <div class="price-line discount">
+              <span>Discount Applied</span>
+              <span class="value">
+                - <i data-lucide="indian-rupee" class="rupee-icon"></i> <%= order.discount.toFixed(2) %>
+              </span>
+            </div>
+            <% } %>
+
+            <div class="final-total price-line">
+              <span>TOTAL PAID</span>
+              <span class="value final-value">
+                <i data-lucide="indian-rupee" class="rupee-icon"></i> <%= order.totalAmount.toFixed(2) %>
+              </span>
+            </div>
+
+            <div class="payment-info">
+              <p>Payment via <b><%= order.paymentMethod %></b></p>
+              <span class="payment-status status-<%= order.paymentMethod.toLowerCase() %>">
+                <%= order.paymentStatus %>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <% } else { %>
+      <div class="empty-state">
+        <h2>Order Not Found</h2>
+        <p>The order ID you requested does not exist or you do not have permission to view it.</p>
+        <a href="/myorders" class="primary-btn">Go to My Orders</a>
+      </div>
+      <% } %>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script type="module">
+    import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
+    lucide.createIcons();
+    const cancelBtn = document.querySelector('.cancel-btn');
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', async (e) => {
+        const button = e.target.closest('button');
+        const orderId = button.dataset.orderId;
+        const confirmation = await Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, cancel it!'
+        });
+
+        if (confirmation.isConfirmed) {
+          try {
+            const response = await fetch(`/order/cancel/${orderId}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                status: 'Cancelled'
+              })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              const statusElement = document.querySelector('.order-status');
+              const actionBar = document.querySelector('.action-buttons');
+              if (statusElement) {
+                statusElement.className = 'order-status';
+                statusElement.classList.add('status-cancelled');
+                statusElement.innerHTML = '<b>CANCELLED</b>';
+              }
+
+              if (actionBar) {
+                actionBar.innerHTML = '';
+              }
+
+              Swal.fire(
+                'Cancelled!',
+                'Your order has been successfully cancelled.',
+                'success'
+              );
+
+            } else {
+              Swal.fire(
+                'Error!',
+                data.message || 'Could not cancel the order.',
+                'error'
+              );
+            }
+          } catch (error) {
+            console.error('Cancellation failed:', error);
+            Swal.fire(
+              'Network Error!',
+              'Failed to connect to the server.',
+              'error'
+            );
+          }
+        }
+      });
+    }
+  </script>
+  <%- include('./partials/footer.ejs') %>
+</body>
+
+</html>

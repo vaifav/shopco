@@ -8,13 +8,6 @@ const productSchema = new mongoose.Schema(
 			trim: true,
 			text: true,
 		},
-		// brand: {
-		// 	type: mongoose.Schema.Types.ObjectId,
-		// 	ref: "brand",
-		// 	default: "",
-		// 	required: true,
-		// 	index: true,
-		// },
 		category: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "category",

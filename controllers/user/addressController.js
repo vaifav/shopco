@@ -26,8 +26,8 @@ const getAddressPage = async (req, res) => {
 			address,
 			singleAddress,
 			personalInfo: {
-				avatar: personalInfo.personalInfo.avatar,
-				fname: personalInfo.personalInfo.fname,
+				avatar: personalInfo?.personalInfo?.avatar,
+				fname: personalInfo?.personalInfo?.fname,
 			},
 			email: personalInfo.email,
 		});
@@ -37,11 +37,25 @@ const getAddressPage = async (req, res) => {
 	}
 };
 
-
 const addAddress = async (req, res) => {
 	try {
 		const userId = req.session.user.userId;
 		const data = { ...req.body, userId };
+
+		const PINCODE_REGEX = /^[1-9][0-9]{5}$/;
+		const pinCode = req.body.pin;
+		if (!pinCode || typeof pinCode !== "string") {
+			return res.status(400).json({
+				success: false,
+				message: "Pincode is required and must be a string.",
+			});
+		}
+		if (!PINCODE_REGEX.test(pinCode)) {
+			return res.status(400).json({
+				success: false,
+				message: "Invalid pincode format. Pincode must be 6 digits and cannot start with 0.",
+			});
+		}
 
 		const newAddress = await createAddress(data);
 		return res.status(201).json({
@@ -61,6 +75,21 @@ const editAddress = async (req, res) => {
 	try {
 		const userId = req.session.user.userId;
 		const updateData = req.body;
+
+		const PINCODE_REGEX = /^[1-9][0-9]{5}$/;
+		const pinCode = req.body.pin;
+		if (!pinCode || typeof pinCode !== "string") {
+			return res.status(400).json({
+				success: false,
+				message: "Pincode is required and must be a string.",
+			});
+		}
+		if (!PINCODE_REGEX.test(pinCode)) {
+			return res.status(400).json({
+				success: false,
+				message: "Invalid pincode format. Pincode must be 6 digits and cannot start with 0.",
+			});
+		}
 
 		const updatedAddress = await updateAddress(req.params.id, userId, updateData);
 

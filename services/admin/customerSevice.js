@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import personalInfoModel from "../../models/personalInfoModel.js";
 import userModel from "../../models/signupModel.js";
+import OrderModel from "../../models/orderModel.js";
 
 async function customerDetails(page = 1, limit = 5, createdAt, fname, search = "", isBlocked = "") {
 	const data = {};
@@ -66,7 +67,7 @@ async function customerDetails(page = 1, limit = 5, createdAt, fname, search = "
 		data.newCustomers = await countUsersBetweenDates("2025-10-16", "2025-10-16");
 		data.data = filteredInfos.map((info) => ({
 			id: info._id,
-			name: `${info.fname} ${info.lname}`,
+			name: `${info.fname} ${info.lname || ""}`,
 			email: info.email,
 			phone: info.phone,
 			isBlocked: info?.userId?.isBlocked || false,
@@ -94,10 +95,14 @@ const singleCustomer = async (userId) => {
 				select: "state city country houseName pin street -_id",
 			})
 			.lean();
+		const userIdForOrder = await personalInfoModel.findOne({ _id: userId });
+		const orders = await OrderModel.find({
+			user: new mongoose.Types.ObjectId(userIdForOrder.userId),
+		});
 
 		const data = {
 			id: personalInfo._id,
-			name: `${personalInfo.fname} ${personalInfo.lname}`,
+			name: `${personalInfo.fname} ${personalInfo.lname || ""}`,
 			email: personalInfo.email,
 			phone: personalInfo.phone,
 			isBlocked: personalInfo.userId.isBlocked || false,
@@ -112,7 +117,10 @@ const singleCustomer = async (userId) => {
 				pin: personalInfo.address.pin,
 				street: personalInfo.address.street,
 			},
+			orders,
 		};
+
+		console.log(data.orders);
 
 		return data;
 	} catch (error) {
@@ -135,6 +143,14 @@ const blockOrUnblockCustomer = async (id, { isBlocked }) => {
 			{ _id: id },
 			{ $set: { isBlocked } }
 		);
+
+		const db = mongoose.connection.db;
+		const sessionCollection = db.collection("sessions");
+		if (isBlocked) {
+			const result = await sessionCollection.deleteMany({
+				session: new RegExp(`"userId":"${personalInfo.userId.toString()}"`),
+			});
+		}
 
 		if (!updateUserModel || !updateInfoModel) throw new Error("Customer not found or update failed");
 		const user = await userModel.findOne({ _id: userId });

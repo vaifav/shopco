@@ -20,6 +20,11 @@ const verifyOtp = async (_id, otp) => {
 			{ otp: null, otpExpires: null, isVerified: true },
 			{ new: true }
 		);
+		await personalInfoModel.create({
+			email: verifiedUser.email,
+			fname: verifiedUser.username,
+			userId: verifiedUser._id,
+		});
 
 		return verifiedUser;
 	} catch (error) {

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style/partials.css">
+    <link rel="stylesheet" href="/style/orderSuccess.css">
+    <title>Order Placed Successfully</title>
+</head>
+
+<body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+        <section class="success-container">
+            <i data-lucide="check-circle" class="success-icon"></i>
+            <h1 class="main-heading">Order Placed Successfully!</h1>
+            
+            <p class="order-message">Thank you for your purchase. Your order has been confirmed....</p>
+
+            <section class="order-details-summary">
+                
+                <dl>
+                    <div class="summary-item">
+                        <dt class="label">Order ID:</dt>
+                        <dd class="value order-id-value"><b><%= orderId %></b></dd>
+                    </div>
+                    <div class="summary-item total">
+                        <dt class="label">Total Amount:</dt>
+                        <dd class="value">
+                            <i data-lucide="indian-rupee"></i> <b><%= totalAmount.toFixed(2) %></b>
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+
+            <nav class="next-steps-actions">
+                <a href="/products" class="continue-shopping-btn">
+                    Continue Shopping
+                </a>
+                <a href="/myorders" class="view-order-btn">
+                    View My Orders
+                </a>
+            </nav>
+
+        </section>
+    </main>
+
+    <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+    <%- include('./partials/footer.ejs') %>
+</body>
+
+</html>

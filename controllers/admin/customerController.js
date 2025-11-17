@@ -4,6 +4,7 @@ import {
 	customerDetails,
 	singleCustomer,
 } from "../../services/admin/customerSevice.js";
+import mongoose from "mongoose";
 
 const countries = Country.getAllCountries();
 
@@ -45,7 +46,7 @@ const getSingleCustomer = async (req, res) => {
 
 const updateCustomerBlockStatus = async (req, res) => {
 	try {
-		const { isBlocked } = await blockOrUnblockCustomer(req.params.id, req.body);
+		const { isBlocked, personalInfo } = await blockOrUnblockCustomer(req.params.id, req.body);
 		return res.status(201).json({
 			success: true,
 			message: isBlocked ? "Block customer" : "Unblock customer",

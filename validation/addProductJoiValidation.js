@@ -3,9 +3,9 @@ import Joi from "joi";
 const variantJoiSchema = Joi.object({
 	image: Joi.any().optional(),
 
-	price: Joi.number().min(0).required().messages({
+	price: Joi.number().min(100).required().messages({
 		"number.base": "Price must be a number.",
-		"number.min": "Price cannot be negative.",
+		"number.min": "Price should be greater than or equal to 100.",
 		"any.required": "Price is required.",
 	}),
 

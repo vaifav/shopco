@@ -63,6 +63,22 @@
 	display: flex;
 	align-items: center;
 	gap: 1rem;
+
+	& input {
+		width: 100%;
+	}
+
+	& div.clear-search {
+		width: fit-content;
+		position: relative;
+		right: 7px;
+		top: 2px;
+		cursor: pointer;
+
+		& svg {
+			stroke: #909090;
+		}
+	}
 }
 
 .header nav.icons {

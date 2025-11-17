@@ -1,5 +1,28 @@
 import addressModel from "../models/addressModel.js";
 
+function isNotValidUserName(username) {
+	if (!username) {
+		return "Username is required.";
+	}
+
+	const minLength = 3;
+	const maxLength = 20;
+	if (username.length < minLength || username.length > maxLength) {
+		return `Username must be between ${minLength} and ${maxLength} characters long.`;
+	}
+
+	const validCharsRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9_.-]+$/;
+	if (!validCharsRegex.test(username)) {
+		return "Username can only contain letters, numbers, periods (.), hyphens (-), and underscores (_).";
+	}
+
+	if (username.trim() !== username) {
+		return "Username cannot contain leading or trailing spaces.";
+	}
+
+	return null;
+}
+
 const getAddress = async (userId) => {
 	try {
 		if (!userId) throw new Error("User ID is required");
@@ -30,6 +53,8 @@ const createAddress = async (data) => {
 		for (const field of requiredFields) {
 			if (!data[field]) throw new Error(`Field "${field}" is required`);
 		}
+		const notValidUserName = isNotValidUserName(data.fullname)
+		if(notValidUserName) throw new Error(notValidUserName);
 
 		const address = await addressModel.create(data);
 		return address;

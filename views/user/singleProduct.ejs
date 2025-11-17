@@ -17,7 +17,11 @@
   <%- include('./partials/header.ejs') %>
 
   <section class="wrapper single-product">
-
+    <ol style="display: flex; gap: 1rem; margin-block: 1rem; ">
+      <li><a href="/">Home &raquo;</a></li>
+      <li><a href="/products">Product &raquo;</a></li>
+      <li><%= product.productName.toUpperCase()  %></li>
+    </ol>
     <section class="product-container">
       <section class="product-images">
         <aside>
@@ -55,14 +59,15 @@
           <p class="description"><%= product.description %></p>
         </section>
 
-        <form>
+        <form action="/checkout/buy-now" method="POST">
           <div class="for-colors">
             <label>Choose Color</label>
             <span class="colors">
               <% product.colors.forEach(color => { %>
               <label class="color-option">
-                <input type="radio" name="color" value="<%= color %>" checked>
-                <span class="item" data-color="<%= color.toLowerCase() %>" data-productid="<%= product.prId %>" data-variantid="<%= product.vrId %>"></span>
+                <input type="radio" name="color" value="<%= color %>" <%= (product.variantColor && color.toLowerCase() === product.variantColor.toLowerCase()) ? 'checked' : '' %>>
+                <span class="item" data-color="<%= color.toLowerCase() %>" data-productid="<%= product.prId %>" data-variantid="<%= product.vrId %>">
+                </span>
               </label>
               <% }) %>
             </span>
@@ -80,11 +85,15 @@
             </span>
           </div>
 
+          <input type="hidden" name="productId" value="<%= product.prId %>">
+          <input type="hidden" name="variantId" value="<%= product.vrId %>">
+
+
           <div class="btns">
             <label for="count" class="count-container">
               <input type="number" name="count" id="count" value="1" min="1" max="10">
             </label>
-            <button type="button">Add to Cart</button>
+            <button type="button" class="add-to-cart" data-variantid="<%= product.vrId %>" data-color="" data-size="" data-count="">Add to Cart</button>
             <button type="submit">Buy Now</button>
           </div>
         </form>
@@ -131,7 +140,7 @@
 
   <%- include('./partials/footer.ejs') %>
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
-  <script src="/script/singleProduct.js"></script>
+  <script src="/script/singleProduct.js" type="module"></script>
 </body>
 
 </html>
