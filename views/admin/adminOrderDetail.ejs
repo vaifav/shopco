@@ -34,6 +34,11 @@
             <b><%= order.orderStatus %></b>
           </span>
         </div>
+        <div class="action-buttons">
+          <button class="secondary-btn"><a href="/admin/orders/invoice/<%= order.id %>" title="Download Invoice">
+              Download Invoice
+            </a></button>
+        </div>
       </div>
 
       <div class="order-detail-grid">

@@ -10,10 +10,11 @@ const getOrdersPage = async (req, res) => {
 
 	let page = parseInt(req.query.page) || 1;
 	let limit = parseInt(req.query.limit) || 5;
+	let search = req.query.search;
 
 	try {
 		const personalInfo = await getPersonalInfo(userId);
-		const orderData = await getOrdersByUserId(userId, page, limit);
+		const orderData = await getOrdersByUserId(userId, page, limit, search);
 
 		return res.render("user/order", {
 			orders: orderData.orders,
@@ -93,5 +94,7 @@ const cancelOrder = async (req, res, next) => {
 		});
 	}
 };
+
+
 
 export { getOrderDetailPage, getOrdersPage, getOrderSuccessPage, cancelOrder };

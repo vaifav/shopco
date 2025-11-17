@@ -1,15 +1,40 @@
 import OrderModel from "../models/orderModel.js";
 import Variant from "../models/variantModel.js";
 
-const getOrdersByUserId = async (userId, page = 1, limit = 5) => {
+const getOrdersByUserId = async (userId, page = 1, limit = 5, search) => {
 	try {
-		const total = await OrderModel.countDocuments({ user: userId });
+		let query = { user: userId };
+		let total = 0;
+
+		if (search) {
+			const searchRegex = new RegExp(search, "i");
+			const searchCriteria = [
+				{ "items.name": searchRegex },
+				{ "items.color": searchRegex },
+				{ paymentMethod: searchRegex },
+				{ orderStatus: searchRegex },
+			];
+			const searchNumber = parseFloat(search);
+			if (!isNaN(searchNumber)) {
+				searchCriteria.push({ totalAmount: searchNumber });
+			}
+
+			query = {
+				user: userId,
+				$or: searchCriteria,
+			};
+		}
+
+		total = await OrderModel.countDocuments(query);
 		const totalPages = Math.ceil(total / limit);
 		if (page < 1) page = 1;
 		if (page > totalPages) page = totalPages || 1;
 		let skip = (page - 1) * limit;
+		if (total === 0) {
+			return { orders: [], page, limit, totalPages: 1, total: 0 };
+		}
 
-		const orders = await OrderModel.find({ user: userId })
+		const orders = await OrderModel.find(query)
 			.sort({ createdAt: -1 })
 			.skip(skip)
 			.limit(limit)
@@ -82,5 +107,6 @@ const updateOrderStatus = async (orderId, newStatus) => {
 		throw new Error(error.message);
 	}
 };
+
 
 export { getOrderDetails, getOrdersByUserId, updateOrderStatus };

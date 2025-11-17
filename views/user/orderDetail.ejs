@@ -17,10 +17,10 @@
 
   <section class="order-detail-page wrapper">
     <ol style="display: flex; gap: 1rem; margin-block: 1rem; ">
-          <li><a href="/">Home &raquo;</a></li>
-          <li><a href="/myorders">Orders &raquo;</a></li>
-          <li>Order <%= `#${order._id.toString().slice(0,3).toUpperCase()}...${order._id.toString().slice(-4).toUpperCase()}` %></li>
-        </ol>
+      <li><a href="/">Home &raquo;</a></li>
+      <li><a href="/myorders">Orders &raquo;</a></li>
+      <li>Order <%= `#${order._id.toString().slice(0,3).toUpperCase()}...${order._id.toString().slice(-4).toUpperCase()}` %></li>
+    </ol>
     <div class="container">
       <a href="/myorders" class="back-link">
         <i data-lucide="arrow-left"></i> Back to My Orders
@@ -47,6 +47,9 @@
             <i data-lucide="rotate-ccw"></i> Request Return
           </button>
           <% } %>
+          <button class="secondary-btn"><a href="/orders/invoice/<%= order.id %>" title="Download Invoice">
+              Download Invoice
+            </a></button>
         </div>
       </div>
 
@@ -73,11 +76,11 @@
                       <img src="<%= item.imageUrl %>" alt="<%= item.name %>">
                     </div>
                     <div class="item-text-info">
-                      <a href="/products/<%= item.productId %>" class="item-name">
+                      <a href="/products/<%= item.productId %>/<%= item.variantId %>" class="item-name">
                         <%= item.name %>
                       </a>
                       <p class="variant">
-                        <%= item.color %> | Size: <%= item.size %>
+                        <%= item.color %> | Size: <%= item.size.toUpperCase() %>
                       </p>
                     </div>
                   </div>

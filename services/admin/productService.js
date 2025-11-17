@@ -358,6 +358,28 @@ const deleteProduct = async (_id) => {
 	}
 };
 
+const restoreProduct = async (_id) => {
+	try {
+		const product = await productModel.findOne({ _id });
+		if (!product) throw new Error("Product not found..");
+
+		const category = await categoryModel.findOne({ _id: product.category });
+		if (category.isBlocked) {
+			throw new Error(`This product belongs to a blocked category - ${category.categoryName}`);
+		}
+
+		const deletedProduct = await productModel.findOneAndUpdate(
+			{ _id },
+			{ $set: { isBlocked: false } },
+			{ new: true }
+		);
+		return deletedProduct;
+	} catch (error) {
+		console.log(error.message);
+		throw new Error(error.message);
+	}
+};
+
 export {
 	getProducts,
 	getCategories,
@@ -365,4 +387,5 @@ export {
 	createProduct,
 	updateProduct,
 	deleteProduct,
+	restoreProduct,
 };

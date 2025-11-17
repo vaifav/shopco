@@ -95,9 +95,11 @@ const singleCustomer = async (userId) => {
 				select: "state city country houseName pin street -_id",
 			})
 			.lean();
-		const userIdForOrder = await personalInfoModel.findOne({_id:userId})	
-		const orders = await OrderModel.find({ user: new mongoose.Types.ObjectId(userIdForOrder.userId) });
-		
+		const userIdForOrder = await personalInfoModel.findOne({ _id: userId });
+		const orders = await OrderModel.find({
+			user: new mongoose.Types.ObjectId(userIdForOrder.userId),
+		});
+
 		const data = {
 			id: personalInfo._id,
 			name: `${personalInfo.fname} ${personalInfo.lname || ""}`,
@@ -141,6 +143,14 @@ const blockOrUnblockCustomer = async (id, { isBlocked }) => {
 			{ _id: id },
 			{ $set: { isBlocked } }
 		);
+
+		const db = mongoose.connection.db;
+		const sessionCollection = db.collection("sessions");
+		if (isBlocked) {
+			const result = await sessionCollection.deleteMany({
+				session: new RegExp(`"userId":"${personalInfo.userId.toString()}"`),
+			});
+		}
 
 		if (!updateUserModel || !updateInfoModel) throw new Error("Customer not found or update failed");
 		const user = await userModel.findOne({ _id: userId });

@@ -43,9 +43,9 @@
       <div class="sections">
         <section id="orders">
           <ol style="display: flex; gap: 1rem; margin-block: 1rem; ">
-          <li><a href="/">Home &raquo;</a></li>
-          <li>Orders</li>
-        </ol>
+            <li><a href="/">Home &raquo;</a></li>
+            <li>Orders</li>
+          </ol>
           <% if (orders && orders.length > 0) { %>
           <div class="orders-list">
             <% orders.forEach(order => { %>
@@ -123,6 +123,16 @@
 
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
   <script>
+    const searchForm = document.querySelector('.header .main-nav-container form ')
+    searchForm.querySelector('input').setAttribute('placeholder', "search orders")
+
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault()
+      addOrUpdateQueryParams({
+        "search": searchForm.querySelector('input').value
+      })
+    })
+
     function addOrUpdateQueryParams(params) {
       const url = new URL(window.location.href);
       for (const key in params) {

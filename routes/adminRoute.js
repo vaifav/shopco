@@ -23,9 +23,15 @@ import {
 	getProductEdit,
 	productListPage,
 	softDeleteProduct,
+	unblockProduct,
 } from "../controllers/admin/productContoller.js";
 import { isVerified } from "../middleware/authMiddleware.js";
-import { getAdminOrders ,getAdminOrderDetailPage, updateAdminOrderStatus} from "../controllers/admin/orderController.js";
+import {
+	getAdminOrders,
+	getAdminOrderDetailPage,
+	updateAdminOrderStatus,
+	downloadOrderInvoice,
+} from "../controllers/admin/orderController.js";
 
 const admin = Router();
 
@@ -35,12 +41,13 @@ admin.get("/customers", getCustomers);
 admin.get("/products", productListPage);
 admin.get("/orders", getAdminOrders);
 admin.get("/orders/:orderId", getAdminOrderDetailPage);
-admin.put('/orders/:orderId/status', updateAdminOrderStatus);
+admin.put("/orders/:orderId/status", updateAdminOrderStatus);
 
 admin.route("/products/action").get(getProductAdd).post(uploadMultipleVariantImages, addProduct);
 
 admin.get("/products/action/:id", getProductEdit);
 admin.patch("/products/action/:id", uploadMultipleVariantImages, editProduct);
+admin.put("/products/action/:id", unblockProduct);
 admin.delete("/products/action/:id", softDeleteProduct);
 
 admin.use(isVerified);
@@ -56,6 +63,7 @@ admin
 	.delete(removeCategory);
 
 admin.route("/customers/:id").get(getSingleCustomer).patch(updateCustomerBlockStatus);
+admin.get('/orders/invoice/:orderId', downloadOrderInvoice);
 
 admin.use((req, res) => res.status(404).render("user/pagenotfound"));
 export default admin;

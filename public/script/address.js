@@ -72,7 +72,7 @@ function handleAddressSubmit(form, url, method, overlay) {
 					text: result.message || "Something went wrong. Please try again.",
 					confirmButtonColor: "#d33",
 				});
-				window.location.href = "/account#manage-address";
+				window.location.href = "/address";
 				return;
 			}
 

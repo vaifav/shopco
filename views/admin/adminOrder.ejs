@@ -16,6 +16,9 @@
     @import url("/style/search.css");
   </style>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
 </head>
 
 <body>
@@ -48,17 +51,23 @@
           <section class="admin-search order-search">
             <form>
               <input type="text" name="adn-search" id="adn-search" placeholder="search">
-              <label for="adn-search"><i data-lucide="search"></i></label>
+              <label for="adn-search" class="adn-clear-label"><i data-lucide="X"></i></label>
             </form>
             <div class="search-container">
               <button class="up-down"><i data-lucide="arrow-down-up"></i></button>
               <button class="active-block-filter"><i data-lucide="list-filter"></i>
-                <ul></ul>
+                <ul>
+                  <li>Filter By</li>
+                  <li class="date-filter"><i data-lucide="calendar-search"></i> <input type="text" name="orderDate" id="orderDate" class="custom-date-picker" placeholder="Select Order Date"> <div style="display: inline-block;"><i data-lucide="X"></i></div></li>
+                  <% 
+                     const allStatusesForFilter = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled", "Returned"];
+                   %>
+                   <li class="all" data-status=""><i data-lucide="chevrons-right"></i><b>All</b></li>
+                  <% allStatusesForFilter.forEach(status => { %>
+                  <li class="<%= status.toLowerCase() %>" data-status="<%= status %>"><i data-lucide="chevrons-right"></i><b><%= status %></b></li>
+                  <% }) %>
+                </ul>
               </button>
-              <button class="active-block-details"><i data-lucide="chart-no-axes-column"></i>
-                <ul></ul>
-              </button>
-
             </div>
           </section>
           <section class="order-list">
@@ -84,7 +93,7 @@
                     <%= `${order.id.toString().slice(0,3).toUpperCase()}...${order.id.toString().slice(-4).toUpperCase()}` %>
                   </td>
                   <td data-label="Customer"><%= order.customerName %></td>
-                  <td data-label="Date"><%= order.date.toLocaleDateString() %></td>
+                  <td data-label="Date"><%= new Date(order.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) %></td>
                   <td data-label="Amount">₹<%= order.totalAmount.toFixed(2) %></td>
                   <td data-label="Status" class="status-cell">
                     <span class="status <%= order.orderStatus.toLowerCase() %>" id="status-display-<%= order.id %>">

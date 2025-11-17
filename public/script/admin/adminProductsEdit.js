@@ -121,6 +121,7 @@ const displayError = (input, message) => {
         const errorMessage = document.createElement("span");
         errorMessage.classList.add("error-message");
         errorMessage.textContent = message;
+        errorMessage.style.color = "red"
         container.append(errorMessage);
     }
 };
