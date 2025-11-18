@@ -27,6 +27,11 @@
 	transform: translateY(-50%);
 }
 
+.products .favorite-icon.fav svg {
+	fill: #ff657e;
+	stroke: #ff657e;
+}
+
 .aside-modal-wrapper {
 	position: relative;
 	width: calc(100% - 80%);

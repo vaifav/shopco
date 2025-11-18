@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import categoryModel from "../models/categoryModel.js";
 import productModel from "../models/productModel.js";
 import variantModel from "../models/variantModel.js";
+import wishlistModel from "../models/wishlistModel.js";
 
 const getProductData = async (
 	page = 1,
@@ -11,7 +12,8 @@ const getProductData = async (
 	size,
 	price = -1,
 	minprice,
-	maxprice
+	maxprice,
+	userId
 ) => {
 	const data = {};
 	const query = {};
@@ -184,8 +186,11 @@ const getProductData = async (
 				},
 			},
 		]);
-		console.log(data);
-		
+		data.wishlist = [];
+		if (userId) {
+			const wishlist = await wishlistModel.findOne({ userId });
+			data.wishlist = wishlist ? wishlist.items : [];
+		}
 		return data;
 	} catch (error) {
 		console.log(error);
@@ -193,7 +198,7 @@ const getProductData = async (
 	}
 };
 
-const getSingleProduct = async (_id, varId) => {
+const getSingleProduct = async (_id, varId, userId) => {
 	const data = {};
 	try {
 		const findProduct = await productModel.findOne({ _id: new mongoose.Types.ObjectId(_id) });
@@ -298,6 +303,11 @@ const getSingleProduct = async (_id, varId) => {
 		data.product = product[0];
 		data.product.colors = colors.length > 0 ? colors[0]["colors"] : [];
 		data.relatedProducts = productBasedOnCategory;
+		data.isInWishList = false;
+		if (userId) {
+			const wishlist = await wishlistModel.findOne({ userId });
+			data.isInWishList = wishlist.items.includes(data.product.vrId) ? true : false;
+		}
 
 		return data;
 	} catch (error) {

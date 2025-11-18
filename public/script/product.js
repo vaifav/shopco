@@ -265,6 +265,7 @@ navToProductDetailPage.forEach((article) => {
 
 	article.addEventListener("click", async (e) => {
 		const addToCart = e.target.closest("span.cart-icon");
+		const fav = e.target.closest("span.favorite-icon");
 
 		if (addToCart) {
 			e.preventDefault();
@@ -312,8 +313,7 @@ navToProductDetailPage.forEach((article) => {
 					showConfirmButton: false,
 					timer: 1500,
 				});
-
-				console.log("Product added:", productData);
+				article.querySelector("span.favorite-icon").classList.toggle("fav");
 				return;
 			} catch (error) {
 				console.error("Fetch error:", error);
@@ -323,6 +323,80 @@ navToProductDetailPage.forEach((article) => {
 					text: "Could not connect to the server or process the request.",
 					confirmButtonColor: "#d33",
 				});
+				return;
+			}
+		}
+
+		if (fav) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			const variantid = fav.getAttribute("data-variantid").trim();
+			const isCurrentlyFavorite = fav.classList.contains("fav");
+
+			const method = isCurrentlyFavorite ? "DELETE" : "POST";
+			const url = isCurrentlyFavorite ? `/wishlist/${variantid}` : "/wishlist";
+			const actionText = method === "POST" ? "Item moved to wishlist" : "Item removed from wishlist";
+
+			const requestOptions = {
+				method,
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: method === "POST" ? JSON.stringify({ variantId: variantid }) : null,
+			};
+
+			fav.classList.toggle("fav");
+			try {
+				const res = await fetch(url, requestOptions);
+				console.log(res);
+
+				if (res.status === 401 || res.redirected) {
+					await Swal.fire({
+						icon: "info",
+						title: "Login Required",
+						text: "Please log in or create an account to save items to your wishlist.",
+						confirmButtonText: "Go to Login",
+						showCancelButton: true,
+						cancelButtonText: "Cancel",
+					}).then((result) => {
+						if (result.isConfirmed) {
+							window.location.href = "/login";
+						}
+					});
+					fav.classList.toggle("fav");
+					return;
+				}
+
+				const result = await res.json();
+				if (!res.ok || !result.success) {
+					await Swal.fire({
+						icon: "error",
+						title: "Failed!",
+						text: result.message || "An unknown error occurred.",
+						confirmButtonColor: "#d33",
+					});
+					fav.classList.toggle("fav");
+					return;
+				}
+
+				await Swal.fire({
+					icon: "success",
+					title: actionText,
+					text: result.message,
+					showConfirmButton: false,
+					timer: 1500,
+				});
+				return;
+			} catch (error) {
+				console.error(error);
+				await Swal.fire({
+					icon: "error",
+					title: "Failed!",
+					text: "Could not connect to the server or process the request.",
+					confirmButtonColor: "#d33",
+				});
+				fav.classList.toggle("fav");
 				return;
 			}
 		}

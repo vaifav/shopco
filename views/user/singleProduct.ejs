@@ -37,16 +37,21 @@
         <section class="text-details">
 
           <h1><%= product.productName.toUpperCase() %></h1>
-          <div class="star">
-            <% for( let star = 1; star <= 5; star++ ) { %>
-            <% if (star <= product.rating) { %>
-            <i data-lucide="star" class="rating true"></i>
-            <% } else {%>
-            <i data-lucide="star" class="rating false"></i>
-            <% } %>
-            <% } %>
-            &nbsp;
-            <span><%= product.rating %> / 5</span>
+          <div class="icons">
+            <div class="star">
+              <% for( let star = 1; star <= 5; star++ ) { %>
+              <% if (star <= product.rating) { %>
+              <i data-lucide="star" class="rating true"></i>
+              <% } else {%>
+              <i data-lucide="star" class="rating false"></i>
+              <% } %>
+              <% } %>
+              &nbsp;
+              <span><%= product.rating %> / 5</span>
+            </div>
+            <div>
+              <span class="favorite-icon <%= isInWishList ? 'fav' : '' %>" data-variantid="<%= product.vrId %>"><i data-lucide="heart"></i></span>
+            </div>
           </div>
           <h3 class="price">
             <i data-lucide="indian-rupee" class="ruppee-icon"></i>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/wishlist.css">
+  <title>Wishlist</title>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+
+  <section class="body">
+    <main>
+      <div class="wishlist-header-actions">
+        <h1 class="main-heading">Your Wishlist</h1>
+        <button id="clear-wishlist-btn" class="clear-wishlist-btn">
+          <i data-lucide="trash-2" class="lucide-icon"></i> Clear All
+        </button>
+      </div>
+      <section class="wishlist-page-layout">
+        <section class="wishlist-container" aria-labelledby="wishlist-heading">
+
+          <% if (wishlist && wishlist.length > 0) { %>
+          <% wishlist.forEach(item => { %>
+          <% const isOutOfStock = item.stock === 0; %>
+          <% const finalPrice = item.price %>
+
+          <article class="wishlist-item <%= isOutOfStock ? 'out-of-stock' : '' %>" data-variantid="<%= item.variantId %>">
+            <img src="<%= item.image %>" alt="<%= item.productName %>" class="item-image">
+            <div class="item-details">
+              <h3 class="item-name"><a href="/products/<%= item.productId %>/<%= item.variantId %>"><%= item.productName %></a></h3>
+              <ul>
+                <li class="item-variant">Size: <%= item.size %></li>
+                <li class="item-variant">Color: <%= item.color %></li>
+              </ul>
+              <p class="item-price">
+                <i data-lucide="indian-rupee"></i>
+                <b><%= finalPrice %></b>
+              </p>
+            </div>
+            <div class="item-actions">
+              <button class="remove-item" aria-label="Remove <%= item.productName %>" data-variantid="<%= item.variantId %>">
+                <i data-lucide="x" class="lucide-icon"></i> Remove
+              </button>
+              <button class="add-to-cart-btn <%= isOutOfStock ? 'disabled' : '' %>" data-variantid="<%= item.variantId %>" data-size="<%= item.size %>" data-count="1" data-color="<%= item.color %>" data-price="<%= finalPrice %>" <%= isOutOfStock ? 'disabled title="Item is currently out of stock"' : '' %>>
+                <%= isOutOfStock ? 'Out of Stock' : 'Add to Cart' %>
+              </button>
+            </div>
+          </article>
+          <% }) %>
+          <% } else { %>
+          <p class="empty-wishlist-message">Your wishlist is empty! Start adding some favorites.</p>
+          <% } %>
+
+        </section>
+      </section>
+    </main>
+  </section>
+
+  <%- include('./partials/footer.ejs') %>
+  <script src="/script/wishlist.js" type="module"></script>
+</body>
+
+</html>

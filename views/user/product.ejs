@@ -7,10 +7,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style/partials.css">
-  <link rel="stylesheet" href="style/swal.css">
-  <link rel="stylesheet" href="style/pagination.css">
-  <link rel="stylesheet" href="style/product.css">
+  <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/swal.css">
+  <link rel="stylesheet" href="/style/pagination.css">
+  <link rel="stylesheet" href="/style/product.css">
   <title>Products</title>
 </head>
 
@@ -119,7 +119,7 @@
                   <span class="cart-icon" data-variantid="<%= product.vrId %>" data-color="<%= product.color %>" data-size="<%= product.sizes[0] %>" data-count="1">
                     <i data-lucide="shopping-cart"></i>
                   </span>
-                  <span class="favorite-icon">
+                  <span class="favorite-icon <%= wishlist.includes(product.vrId) ? 'fav' : '' %>" data-variantid="<%= product.vrId %>">
                     <i data-lucide="heart"></i>
                   </span>
                 </div>
