@@ -5,6 +5,7 @@ import {
 } from "../../services/productService.js";
 
 const products = async (req, res) => {
+	const userId = req.session?.user?.userId;
 	const page = parseInt(req.query.page) || 1;
 	const limit = parseInt(req.query.limit) || 5;
 	const search = req.query.search;
@@ -15,7 +16,17 @@ const products = async (req, res) => {
 	const maxprice = parseInt(req.query.maxprice);
 
 	try {
-		const data = await getProductData(page, limit, search, category, size, price, minprice, maxprice);
+		const data = await getProductData(
+			page,
+			limit,
+			search,
+			category,
+			size,
+			price,
+			minprice,
+			maxprice,
+			userId
+		);
 		return res.render("user/product", data);
 	} catch (error) {
 		console.error("Error rendering product page:", error.message);
@@ -24,8 +35,9 @@ const products = async (req, res) => {
 };
 
 const singleProduct = async (req, res) => {
+	const userId = req.session?.user?.userId;
 	try {
-		const data = await getSingleProduct(req.params.id, req.params.varId);
+		const data = await getSingleProduct(req.params.id, req.params.varId, userId);
 
 		return res.render("user/singleProduct", data);
 	} catch (error) {

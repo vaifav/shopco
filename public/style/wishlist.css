@@ -91,11 +91,16 @@ main {
 	flex-grow: 1;
 }
 
-.item-name {
+.item-name * {
 	font-size: 1.1em;
 	font-weight: 600;
 	color: #333;
 	margin: 0 0 5px 0;
+	transition: 0.5s all;
+}
+
+.item-name a:hover {
+	color: #1976d2;
 }
 
 .item-details ul {
@@ -163,7 +168,7 @@ main {
 }
 
 .remove-item:hover {
-	color: #e03131;
+	color: #ff7262;
 }
 
 .remove-item svg {
@@ -175,7 +180,7 @@ main {
 }
 
 .remove-item:hover svg {
-	stroke: #e03131;
+	stroke: #ff7262;
 }
 
 .add-to-cart-btn {

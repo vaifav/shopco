@@ -2,6 +2,7 @@ import { v4 as uuid } from "uuid";
 import cartModel from "../models/cartModel.js";
 import mongoose from "mongoose";
 import variantModel from "../models/variantModel.js";
+import wishlistModel from "../models/wishlistModel.js";
 
 const updateOptions = { new: true, upsert: true, setDefaultsOnInsert: true };
 const MAX_AGE_MS = 2147483647 * 1000;
@@ -75,6 +76,11 @@ const createCart = async (req, res, userId, data) => {
 			stockMsg = `Only ${variant.stock} items left...`;
 		}
 		if (variant.stock === 0 || variant.stock < Number(dataObj.count)) throw new Error(stockMsg);
+
+		const wishlist = await wishlistModel.findOne({ userId });
+		if (wishlist.items.includes(dataObj.variantId)) {
+			await wishlistModel.findOneAndUpdate({ userId }, { $pull: { items: dataObj.variantId } });
+		}
 
 		if (!userId) {
 			let guestId = req?.cookies?.guestId;

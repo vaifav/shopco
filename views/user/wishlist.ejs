@@ -23,49 +23,40 @@
           <i data-lucide="trash-2" class="lucide-icon"></i> Clear All
         </button>
       </div>
-
       <section class="wishlist-page-layout">
         <section class="wishlist-container" aria-labelledby="wishlist-heading">
 
-          <article class="wishlist-item">
-            <img src="/images/static_product_image_1.jpg" alt="Stylish Summer Shirt" class="item-image">
-            <div class="item-details">
-              <h3 class="item-name">Stylish Summer Shirt</h3>
-              <ul>
-                <li class="item-variant">Size: L </li>
-                <li class="item-variant">Color: Teal</li>
-              </ul>
-              <p class="item-price"> <i data-lucide="indian-rupee"></i> <b>1599</b></p>
-            </div>
-            <div class="item-actions">
-              <button class="remove-item" aria-label="Remove Stylish Summer Shirt" data-variantid="wish_001">
-                <i data-lucide="x" class="lucide-icon"></i> Remove
-              </button>
-              <button class="add-to-cart-btn" data-variantid="wish_001" data-price="1599">
-                Add to Cart
-              </button>
-            </div>
-          </article>
+          <% if (wishlist && wishlist.length > 0) { %>
+          <% wishlist.forEach(item => { %>
+          <% const isOutOfStock = item.stock === 0; %>
+          <% const finalPrice = item.price %>
 
-          <article class="wishlist-item out-of-stock">
-            <img src="/images/another_static_image_2.jpg" alt="Premium Leather Wallet" class="item-image">
+          <article class="wishlist-item <%= isOutOfStock ? 'out-of-stock' : '' %>" data-variantid="<%= item.variantId %>">
+            <img src="<%= item.image %>" alt="<%= item.productName %>" class="item-image">
             <div class="item-details">
-              <h3 class="item-name">Premium Leather Wallet</h3>
+              <h3 class="item-name"><a href="/products/<%= item.productId %>/<%= item.variantId %>"><%= item.productName %></a></h3>
               <ul>
-                <li class="item-variant">Variant: Standard </li>
-                <li class="item-variant">Color: Black</li>
+                <li class="item-variant">Size: <%= item.size %></li>
+                <li class="item-variant">Color: <%= item.color %></li>
               </ul>
-              <p class="item-price"> <i data-lucide="indian-rupee"></i> <b>2499</b></p>
+              <p class="item-price">
+                <i data-lucide="indian-rupee"></i>
+                <b><%= finalPrice %></b>
+              </p>
             </div>
             <div class="item-actions">
-              <button class="remove-item" aria-label="Remove Premium Leather Wallet" data-variantid="wish_002">
+              <button class="remove-item" aria-label="Remove <%= item.productName %>" data-variantid="<%= item.variantId %>">
                 <i data-lucide="x" class="lucide-icon"></i> Remove
               </button>
-              <button class="add-to-cart-btn disabled" disabled title="Item is currently out of stock">
-                Out of Stock
+              <button class="add-to-cart-btn <%= isOutOfStock ? 'disabled' : '' %>" data-variantid="<%= item.variantId %>" data-size="<%= item.size %>" data-count="1" data-color="<%= item.color %>" data-price="<%= finalPrice %>" <%= isOutOfStock ? 'disabled title="Item is currently out of stock"' : '' %>>
+                <%= isOutOfStock ? 'Out of Stock' : 'Add to Cart' %>
               </button>
             </div>
           </article>
+          <% }) %>
+          <% } else { %>
+          <p class="empty-wishlist-message">Your wishlist is empty! Start adding some favorites.</p>
+          <% } %>
 
         </section>
       </section>

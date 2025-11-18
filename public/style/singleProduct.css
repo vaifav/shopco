@@ -70,10 +70,6 @@
 	margin-bottom: 0.5rem;
 }
 
-.single-product .product-container .text-details .star {
-	margin-bottom: 1rem;
-}
-
 .single-product .product-container .text-details p.description {
 	color: #666;
 	margin-block: 1.5rem;
@@ -145,14 +141,24 @@
 
 .single-product .product-container .text-details .icons {
 	display: flex;
-	gap: 1rem;
+	justify-content: space-between;
 	align-items: center;
 	padding-block: 0.5rem;
+	width: fit-content;
+	gap: 3rem;
 }
 
 .single-product .product-container .text-details .icons span {
 	position: relative;
 	top: -3px;
+}
+.single-product .product-container .text-details .icons span.favorite-icon {
+	top: 0px;
+	cursor: pointer;
+}
+.single-product .product-container .text-details .icons span.favorite-icon.fav svg {
+	fill: #ff657e;
+	stroke: #ff657e;
 }
 
 .single-product .nav-to-product-detail-page:hover {
