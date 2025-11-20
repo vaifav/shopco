@@ -2,16 +2,32 @@ import mongoose from "mongoose";
 
 const OrderItemSchema = new mongoose.Schema(
 	{
-		productId: { type: mongoose.Schema.Types.ObjectId, ref: "product", required: true },
-		variantId: { type: mongoose.Schema.Types.ObjectId, ref: "variant", required: true },
+		productId: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "product",
+			required: true,
+		},
+		variantId: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "variant",
+			required: true,
+		},
 		name: { type: String, required: true },
 		price: { type: Number, required: true },
 		quantity: { type: Number, required: true },
 		size: { type: String },
 		color: { type: String },
 		imageUrl: { type: String },
+		itemStatus: {
+			type: String,
+			required: true,
+			default: "Pending",
+			enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled", "Returned"],
+		},
+		reason: { type: String },
+		refundedAmount: { type: Number, default: 0 },
 	},
-	{ _id: false }
+	{ _id: true }
 );
 
 const ShippingAddressSchema = new mongoose.Schema(
@@ -47,18 +63,11 @@ const orderSchema = new mongoose.Schema(
 			required: true,
 			enum: ["COD", "CARD", "PAYPAL", "GOOGLE_PAY"],
 		},
-
 		totalAmount: {
 			type: Number,
 			required: true,
 		},
-
-		orderStatus: {
-			type: String,
-			required: true,
-			default: "Pending",
-			enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled", "Returned"],
-		},
+		returnReason: { type: String },
 	},
 	{
 		timestamps: true,

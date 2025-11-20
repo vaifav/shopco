@@ -77,14 +77,18 @@ body {
 	font-weight: 600;
 	color: var(--color-text-dark);
 }
-
+.closed-item-status {
+	font-size: 0.9rem;
+	text-wrap: nowrap;
+}
 .action-buttons {
 	display: flex;
 	gap: 10px;
 	justify-content: flex-end;
 }
 
-.secondary-btn {
+.secondary-btn,
+.primary-btn {
 	padding: 8px 15px;
 	font-size: 0.9rem;
 	border-radius: 8px;
@@ -101,9 +105,18 @@ body {
 	cursor: pointer;
 }
 
+.item-status {
+	padding: 0.5rem;
+	border-radius: 5px;
+}
+
 .secondary-btn:hover {
 	background-color: var(--color-border);
 	border-color: var(--color-primary);
+}
+
+.cancel-item-btn.secondary-btn {
+	text-wrap: nowrap;
 }
 
 .order-detail-grid {
@@ -156,33 +169,24 @@ body {
 .order-items-table thead th {
 	font-weight: 600;
 	color: var(--color-text-medium);
-	padding: 10px 5px;
-	padding-left: 0;
-	text-align: left;
+	padding-block: 10px;
+	text-align: center;
 	border-bottom: 1px dashed var(--color-border);
 }
 
 .order-items-table .col-product {
 	width: 60%;
-}
-.order-items-table .col-qty {
-	width: 10%;
-	text-align: center;
-}
-.order-items-table .col-price {
-	width: 15%;
-	text-align: right;
-}
-.order-items-table .col-total {
-	width: 15%;
-	text-align: right;
+	text-align: left;
 }
 
 .order-items-table td {
-	padding: 15px 5px;
-	padding-left: 0;
+	padding-block: 15px;
+	padding-inline: 1.3rem;
 	border-bottom: 1px dashed var(--color-border);
 	vertical-align: middle;
+}
+.order-items-table tbody tr td:first-child {
+	padding-inline: 0;
 }
 .order-items-table tbody tr:last-child td {
 	border-bottom: none;
@@ -361,7 +365,8 @@ body {
 	background-color: var(--status-delivered-bg);
 	color: var(--status-delivered-text);
 }
-.status-cancelled {
+.status-cancelled,
+.status-returned {
 	background-color: var(--status-cancelled-bg);
 	color: var(--status-cancelled-text);
 }

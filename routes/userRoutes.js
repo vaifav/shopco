@@ -42,6 +42,8 @@ import {
 	getOrderDetailPage,
 	getOrdersPage,
 	getOrderSuccessPage,
+	cancelItem,
+	returnItem,
 } from "../controllers/user/orderController.js";
 import { downloadOrderInvoice } from "../controllers/admin/orderController.js";
 import {
@@ -112,12 +114,14 @@ user
 	.post(...checkoutMiddleware, savePaymentMethodAndRedirect);
 
 user.get("/checkout/summary", ...checkoutMiddleware, getCheckoutSummaryPage);
-user.post("/order/place", requireAuth, isVerified, placeOrder);
-user.get("/order/success", requireAuth, isVerified, getOrderSuccessPage);
+user.post("/order/place", ...authVerified, placeOrder);
+user.get("/order/success", ...authVerified, getOrderSuccessPage);
 
-user.get("/myorders/:orderId", requireAuth, isVerified, getOrderDetailPage);
-user.patch("/order/cancel/:orderId", requireAuth, isVerified, cancelOrder);
+user.get("/myorders/:orderId", ...authVerified, getOrderDetailPage);
+user.patch("/order/cancel/:orderId", ...authVerified, cancelOrder);
 user.get("/orders/invoice/:orderId", downloadOrderInvoice);
+user.patch("/order/item/cancel/:orderId/:itemId", ...authVerified, cancelItem);
+user.patch("/order/item/return/:orderId/:itemId", ...authVerified, returnItem);
 
 user.get("/wishlist", ...authVerified, getWishListPage);
 user.post("/wishlist", ...authVerified, addToWishlist);

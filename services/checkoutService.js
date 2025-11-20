@@ -33,6 +33,7 @@ const createBuyNowSnapshot = async (variantId, size, color, quantity) => {
 				size: size,
 				color: color,
 				imageUrl: variant.images[0],
+				itemStatus: "Pending",
 			},
 		];
 
@@ -97,6 +98,7 @@ const createCartSnapshot = async (userId) => {
 				size: rawItem.size,
 				color: variant.color,
 				imageUrl: variant.images[0],
+				itemStatus: "Pending",
 			});
 		}
 
@@ -145,11 +147,13 @@ const createNewOrder = async (userId, checkoutSnapshot, isFromCart) => {
 				size: item.size,
 				color: item.color,
 				imageUrl: item.imageUrl,
+				itemStatus: item.itemStatus,
+				reason: null,
+				refundedAmount: 0,
 			})),
 			shippingAddress: checkoutSnapshot.shippingAddress,
 			paymentMethod: checkoutSnapshot.paymentMethod.method,
 			totalAmount: checkoutSnapshot.totalAmount,
-			orderStatus: "Pending",
 		});
 
 		await newOrder.save();
@@ -159,25 +163,28 @@ const createNewOrder = async (userId, checkoutSnapshot, isFromCart) => {
 		}
 
 		if ((await OrderModel.countDocuments({ user: new mongoose.Types.ObjectId(userId) })) === 1) {
-			const user = await userModel.findByIdAndUpdate(userId, { isVisitors: false });
+			await userModel.findByIdAndUpdate(userId, { isVisitors: false });
 			const personalInfo = await personalInfoModel.findOne({ userId });
-			if (!personalInfo.phone) {
+
+			if (personalInfo && !personalInfo.phone) {
 				await personalInfoModel.findOneAndUpdate(
 					{ userId },
 					{ $set: { phone: checkoutSnapshot.shippingAddress.phone } }
 				);
 			}
 
-			if (!personalInfo.address) {
+			if (personalInfo && !personalInfo.address) {
 				await personalInfoModel.findOneAndUpdate(
 					{ userId },
 					{ $set: { address: new mongoose.Types.ObjectId(checkoutSnapshot.shippingAddress.addressId) } }
 				);
 			}
 		}
+
 		return newOrder;
 	} catch (error) {
 		throw new Error(error.message);
 	}
 };
+
 export { createBuyNowSnapshot, createCartSnapshot, createNewOrder };

@@ -786,7 +786,7 @@ form #personal-information .form-input-container:first-child figure img {
 	color: #4caf50;
 }
 
-#orders .status-cancelled,
+#orders .status-cancelled,#orders .status-returned,
 #orders .status-failed {
 	background-color: var(--color-danger-bg, #fff1ef);
 	color: var(--color-danger-text, #ff7262);

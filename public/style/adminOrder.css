@@ -111,49 +111,6 @@
 	text-transform: capitalize;
 }
 
-#orders .order-list .dot {
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-}
-
-#orders .order-list .pending * {
-	color: #f59e0b;
-}
-#orders .order-list .pending .dot {
-	background-color: #f59e0b;
-}
-
-#orders .order-list .processing * {
-	color: #0ea5e9;
-}
-#orders .order-list .processing .dot {
-	background-color: #0ea5e9;
-}
-
-#orders .order-list .shipped * {
-	color: #3b82f6;
-}
-#orders .order-list .shipped .dot {
-	background-color: #3b82f6;
-}
-
-#orders .order-list .delivered * {
-	color: #22c55e;
-}
-#orders .order-list .delivered .dot {
-	background-color: #22c55e;
-}
-
-#orders .order-list .cancelled *,
-#orders .order-list .returned * {
-	color: #ef4444;
-}
-#orders .order-list .cancelled .dot,
-#orders .order-list .returned .dot {
-	background-color: #ef4444;
-}
-
 #orders .order-list .actions {
 	display: flex;
 	align-items: center;
@@ -225,7 +182,6 @@
 	font-size: 1.5rem;
 	margin-bottom: 1rem;
 }
-
 
 #orders .search-container ul.active-ul {
 	display: flex;
@@ -384,4 +340,80 @@
 	.status-select-in-table {
 		max-width: 150px;
 	}
+}
+
+#orders .status {
+	display: inline-flex;
+	align-items: center;
+	padding: 0 0.6rem;
+	border-radius: 9999px;
+	font-size: 0.8rem;
+	font-weight: 600;
+	text-transform: capitalize;
+	margin: 0;
+	line-height: 1.2;
+}
+
+#orders .dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	margin-right: 6px;
+	display: inline-block;
+}
+
+#orders .order-list .Pending *,
+#orders .order-list .Partial\ Pending * {
+	color: #f59e0b !important;
+}
+#orders .order-list .Pending .dot,
+#orders .order-list .Partial\ Pending .dot {
+	background-color: #f59e0b !important;
+}
+
+#orders .order-list .Processing *,
+#orders .order-list .Partial\ Processing * {
+	color: #0ea5e9 !important;
+}
+#orders .order-list .Processing .dot,
+#orders .order-list .Partial\ Processing .dot {
+	background-color: #0ea5e9 !important;
+}
+
+#orders .order-list .Shipped *,
+#orders .order-list .Partial\ Shipped * {
+	color: #3b82f6 !important;
+}
+#orders .order-list .Shipped .dot,
+#orders .order-list .Partial\ Shipped .dot {
+	background-color: #3b82f6 !important;
+}
+
+#orders .order-list .Delivered *,
+#orders .order-list .Completed *,
+#orders .order-list .Partial\ Delivered * {
+	color: #22c55e !important;
+}
+#orders .order-list .Delivered .dot,
+#orders .order-list .Completed .dot,
+#orders .order-list .Partial\ Delivered .dot {
+	background-color: #22c55e !important;
+}
+
+#orders .order-list .Cancelled *,
+#orders .order-list .Closed *,
+#orders .order-list .Returned * {
+	color: #ef4444 !important;
+}
+#orders .order-list .Cancelled .dot,
+#orders .order-list .Closed .dot,
+#orders .order-list .Returned .dot {
+	background-color: #ef4444 !important;
+}
+
+#orders .order-list .Completed\ \(with\ Return\) * {
+	color: #a855f7 !important;
+}
+#orders .order-list .Completed\ \(with\ Return\) .dot {
+	background-color: #a855f7 !important;
 }
