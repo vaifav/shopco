@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+  <title>Admin | Edit Coupon</title>
+  <style>
+    @import url("/style/adminPartials.css");
+    @import url("/style/admin.css");
+    @import url("/style/swal.css");
+    @import url("/style/adminCouponsAdd.css");
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+
+  <section class="nav wrapper">
+    <div class="container">
+      <nav id="admin-nav">
+        <ul>
+          <li data-url="/admin"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> <b>Dashboard</b></a></li>
+          <li data-url="/admin/orders"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
+          <li data-url="/admin/products"><a href="#products"><i data-lucide="package"></i> <b>Products</b></a></li>
+          <li data-url="/admin/categories"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
+          <li data-url="/admin/customers"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li data-url="/admin/reports"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
+          <li class="active" data-url="/admin/coupons"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
+          <li data-url="/admin/inbox"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
+          <li data-url="/admin/transactions"><a href="#transactions"><i data-lucide="credit-card"></i> <b>Transactions</b></a></li>
+          <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
+        </ul>
+      </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
+
+      <div class="sections">
+        <section id="coupons" class="show edit">
+          <header>
+            <h1>Edit Coupon: <%= coupon.code %></h1>
+          </header>
+
+          <form id="editCouponForm" class="overlay-form" >
+
+            <div class="left">
+              <h2>1. Coupon Identity & Discount</h2>
+
+              <div class="input-container">
+                <label for="code">Coupon Code</label>
+                <input type="text" name="code" id="code" placeholder="e.g., BLACKFRIDAY20" required maxlength="20" value="<%= coupon.code %>" />
+              </div>
+              <div class="input-container">
+                <label for="title">Coupon Title</label>
+                <input type="text" name="title" id="title" placeholder="e.g., 20% Off Everything" required value="<%= coupon.title %>" />
+              </div>
+              <div class="input-container">
+                <label for="description">Description (Internal)</label>
+                <textarea name="description" id="description" rows="2" placeholder="Notes about campaign goals or targeting."><%= coupon.description %></textarea>
+              </div>
+
+              <div class="input-container-group">
+                <div class="input-container">
+                  <label for="discountType">Discount Type</label>
+                  <select name="discountType" id="discountType" required>
+                    <option value="percentage" <%= coupon.discountType === 'percentage' ? 'selected' : '' %>>Percentage (%)</option>
+                    <option value="fixedAmount" <%= coupon.discountType === 'fixedAmount' ? 'selected' : '' %>>Fixed Amount ($)</option>
+                  </select>
+                </div>
+                <div class="input-container">
+                  <label for="discountValue">Discount Value</label>
+                  <input type="number" name="discountValue" id="discountValue" placeholder="e.g., 20 or 10.00" value="<%= coupon.discountValue %>" min="1" required />
+                </div>
+                <div class="input-container">
+                  <label for="maxDiscountAmount">Max Discount Cap (Optional)</label>
+                  <input type="number" name="maxDiscountAmount" id="maxDiscountAmount" placeholder="Max fixed amount for % discounts" value="<%= coupon.maxDiscountAmount !== null && coupon.maxDiscountAmount !== undefined ? coupon.maxDiscountAmount : '' %>" min="0" />
+                </div>
+              </div>
+
+              <h2>2. Usage Rules</h2>
+
+              <div class="input-container-group">
+                <div class="input-container">
+                  <label for="maxGlobalUses">Max Global Uses</label>
+                  <input type="number" name="maxGlobalUses" id="maxGlobalUses" placeholder="Total uses allowed (e.g., 100)" value="<%= coupon.maxGlobalUses !== Infinity ? coupon.maxGlobalUses : '' %>" min="1" />
+                </div>
+                <div class="input-container">
+                  <label for="maxUsesPerUser">Max Uses Per User</label>
+                  <input type="number" name="maxUsesPerUser" id="maxUsesPerUser" placeholder="e.g., 1 (for unique codes)" value="<%= coupon.maxUsesPerUser %>" min="1" required />
+                </div>
+                <div class="input-container">
+                  <label for="minPurchaseAmount">Min Purchase Amount ($)</label>
+                  <input type="number" name="minPurchaseAmount" id="minPurchaseAmount" placeholder="e.g., 50.00" value="<%= coupon.minPurchaseAmount %>" min="0" required />
+                </div>
+              </div>
+
+            </div>
+
+            <div class="right">
+              <h2>3. Time & Product Restrictions</h2>
+
+              <div class="input-container-group">
+                <div class="input-container">
+                  <label for="startDate">Start Date</label>
+                  <input type="date" name="startDate" id="startDate" required value="<%= coupon.startDate.toISOString().split('T')[0] %>" />
+                </div>
+                <div class="input-container">
+                  <label for="expiryDate">Expiry Date</label>
+                  <input type="date" name="expiryDate" id="expiryDate" required value="<%= coupon.expiryDate.toISOString().split('T')[0] %>" />
+                </div>
+                <div class="input-container">
+                  <label for="isActive">Status</label>
+                  <select name="isActive" id="isActive">
+                    <option value="true" <%= coupon.isActive ? 'selected' : '' %>>Active</option>
+                    <option value="false" <%= !coupon.isActive ? 'selected' : '' %>>Inactive</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="input-container">
+                <label for="restrictionScope">Restriction Scope</label>
+                <select name="restrictionScope" id="restrictionScope" required>
+                  <option value="none" <%= coupon.restrictionScope === 'none' ? 'selected' : '' %>>None (Applies site-wide)</option>
+                  <option value="includeProducts" <%= coupon.restrictionScope === 'includeProducts' ? 'selected' : '' %>>Include Specific Products</option>
+                  <option value="excludeProducts" <%= coupon.restrictionScope === 'excludeProducts' ? 'selected' : '' %>>Exclude Specific Products</option>
+                  <option value="includeCategories" <%= coupon.restrictionScope === 'includeCategories' ? 'selected' : '' %>>Include Specific Categories</option>
+                  <option value="excludeCategories" <%= coupon.restrictionScope === 'excludeCategories' ? 'selected' : '' %>>Exclude Specific Categories</option>
+                </select>
+              </div>
+
+              <div id="restrictionLists">
+                <% 
+                                    // 1. Helper to check if an ID exists in the list (must convert ObjectIds to strings for comparison)
+                                    const isProductRestricted = (productId) => coupon.productRestrictionList.map(id => id.toString()).includes(productId.toString());
+                                    const isCategoryRestricted = (categoryId) => coupon.categoryRestrictionList.map(id => id.toString()).includes(categoryId.toString());
+                                    
+                                    // 2. Pre-fill the hidden input values
+                                    const initialProductList = coupon.productRestrictionList.map(id => id.toString()).join(',');
+                                    const initialCategoryList = coupon.categoryRestrictionList.map(id => id.toString()).join(',');
+
+                                    // 3. Determine initial display state based on restrictionScope
+                                    const isProductScope = ['includeProducts', 'excludeProducts'].includes(coupon.restrictionScope);
+                                    const isCategoryScope = ['includeCategories', 'excludeCategories'].includes(coupon.restrictionScope);
+                                %>
+
+                <div class="input-container product-list-group restriction-dropdown-group" style="display: <%= isProductScope ? 'block' : 'none' %>;">
+                  <label for="productRestrictionDisplay">Product IDs to Target</label>
+                  <input type="hidden" name="productRestrictionList" id="productRestrictionList" value="<%= initialProductList %>" />
+
+                  <div class="custom-select-trigger" id="productRestrictionDisplay" tabindex="0">
+                    <span class="selected-text">Select products...</span>
+                    <i data-lucide="chevron-down" class="dropdown-arrow"></i>
+                  </div>
+
+                  <div class="custom-select-list" data-list-for="productRestrictionList">
+                    <% products.forEach(product => { %>
+                    <label>
+                      <input type="checkbox" data-value="<%= product._id %>" data-name="<%= product.productName %>" <%= isProductRestricted(product._id) ? 'checked' : '' %> />
+                      <%= product.productName %> (ID: <%= product._id.toString().slice(0,3) %>....<%= product._id.toString().slice(-4) %> )
+                    </label>
+                    <% }) %>
+                  </div>
+                </div>
+
+                <div class="input-container category-list-group restriction-dropdown-group" style="display: <%= isCategoryScope ? 'block' : 'none' %>;">
+                  <label for="categoryRestrictionDisplay">Category IDs to Target</label>
+                  <input type="hidden" name="categoryRestrictionList" id="categoryRestrictionList" value="<%= initialCategoryList %>" />
+
+                  <div class="custom-select-trigger" id="categoryRestrictionDisplay" tabindex="0">
+                    <span class="selected-text">Select categories...</span>
+                    <i data-lucide="chevron-down" class="dropdown-arrow"></i>
+                  </div>
+
+                  <div class="custom-select-list" data-list-for="categoryRestrictionList">
+                    <% categories.forEach(category => { %>
+                    <label>
+                      <input type="checkbox" data-value="<%= category._id %>" data-name="<%= category.categoryName %>" <%= isCategoryRestricted(category._id) ? 'checked' : '' %> />
+                      <%= category.categoryName %> (ID: <%= category._id.toString().slice(0,3) %>....<%= category._id.toString().slice(-4) %> )
+                    </label>
+                    <% }) %>
+                  </div>
+                </div>
+              </div>
+
+              <input type="submit" value="UPDATE COUPON" class="submit-btn">
+            </div>
+          </form>
+
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script src="/script/admin/adminNav.js"></script>
+  <script type="module" src="/script/admin/adminCouponsEdit.js"></script>
+</body>
+
+</html>
