@@ -316,7 +316,7 @@ const getSingleProduct = async (_id, varId, userId) => {
 	}
 };
 
-const getSingleProductByColor = async (_id, varId, color) => {
+const getSingleProductByColor = async (_id, varId, color,userId) => {
 	const data = {};
 	const colorRegex = new RegExp(`^${color}$`, "i");
 	try {
@@ -422,6 +422,11 @@ const getSingleProductByColor = async (_id, varId, color) => {
 		data.product = product[0];
 		data.product.colors = colors.length > 0 ? colors[0]["colors"] : [];
 		data.relatedProducts = productBasedOnCategory;
+		data.isInWishList = false;
+		if (userId) {
+			const wishlist = await wishlistModel.findOne({ userId });
+			data.isInWishList = wishlist.items.includes(data.product.vrId) ? true : false;
+		}
 
 		return data;
 	} catch (error) {

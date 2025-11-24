@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+  <link rel="stylesheet" href="/style/partials.css">
+  <link rel="stylesheet" href="/style/swal.css">
+  <link rel="stylesheet" href="/style/account.css">
+  <link rel="stylesheet" href="/style/pagination.css">
+  <title>My Wallet</title>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+
+  <section class="account wrapper">
+    <h1 class="main-heading">My Profile</h1>
+    <div class="container">
+      <nav>
+        <div class="image-container">
+          <div class="avatar">
+            <img src="<%= personalInfo?.avatar ? `${personalInfo.avatar}`: 'images/icons/account.svg' %>" alt="avatar">
+          </div>
+          <h5>Hello👋 <%= personalInfo ? personalInfo.fname: '' %></h5>
+        </div>
+        <ul>
+          <li data-url="/account"><a href="#personal-information"><i data-lucide="user"></i><b>Personal Information</b></a></li>
+          <li data-url="/myorders"><a href="#my-orders"><i data-lucide="shopping-bag"></i> <b>My Orders</b></a></li>
+          <li data-url="/myreviews"><a href="#my-reviews"><i data-lucide="star"></i> <b>My Reviews</b></a></li>
+          <li data-url="/mywishlist"><a href="#my-wishlist"><i data-lucide="heart"></i> <b>My Wishlist</b></a></li>
+          <li data-url="/address"><a href="#manage-address"><i data-lucide="map-pin"></i> <b>Manage Address</b></a></li>
+          <li data-url="/savedcards"><a href="#saved-cards"><i data-lucide="credit-card"></i> <b>Saved Cards</b></a></li>
+          <li class="active" data-url="/mywallet"><a href="#my-wallet"><i data-lucide="wallet"></i> <b>My Wallet</b></a></li>
+          <li data-url="/notification"><a href="#notification"><i data-lucide="bell"></i> <b>Notification</b></a></li>
+          <li data-url="/settings"><a href="#settings"><i data-lucide="settings"></i> <b>Settings</b></a></li>
+        </ul>
+      </nav>
+      <div class="sections">
+        <ol style="display: flex; gap: 1rem; margin-block: 1rem; ">
+          <li><a href="/">Home &raquo;</a></li>
+          <li>My Wallet</li>
+        </ol>
+
+        <section id="my-wallet">
+          <div class="wallet-summary-card">
+            <div class="balance-info">
+              <i data-lucide="wallet"></i>
+              <h3>Current Balance</h3>
+            </div>
+            <% 
+              const currentBalance = wallet?.balance ? wallet.balance : 0;
+            %>
+            <p class="balance-amount">₹ <%= currentBalance.toFixed(2).toLocaleString('en-IN') %></p>
+            <div class="action-buttons">
+              <button type="button" class="add-funds-btn"><i data-lucide="plus-circle"></i> Add Funds</button>
+              <button type="button" class="withdraw-btn" <%= currentBalance > 0 ? '' : 'disabled' %>><i data-lucide="banknote"></i> Withdraw</button>
+            </div>
+          </div>
+
+          <h3>Transaction History</h3>
+          <div class="transaction-history">
+            <% if (!wallet?.transactions || wallet.transactions.length === 0) { %>
+            <p class="no-transactions">No transactions recorded yet.</p>
+            <% } else { %>
+            <% wallet.transactions.forEach(t => { %>
+            <article class="transaction-item <%= t.type === 'CREDIT' ? 'credit' : 'debit' %>">
+              <div class="icon-container">
+                <i data-lucide="<%= t.type === 'CREDIT' ? 'trending-up' : 'trending-down' %>"></i>
+              </div>
+              <div class="details">
+                <p class="type-source">
+                  <b><%= t.type %></b> (<%= t.source %>)
+                </p>
+                <p class="reference">Ref ID: <%= t.externalTransactionId || 'N/A' %></p>
+                <p class="date"><%= new Date(t.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %></p>
+              </div>
+              <div class="amount">
+                <span class="currency">₹</span>
+                <span class="value"><%= t.amount.toFixed(2).toLocaleString('en-IN') %></span>
+              </div>
+            </article>
+            <% }) %>
+            <% } %>
+          </div>
+        </section>
+        <div class="pagination">
+          <% if (page > 1) { %>
+          <a href="" class="pagination-btn" data-page="<%= page - 1 %>" data-limit="<%= limit %>"><i data-lucide="arrow-left"></i>Previous</a>
+          <% } else {%>
+          <a href="" style="visibility: hidden;"><i data-lucide="arrow-left"></i>Previous</a>
+          <% } %>
+
+          <span>
+            <% for(let i = 1; i <= totalPages; i++) { %>
+            <% if (i === page) { %>
+            <span class="btn disable"><%= i %></span>
+            <% } else { %>
+            <a class="btn pagination-btn" href="" data-page="<%= i %>" data-limit="<%= limit %>"><%= i %></a>
+            <% } %>
+            <% } %>
+          </span>
+
+          <% if (page < totalPages) { %>
+          <a href="" class="pagination-btn" data-page="<%= page + 1 %>" data-limit="<%= limit %>">Next<i data-lucide="arrow-right"></i></a>
+          <% } else {%>
+          <a href="" style="visibility: hidden;">Next<i data-lucide="arrow-right"></i></a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+  <script src="/script/account.js" type="module"></script>
+  <script src="/script/wallet.js" type="module"></script>
+  <%- include('./partials/footer.ejs') %>
+</body>
+
+</html>

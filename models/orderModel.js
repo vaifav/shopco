@@ -24,8 +24,16 @@ const OrderItemSchema = new mongoose.Schema(
 			default: "Pending",
 			enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled", "Returned"],
 		},
+		itemPaymentStatus: {
+			type: String,
+			required: true,
+			default: "UNPAID",
+			enum: ["PAID", "UNPAID", "REFUND_PENDING", "REFUNDED", "FAILED", "REFUND_FAILED"],
+		},
+
 		reason: { type: String },
 		refundedAmount: { type: Number, default: 0 },
+		refundTransactionId: { type: String, default: null },
 	},
 	{ _id: true }
 );
@@ -61,11 +69,23 @@ const orderSchema = new mongoose.Schema(
 		paymentMethod: {
 			type: String,
 			required: true,
-			enum: ["COD", "CARD", "PAYPAL", "GOOGLE_PAY"],
+			enum: ["COD", "CARD", "PAYPAL", "GOOGLE_PAY", "RAZOR_PAY","WALLET"],
+		},
+		razorpayOrderId: {
+			type: String,
+			default: null,
+		},
+		razorpayPaymentId: {
+			type: String,
+			default: null,
 		},
 		totalAmount: {
 			type: Number,
 			required: true,
+		},
+		totalRefundedAmount: {
+			type: Number,
+			default: 0,
 		},
 		returnReason: { type: String },
 	},

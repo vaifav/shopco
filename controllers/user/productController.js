@@ -48,7 +48,12 @@ const singleProduct = async (req, res) => {
 
 const singleProductByColor = async (req, res) => {
 	try {
-		const data = await getSingleProductByColor(req.params.id, req.params.varId, req.params.color);
+		const data = await getSingleProductByColor(
+			req.params.id,
+			req.params.varId,
+			req.params.color,
+			req.session?.user?.userId
+		);
 
 		return res.render("user/singleProduct", data);
 	} catch (error) {

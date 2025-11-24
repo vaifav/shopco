@@ -1,5 +1,6 @@
 import OrderModel from "../models/orderModel.js";
 import Variant from "../models/variantModel.js";
+import { creditWallet } from "./walletService.js";
 
 const determineOrderStatus = (items) => {
 	if (!items || items.length === 0) return "Pending";
@@ -119,19 +120,20 @@ const returnStockToInventory = async (items) => {
 const updateItemStatus = async (orderId, itemId, newStatus, reason = null) => {
 	try {
 		const order = await OrderModel.findById(orderId);
-
 		if (!order) throw new Error("Order not found.");
 
 		const item = order.items.id(itemId);
-
 		if (!item) throw new Error("Item not found in order.");
 
 		const currentStatus = item.itemStatus;
 		const closedStatuses = ["Returned", "Cancelled"];
+		const isOnlinePayment = order.paymentMethod !== "COD";
 
 		if (closedStatuses.includes(currentStatus)) {
 			throw new Error(`Item cannot be modified because it is already ${currentStatus}.`);
 		}
+
+		let refundAmount = 0;
 
 		switch (newStatus) {
 			case "Cancelled":
@@ -140,31 +142,45 @@ const updateItemStatus = async (orderId, itemId, newStatus, reason = null) => {
 				}
 
 				await returnStockToInventory([item]);
-
-				const isOnlinePayment = order.paymentMethod !== "COD";
-				item.refundedAmount = isOnlinePayment ? item.price * item.quantity : 0;
-
 				item.reason = "Item Cancellation";
+				refundAmount = isOnlinePayment ? item.price * item.quantity : 0;
 				break;
 
 			case "Returned":
 				if (currentStatus !== "Delivered") {
 					throw new Error(`Item must be Delivered before it can be returned.`);
 				}
-
 				if (!reason) {
 					throw new Error("A reason is required to process an item return.");
 				}
+
 				await returnStockToInventory([item]);
 				item.reason = reason;
-
-				item.refundedAmount = item.price * item.quantity;
+				refundAmount = item.price * item.quantity;
 				break;
 
 			default:
 				throw new Error(`Invalid status transition to ${newStatus}.`);
 		}
 
+		if (isOnlinePayment && refundAmount > 0) {
+			const userId = order.user;
+
+			try {
+				const transactionId = await creditWallet(userId, refundAmount, "REFUND", orderId);
+
+				item.itemPaymentStatus = "REFUNDED";
+				item.refundTransactionId = transactionId;
+				order.totalRefundedAmount += refundAmount;
+			} catch (e) {
+				item.itemPaymentStatus = "REFUND_FAILED";
+				item.refundFailureReason = "Wallet credit failed: " + e.message;
+				refundAmount = 0;
+				throw new Error(`Refund to wallet failed. Item set to REFUND_FAILED.`);
+			}
+		}
+
+		item.refundedAmount = refundAmount;
 		item.itemStatus = newStatus;
 
 		await order.save();
@@ -192,18 +208,42 @@ const updateOrderStatus = async (orderId, newStatus) => {
 		if (itemsToCancel.length === 0) throw new Error("No cancellable items found in this order.");
 
 		await returnStockToInventory(itemsToCancel);
-		const isCOD = order.paymentMethod === "COD";
+		const isOnlinePayment = order.paymentMethod !== "COD";
+		let totalRefundAmount = 0;
 
 		itemsToCancel.forEach((item) => {
+			const itemRefund = isOnlinePayment ? item.price * item.quantity : 0;
+
 			item.itemStatus = "Cancelled";
 			item.reason = "Full Order Cancellation";
-			item.refundedAmount = isCOD ? 0 : item.price * item.quantity;
+			item.refundedAmount = itemRefund;
+			totalRefundAmount += itemRefund;
 		});
 
+		if (isOnlinePayment && totalRefundAmount > 0) {
+			const userId = order.user;
+
+			try {
+				const walletTransactionId = await creditWallet(userId, totalRefundAmount, "REFUND", orderId);
+
+				itemsToCancel.forEach((item) => {
+					item.itemPaymentStatus = "REFUNDED";
+					item.refundTransactionId = walletTransactionId;
+				});
+
+				order.totalRefundedAmount += totalRefundAmount;
+			} catch (e) {
+				itemsToCancel.forEach((item) => {
+					item.itemPaymentStatus = "REFUND_FAILED";
+					item.refundFailureReason = "Wallet credit failed: " + e.message;
+					item.refundedAmount = 0;
+				});
+				throw new Error(`Full refund to wallet failed. Order items set to REFUND_FAILED.`);
+			}
+		}
+
 		await order.save();
-
 		order.orderStatus = determineOrderStatus(order.items);
-
 		return order;
 	} catch (error) {
 		throw new Error(error.message);

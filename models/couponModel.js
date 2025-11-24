@@ -72,6 +72,12 @@ const couponSchema = new mongoose.Schema(
 				ref: "category",
 			},
 		],
+		usersWhoUsed: [
+			{
+				userId: { type: mongoose.Schema.Types.ObjectId, ref: "signup", required: true },
+				count: { type: Number, default: 0, required: true },
+			},
+		],
 	},
 	{ timestamps: true }
 );

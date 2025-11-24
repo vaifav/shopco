@@ -786,7 +786,8 @@ form #personal-information .form-input-container:first-child figure img {
 	color: #4caf50;
 }
 
-#orders .status-cancelled,#orders .status-returned,
+#orders .status-cancelled,
+#orders .status-returned,
 #orders .status-failed {
 	background-color: var(--color-danger-bg, #fff1ef);
 	color: var(--color-danger-text, #ff7262);
@@ -830,5 +831,223 @@ form #personal-information .form-input-container:first-child figure img {
 		width: 100%;
 		margin-top: 15px;
 		align-self: stretch;
+	}
+}
+
+#my-wallet {
+	padding-block: 1rem;
+}
+
+#my-wallet .wallet-summary-card {
+	background: linear-gradient(135deg, #1b73e8, #0f4c8c);
+	color: white;
+	padding: 2rem;
+	border-radius: 12px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+	margin-bottom: 2rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	position: relative;
+	overflow: hidden;
+}
+
+#my-wallet .wallet-summary-card::before {
+	content: "";
+	position: absolute;
+	top: -50px;
+	right: -50px;
+	width: 150px;
+	height: 150px;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 50%;
+}
+
+#my-wallet .balance-info {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 1.1rem;
+	font-weight: 600;
+}
+
+#my-wallet .balance-info i {
+	width: 24px;
+	height: 24px;
+	stroke: white;
+}
+
+#my-wallet .balance-amount {
+	font-size: 3rem;
+	font-weight: 700;
+	margin-top: -0.5rem;
+}
+
+#my-wallet .action-buttons {
+	display: flex;
+	gap: 1rem;
+	margin-top: 1rem;
+}
+
+#my-wallet .action-buttons button {
+	background-color: white;
+	color: #1b73e8;
+	border: none;
+	padding: 0.75rem 1.5rem;
+	border-radius: 8px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.2s, transform 0.2s;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-grow: 1;
+	justify-content: center;
+}
+
+#my-wallet .action-buttons button:hover {
+	background-color: #e0e0e0;
+	transform: translateY(-2px);
+}
+
+#my-wallet .action-buttons button[disabled] {
+	background-color: #ccc;
+	color: #666;
+	cursor: not-allowed;
+	transform: none;
+}
+
+#my-wallet .transaction-history {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	background-color: #e0e0e0;
+	border-radius: 8px;
+	overflow: hidden;
+	margin-top: 1rem;
+}
+
+#my-wallet .no-transactions {
+	text-align: center;
+	padding: 2rem;
+	color: #666;
+	background-color: #fff;
+	border-radius: 8px;
+}
+
+#my-wallet .transaction-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem 1.5rem;
+	background-color: #fff;
+	border-bottom: 1px solid #eee;
+}
+
+#my-wallet .transaction-item:last-child {
+	border-bottom: none;
+}
+
+#my-wallet .icon-container {
+	padding: 0.6rem;
+	border-radius: 50%;
+	margin-right: 1rem;
+	line-height: 0;
+	flex-shrink: 0;
+}
+
+#my-wallet .transaction-item.credit .icon-container {
+	background-color: #e6f6ee;
+}
+#my-wallet .transaction-item.debit .icon-container {
+	background-color: #fce6e6;
+}
+
+#my-wallet .transaction-item.credit i {
+	color: #28a745;
+	stroke: #28a745;
+}
+
+#my-wallet .transaction-item.debit i {
+	color: #dc3545;
+	stroke: #dc3545;
+}
+
+#my-wallet .transaction-item .details {
+	flex-grow: 1;
+	min-width: 0;
+}
+
+#my-wallet .transaction-item .type-source {
+	font-size: 1rem;
+	font-weight: 600;
+	margin-bottom: 0.2rem;
+}
+
+#my-wallet .transaction-item .reference,
+#my-wallet .transaction-item .date {
+	font-size: 0.85rem;
+	color: #666;
+}
+
+#my-wallet .transaction-item .amount {
+	font-size: 1.2rem;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+	margin-left: 1rem;
+}
+
+#my-wallet .transaction-item.credit .amount {
+	color: #28a745;
+}
+
+#my-wallet .transaction-item.debit .amount {
+	color: #dc3545;
+}
+
+#my-wallet .transaction-item .currency {
+	font-size: 0.9em;
+	margin-right: 0.2rem;
+}
+
+@media (max-width: 600px) {
+	#my-wallet .wallet-summary-card {
+		padding: 1.5rem;
+	}
+
+	#my-wallet .balance-amount {
+		font-size: 2.5rem;
+	}
+
+	#my-wallet .action-buttons {
+		flex-direction: column;
+	}
+
+	#my-wallet .action-buttons button {
+		width: 100%;
+		padding: 0.6rem;
+		font-size: 0.95rem;
+	}
+
+	#my-wallet .transaction-item {
+		padding: 0.8rem 1rem;
+	}
+
+	#my-wallet .transaction-item .type-source {
+		font-size: 0.9rem;
+	}
+
+	#my-wallet .transaction-item .reference {
+		display: none;
+	}
+
+	#my-wallet .transaction-item .date {
+		font-size: 0.75rem;
+	}
+
+	#my-wallet .transaction-item .amount {
+		font-size: 1rem;
 	}
 }

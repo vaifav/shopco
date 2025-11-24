@@ -35,6 +35,9 @@ import {
 	savePaymentMethodAndRedirect,
 	saveShippingAddressSnapshot,
 	startCartCheckout,
+	createRazorpayOrder,
+	verifyRazorpayPaymentAndPlaceOrder,
+	placeWalletOrder,
 } from "../controllers/user/checkoutContoller.js";
 import initializeCheckout from "../middleware/checkoutMiddleware.js";
 import {
@@ -52,8 +55,12 @@ import {
 	removeCompleteWishList,
 	removeFromWishlist,
 } from "../controllers/user/wishlistController.js";
+import { getWalletPage } from "../controllers/user/walletController.js";
 
 const user = Router();
+
+const authVerified = [requireAuth, isVerified];
+const checkoutMiddleware = [requireAuth, isVerified, initializeCheckout];
 
 user.get("/username", (req, res) => {
 	if (req.session?.user?.isVerified) {
@@ -76,8 +83,6 @@ user
 
 user.delete("/cart/all", clearAllItems);
 
-const authVerified = [requireAuth, isVerified];
-
 user.get("/account", ...authVerified, getPersonalInfoPage);
 user.get("/address", ...authVerified, getAddressPage);
 user.get("/myorders", ...authVerified, getOrdersPage);
@@ -93,8 +98,6 @@ user
 	.route("/address/:id")
 	.patch(...authVerified, editAddress)
 	.delete(...authVerified, removeAddress);
-
-const checkoutMiddleware = [requireAuth, isVerified, initializeCheckout];
 
 user
 	.route("/checkout")
@@ -114,9 +117,18 @@ user
 	.post(...checkoutMiddleware, savePaymentMethodAndRedirect);
 
 user.get("/checkout/summary", ...checkoutMiddleware, getCheckoutSummaryPage);
-user.post("/order/place", ...authVerified, placeOrder);
-user.get("/order/success", ...authVerified, getOrderSuccessPage);
 
+user.post("/order/place", ...authVerified, placeOrder);
+user.post("/order/place/wallet", ...authVerified, placeWalletOrder);
+user.post("/checkout/razorpay/order", ...authVerified, initializeCheckout, createRazorpayOrder);
+user.post(
+	"/checkout/razorpay/verify",
+	...authVerified,
+	initializeCheckout,
+	verifyRazorpayPaymentAndPlaceOrder
+);
+
+user.get("/order/success", ...authVerified, getOrderSuccessPage);
 user.get("/myorders/:orderId", ...authVerified, getOrderDetailPage);
 user.patch("/order/cancel/:orderId", ...authVerified, cancelOrder);
 user.get("/orders/invoice/:orderId", downloadOrderInvoice);
@@ -128,4 +140,5 @@ user.post("/wishlist", ...authVerified, addToWishlist);
 user.delete("/wishlist/:id", ...authVerified, removeFromWishlist);
 user.delete("/wishlist", ...authVerified, removeCompleteWishList);
 
+user.get("/mywallet", ...authVerified, getWalletPage);
 export default user;
