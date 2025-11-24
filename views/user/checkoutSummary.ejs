@@ -68,7 +68,7 @@ const a = checkout.shippingAddress;
 
         <section class="payment-method-section">
           <h2 class="section-heading">Payment Method</h2>
-          
+
           <div class="summary-detail-block">
             <p class="payment-line">
               <b><%= checkout.paymentMethod.method === "COD" ? 'Cash on delivery' : checkout.paymentMethod.method %></b>
@@ -125,40 +125,185 @@ const subtotal = totalAmount - DELIVERY_FEE;
     </section>
   </main>
 
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+
   <script type="module">
     import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
-    const urlParams = new URLSearchParams(window.location.search);
-    const errorMessage = urlParams.get('error');
-    const successMessage = urlParams.get('success');
 
-    if (errorMessage) {
+    const RAZORPAY_KEY_ID = "<%= razorpayKeyId %>";
+    const selectedMethod = "<%= checkout.paymentMethod.method %>";
+
+    const placeOrderForm = document.querySelector('.place-order-form');
+    const placeOrderBtn = placeOrderForm ? placeOrderForm.querySelector('.place-order-btn') : null;
+
+    async function initiateRazorpayPayment() {
+      if (placeOrderBtn) placeOrderBtn.disabled = true;
+
+      try {
+        const response = await fetch('/checkout/razorpay/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.message || 'Failed to create Razorpay order on server.');
+        }
+
+        const order = data.order;
+
+        const options = {
+          "key": RAZORPAY_KEY_ID,
+          "amount": order.amount,
+          "currency": "INR",
+          "name": "SHOP.CO",
+          "description": "Order Payment",
+          "order_id": order.id,
+          "handler": async function(response) {
+            await verifyPaymentAndPlaceOrder(response);
+          },
+          "modal": {
+            "ondismiss": function() {
+              if (placeOrderBtn) placeOrderBtn.disabled = false;
+            }
+          },
+          "theme": {
+            "color": "#3399cc"
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+
+      } catch (error) {
+        console.error("Razorpay initiation error:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Payment Failed',
+          text: `Error: ${error.message}`,
+        });
+        if (placeOrderBtn) placeOrderBtn.disabled = false;
+      }
+    }
+
+    async function verifyPaymentAndPlaceOrder(response) {
+      try {
+        const verificationResponse = await fetch('/checkout/razorpay/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            razorPayOrderId: response.razorpay_order_id,
+            razorPayPaymentId: response.razorpay_payment_id,
+            razorPaySignature: response.razorpay_signature
+          })
+        });
+
+        const data = await verificationResponse.json();
+
+        if (data.success) {
+          window.location.href = `/order/success`;
+        } else {
+          throw new Error(data.error || data.message || 'Order failed to finalize on server.');
+        }
+
+      } catch (error) {
+        console.error("Verification and Placement error:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Order Failed',
+          text: `Payment successful but order placement failed: ${error.message}`,
+        });
+      } finally {
+        if (placeOrderBtn) placeOrderBtn.disabled = false;
+      }
+    }
+
+    async function initiateWalletPayment() {
+      if (placeOrderBtn) placeOrderBtn.disabled = true;
+
+      try {
+        const response = await fetch('/order/place/wallet', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          window.location.href = `/order/success`;
+        } else {
+          throw new Error(data.message || 'Wallet payment failed.');
+        }
+
+      } catch (error) {
+        console.error("Wallet payment error:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Payment Failed',
+          text: `Error: ${error.message}`,
+        }).then(() => {
+          window.location.href = "/checkout/summary";
+        });
+      } finally {
+        if (placeOrderBtn) placeOrderBtn.disabled = false;
+      }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (placeOrderForm && placeOrderBtn) {
+        placeOrderForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+
+          if (selectedMethod === "RAZOR_PAY") {
+            initiateRazorpayPayment();
+          } else if (selectedMethod === "WALLET") {
+            initiateWalletPayment();
+          } else if (selectedMethod === "COD") {
+            // placeOrderForm.removeEventListener('submit', arguments.callee);
+            placeOrderForm.submit();
+          }
+        });
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const errorMessage = urlParams.get('error');
+      const successMessage = urlParams.get('success');
+
+      if (errorMessage) {
         const decodedMessage = decodeURIComponent(errorMessage);
         Swal.fire({
-            icon: 'error',
-            title: 'Order Failed',
-            text: `We couldn't place your order. Reason: ${decodedMessage}`,
-            confirmButtonText: 'Review Order Details',
-            confirmButtonColor: "#d33",
+          icon: 'error',
+          title: 'Order Failed',
+          text: `We couldn't place your order. Reason: ${decodedMessage}`,
+          confirmButtonText: 'Review Order Details',
+          confirmButtonColor: "#d33",
         }).then(() => {
-            const newUrl = window.location.pathname;
-            window.history.replaceState({}, document.title, newUrl);
+          const newUrl = window.location.pathname;
+          window.history.replaceState({}, document.title, newUrl);
         });
-    }
+      }
 
-    if (successMessage) {
+      if (successMessage) {
         const decodedMessage = decodeURIComponent(successMessage);
         Swal.fire({
-            icon: 'success',
-            title: 'Order placed successfully',
-            text: `${decodedMessage}`,
-            confirmButtonText: 'View Order',
+          icon: 'success',
+          title: 'Order placed successfully',
+          text: `${decodedMessage}`,
+          confirmButtonText: 'View Order',
         }).then(() => {
-            window.location.href = "/myorders"
+          window.location.href = "/myorders"
         });
-    }
+      }
 
-    lucide.createIcons();
+      lucide.createIcons();
+    });
   </script>
   <%- include('./partials/footer.ejs') %>
 </body>

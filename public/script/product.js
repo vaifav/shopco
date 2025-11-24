@@ -313,7 +313,10 @@ navToProductDetailPage.forEach((article) => {
 					showConfirmButton: false,
 					timer: 1500,
 				});
-				article.querySelector("span.favorite-icon").classList.toggle("fav");
+				const fav = article.querySelector("span.favorite-icon");
+				if (fav.classList.contains("fav")) {
+					fav.classList.remove("fav");
+				}
 				return;
 			} catch (error) {
 				console.error("Fetch error:", error);

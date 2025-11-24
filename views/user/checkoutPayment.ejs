@@ -22,6 +22,11 @@
           <div class="payment-options">
 
             <div class="radio-option">
+              <input type="radio" id="WALLET" name="paymentMethod" value="WALLET">
+              <label for="WALLET">Wallet</label>
+            </div>
+            
+            <div class="radio-option">
               <input type="radio" id="googlepay" name="paymentMethod" value="Google Pay">
               <label for="googlepay">Google Pay</label>
             </div>
@@ -30,6 +35,10 @@
               <input type="radio" id="paypal" name="paymentMethod" value="PayPal">
               <label for="paypal">PayPal</label>
             </div>
+            <div class="radio-option">
+              <input type="radio" id="RAZOR_PAY" name="paymentMethod" value="RAZOR_PAY">
+              <label for="RAZOR_PAY">Razor Pay</label>
+            </div>
 
             <div class="radio-option selected">
               <input type="radio" id="cod" name="paymentMethod" value="COD" checked>
@@ -37,10 +46,10 @@
             </div>
 
             <div class="radio-option card-option">
-             <div class="radio-option-div-debit-card">
-               <input type="radio" id="card" name="paymentMethod" value="Card">
-              <label for="card">Debit card / Credit card</label>
-             </div>
+              <div class="radio-option-div-debit-card">
+                <input type="radio" id="card" name="paymentMethod" value="Card">
+                <label for="card">Debit card / Credit card</label>
+              </div>
 
               <div class="card-details-form" style="display: none;">
                 <label for="cardType" class="input-label">Card</label>

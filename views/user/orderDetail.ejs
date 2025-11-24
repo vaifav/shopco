@@ -31,25 +31,25 @@
 
       <div class="status-action-bar card">
         <div class="status-group">
-          <span class="label">Current Status:</span>
-          <span class="order-status status-<%= order.orderStatus.toLowerCase() %>">
+          <span class="label">Overall Order Status:</span>
+          <span class="order-status status-<%= order.orderStatus.toLowerCase().replace(/[^a-z0-9]/g, '-') %>">
             <b><%= order.orderStatus %></b>
           </span>
         </div>
 
         <div class="action-buttons">
-          <% if (order.orderStatus === 'Pending' || order.orderStatus === 'Shipped') { %>
-          <button class="cancel-btn secondary-btn" data-order-id="<%= order._id %>">
-            <i data-lucide="x-circle"></i> Cancel Order
-          </button>
-          <% } else if (order.orderStatus === 'Delivered') { %>
-          <button class="return-btn secondary-btn" data-order-id="<%= order._id %>">
-            <i data-lucide="rotate-ccw"></i> Request Return
+          <% 
+            const isCancellable = !['Cancelled', 'Closed', 'Delivered', 'Partial Delivered', 'Completed', 'Completed (with Return)'].includes(order.orderStatus);
+            if (isCancellable) { 
+          %>
+          <button class="cancel-btn primary-btn danger-btn" data-order-id="<%= order._id %>" title="Cancel all unfulfilled items in the order">
+            <i data-lucide="x-circle"></i> Cancel Entire Order
           </button>
           <% } %>
-          <button class="secondary-btn"><a href="/orders/invoice/<%= order.id %>" title="Download Invoice">
+          <button class="secondary-btn"><a href="/orders/invoice/<%= order._id %>" title="Download Invoice">
               Download Invoice
-            </a></button>
+            </a>
+          </button>
         </div>
       </div>
 
@@ -63,13 +63,15 @@
               <tr>
                 <th class="col-product">Product</th>
                 <th class="col-qty">Qty</th>
+                <th class="col-status">Status</th>
                 <th class="col-price">Price</th>
                 <th class="col-total">Total</th>
+                <th class="col-actions">Actions</th>
               </tr>
             </thead>
             <tbody>
               <% order.items.forEach(item => { %>
-              <tr>
+              <tr data-item-id="<%= item._id %>">
                 <td class="item-details-cell">
                   <div class="item-product-info">
                     <div class="item-image">
@@ -88,6 +90,17 @@
                 <td class="item-qty-cell">
                   <span class="desktop-qty"><%= item.quantity %></span>
                 </td>
+                <td class="item-status-cell">
+                  <% if (item.itemStatus === 'Returned' && item.reason) { %>
+                  <span class="item-status status-<%= item.itemStatus.toLowerCase().replace(/[^a-z0-9]/g, '-') %>" title=" Reason: <%= item.reason %>">
+                    <b><%= item.itemStatus %></b>
+                  </span>
+                  <% }else { %>
+                  <span class="item-status status-<%= item.itemStatus.toLowerCase().replace(/[^a-z0-9]/g, '-') %>">
+                    <b><%= item.itemStatus %></b>
+                  </span>
+                  <% }%>
+                </td>
                 <td class="item-price-cell">
                   <span class="item-price-unit">
                     <i data-lucide="indian-rupee" class="rupee-icon sm-icon"></i>
@@ -100,8 +113,27 @@
                     <%= (item.price * item.quantity).toFixed(2) %>
                   </span>
                 </td>
+                <td class="item-actions-cell">
+                  <% 
+                    const cancellableStatuses = ['Pending', 'Processing', 'Shipped'];
+                    const returnableStatus = 'Delivered';
+                    const closedStatuses = ['Cancelled', 'Returned'];
+                  %>
+                  <% if (cancellableStatuses.includes(item.itemStatus)) { %>
+                  <button class="cancel-item-btn secondary-btn" data-order-id="<%= order._id %>" data-item-id="<%= item._id %>" title="Cancel this item only">
+                    Cancel Item
+                  </button>
+                  <% } else if (item.itemStatus === returnableStatus) { %>
+                  <button class="return-item-btn primary-btn return-btn" data-order-id="<%= order._id %>" data-item-id="<%= item._id %>" title="Request return for this item only">
+                    Return Item
+                  </button>
+                  <% } else if (closedStatuses.includes(item.itemStatus)) { %>
+                  <span class="closed-item-status">Action Complete</span>
+                  <% } %>
+                </td>
               </tr>
-              <% }); %>
+              <% });
+              %>
             </tbody>
           </table>
         </div>
@@ -111,8 +143,14 @@
           <div class="shipping-info card">
             <h2><i data-lucide="map-pin"></i> Shipping Address</h2>
             <p><b><%= order.shippingAddress.fullName %></b></p>
-            <p><%= order.shippingAddress.houseName %>, <%= order.shippingAddress.street %>, <%= order.shippingAddress.city %></p>
-            <p><%= order.shippingAddress.pin %></p>
+            <p>
+              <%= order.shippingAddress.houseName %>,
+              <%= order.shippingAddress.street %>,
+              <%= order.shippingAddress.city %>,
+              <%= order.shippingAddress.state %>,
+              <%= order.shippingAddress.country %>
+            </p>
+            <p>Pin: <%= order.shippingAddress.pin %></p>
             <p>Phone: <%= order.shippingAddress.phone %></p>
             <p class="order-placed-date">
               Order Placed: <b><%= new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></b>
@@ -124,7 +162,7 @@
 
             <% 
                             let subtotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                            const deliveryFee = 15.00; // Example fixed fee
+                            const deliveryFee = 15.00;
                         %>
 
             <div class="price-line">
@@ -158,9 +196,9 @@
             </div>
 
             <div class="payment-info">
-              <p>Payment via <b><%= order.paymentMethod %></b></p>
-              <span class="payment-status status-<%= order.paymentMethod.toLowerCase() %>">
-                <%= order.paymentStatus %>
+              <p>Payment Method: <b><%= order.paymentMethod %></b></p>
+              <span class="payment-status status-<%= order.paymentMethod.toLowerCase().replace(/[^a-z0-9]/g, '-') %>">
+                <%= order.paymentMethod === 'COD' ? 'Unpaid' : 'Paid' %>
               </span>
             </div>
           </div>
@@ -178,77 +216,7 @@
   </section>
 
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
-  <script type="module">
-    import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.23.0/+esm";
-    lucide.createIcons();
-    const cancelBtn = document.querySelector('.cancel-btn');
-
-    if (cancelBtn) {
-      cancelBtn.addEventListener('click', async (e) => {
-        const button = e.target.closest('button');
-        const orderId = button.dataset.orderId;
-        const confirmation = await Swal.fire({
-          title: 'Are you sure?',
-          text: "You won't be able to revert this!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Yes, cancel it!'
-        });
-
-        if (confirmation.isConfirmed) {
-          try {
-            const response = await fetch(`/order/cancel/${orderId}`, {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                status: 'Cancelled'
-              })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-              const statusElement = document.querySelector('.order-status');
-              const actionBar = document.querySelector('.action-buttons');
-              if (statusElement) {
-                statusElement.className = 'order-status';
-                statusElement.classList.add('status-cancelled');
-                statusElement.innerHTML = '<b>CANCELLED</b>';
-              }
-
-              if (actionBar) {
-                actionBar.innerHTML = '';
-              }
-
-              Swal.fire(
-                'Cancelled!',
-                'Your order has been successfully cancelled.',
-                'success'
-              );
-
-            } else {
-              Swal.fire(
-                'Error!',
-                data.message || 'Could not cancel the order.',
-                'error'
-              );
-            }
-          } catch (error) {
-            console.error('Cancellation failed:', error);
-            Swal.fire(
-              'Network Error!',
-              'Failed to connect to the server.',
-              'error'
-            );
-          }
-        }
-      });
-    }
-  </script>
+  <script type="module" src="/script/order.js"></script>
   <%- include('./partials/footer.ejs') %>
 </body>
 

@@ -1,8 +1,8 @@
 import {
 	getAdminSingleOrderDetails,
 	orderDetails,
-	updateOrderStatus,
-	generateInvoicePdf
+	updateOrderItemStatus,
+	generateInvoicePdf,
 } from "../../services/admin/orderService.js";
 
 async function getAdminOrders(req, res) {
@@ -53,27 +53,31 @@ const getAdminOrderDetailPage = async (req, res) => {
 	}
 };
 
-const updateAdminOrderStatus = async (req, res) => {
-	const { orderId } = req.params;
+const updateAdminOrderItemStatus = async (req, res) => {
+	const { orderId, itemId } = req.params;
+
 	const { newStatus } = req.body;
 
-	if (!newStatus || !orderId) {
-		return res.status(400).json({ success: false, message: "Missing Order ID or Status." });
+	if (!newStatus || !orderId || !itemId) {
+		return res.status(400).json({
+			success: false,
+			message: "Missing Order ID, Item ID, or new Status.",
+		});
 	}
 
 	try {
-		const result = await updateOrderStatus(orderId, newStatus);
-
+		const result = await updateOrderItemStatus(orderId, itemId, newStatus);
 		return res.status(200).json({
 			success: true,
-			message: `Order status updated to ${result.newStatus}.`,
-			newStatus: result.newStatus,
+			message: `Order item status updated to ${result.newItemStatus}. Overall order status is now ${result.newOverallStatus}.`,
+			newItemStatus: result.newItemStatus,
+			newOverallStatus: result.newOverallStatus,
 		});
 	} catch (error) {
-		console.error("(updateAdminOrderStatus):", error.message);
+		console.error("(updateAdminOrderItemStatus):", error.message);
 		return res.status(500).json({
 			success: false,
-			message: error.message || "Internal server error. Failed to update status.",
+			message: error.message || "Internal server error. Failed to update item status.",
 		});
 	}
 };
@@ -94,4 +98,9 @@ const downloadOrderInvoice = async (req, res) => {
 	}
 };
 
-export { getAdminOrders, getAdminOrderDetailPage, updateAdminOrderStatus ,downloadOrderInvoice};
+export {
+	getAdminOrders,
+	getAdminOrderDetailPage,
+	updateAdminOrderItemStatus,
+	downloadOrderInvoice,
+};

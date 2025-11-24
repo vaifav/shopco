@@ -80,8 +80,8 @@ async function orderDetails(page = 1, limit = 10, date, status, search = "", cre
 				customerName: order.user ? customerIdentifier : "Guest User",
 				date: order.createdAt,
 				totalAmount: order.totalAmount,
-				orderStatus: order.orderStatus,
 				paymentMethod: order.paymentMethod,
+				orderStatus: determineOrderStatus(order.items),
 			};
 		});
 
@@ -97,61 +97,12 @@ const getAdminSingleOrderDetails = async (orderId) => {
 		const order = await OrderModel.findOne({
 			_id: orderId,
 		});
+		order.orderStatus = determineOrderStatus(order.items);
 
 		return order;
 	} catch (error) {
 		console.error("Error fetching order details:", error);
 		throw new Error("Could not fetch order details.");
-	}
-};
-
-const updateOrderStatus = async (orderId, newStatus) => {
-	const validTransitions = {
-		Pending: ["Processing", "Cancelled"],
-		Processing: ["Shipped", "Cancelled"],
-		Shipped: ["Delivered", "Returned"],
-		Delivered: ["Returned"],
-		Cancelled: [],
-		Returned: [],
-	};
-
-	if (!mongoose.Types.ObjectId.isValid(orderId)) {
-		throw new Error(`Invalid Order ID format: ${orderId}`);
-	}
-
-	try {
-		const validStatuses = Object.keys(validTransitions);
-		if (!validStatuses.includes(newStatus)) {
-			throw new Error(
-				`Invalid order status: ${newStatus}. Must be one of: ${validStatuses.join(", ")}`
-			);
-		}
-
-		const order = await OrderModel.findOne({ _id: orderId });
-
-		const checkStatus = validTransitions[order.orderStatus];
-		if (!checkStatus || !checkStatus.includes(newStatus)) {
-			const errorMsg =
-				checkStatus.length === 0
-					? `The order is already ${order.orderStatus}`
-					: `Only ${checkStatus} is allowed.....`;
-			throw new Error(errorMsg);
-		}
-
-		const updatedOrder = await OrderModel.findByIdAndUpdate(
-			orderId,
-			{ orderStatus: newStatus },
-			{ new: true }
-		);
-
-		if (!updatedOrder) {
-			throw new Error(`Order ID not found.`);
-		}
-
-		return { success: true, newStatus: updatedOrder.orderStatus };
-	} catch (error) {
-		console.error("Error updating order status:", error);
-		throw new Error(error.message || "Failed to update order status in database.");
 	}
 };
 
@@ -247,4 +198,121 @@ async function generateInvoicePdf(orderId, res) {
 	}
 }
 
-export { orderDetails, getAdminSingleOrderDetails, updateOrderStatus, generateInvoicePdf };
+const determineOrderStatus = (items) => {
+	if (!items || items.length === 0) return "Pending";
+
+	const statuses = items.map((item) => item.itemStatus);
+
+	const isClosed = statuses.every((s) => ["Cancelled", "Returned"].includes(s));
+	if (isClosed) {
+		if (statuses.every((s) => s === "Returned")) return "Completed (with Return)";
+		return "Closed";
+	}
+
+	const isPartialStatus = statuses.some((s) => s === "Cancelled" || s === "Returned");
+	const isDelivered = statuses.some((s) => s === "Delivered");
+	const isShipped = statuses.some((s) => s === "Shipped");
+	const isProcessing = statuses.some((s) => s === "Processing");
+	const isPending = statuses.some((s) => s === "Pending");
+
+	if (statuses.every((s) => s === "Delivered")) return "Completed";
+
+	if (isDelivered) {
+		return isPartialStatus ? "Partial Delivered" : "Delivered";
+	}
+	if (isShipped) {
+		return isPartialStatus ? "Partial Shipped" : "Shipped";
+	}
+	if (isProcessing) {
+		return isPartialStatus ? "Partial Processing" : "Processing";
+	}
+
+	if (isPending) {
+		return isPartialStatus ? "Partial Pending" : "Pending";
+	}
+
+	return "Pending";
+};
+
+const updateOrderItemStatus = async (orderId, itemId, newStatus) => {
+	const validTransitions = {
+		Pending: ["Processing", "Cancelled"],
+		Processing: ["Shipped", "Cancelled"],
+		Shipped: ["Delivered", "Returned"],
+		Delivered: ["Returned"],
+		Cancelled: [],
+		Returned: [],
+	};
+
+	if (!mongoose.Types.ObjectId.isValid(orderId)) {
+		throw new Error(`Invalid Order ID format: ${orderId}`);
+	}
+	if (!mongoose.Types.ObjectId.isValid(itemId)) {
+		throw new Error(`Invalid Item ID format: ${itemId}`);
+	}
+
+	try {
+		const validStatuses = Object.keys(validTransitions);
+		if (!validStatuses.includes(newStatus)) {
+			throw new Error(
+				`Invalid item status: ${newStatus}. Must be one of: ${validStatuses.join(", ")}`
+			);
+		}
+
+		const order = await OrderModel.findOne({
+			_id: orderId,
+			"items._id": itemId,
+		}).lean();
+
+		if (!order) {
+			throw new Error(`Order or Order Item not found.`);
+		}
+
+		const itemToUpdate = order.items.find((item) => item._id.toString() === itemId);
+
+		if (!itemToUpdate) {
+			throw new Error(`Order Item not found.`);
+		}
+
+		const currentStatus = itemToUpdate.itemStatus;
+		const checkStatus = validTransitions[currentStatus];
+
+		if (!checkStatus || !checkStatus.includes(newStatus)) {
+			const errorMsg =
+				checkStatus.length === 0
+					? `The item is already ${currentStatus} and cannot be updated further.`
+					: `Cannot transition item status from ${currentStatus} to ${newStatus}. Only ${checkStatus.join(
+							", "
+					  )} is allowed.`;
+			throw new Error(errorMsg);
+		}
+
+		const updateResult = await OrderModel.updateOne(
+			{ _id: orderId, "items._id": itemId },
+			{ $set: { "items.$.itemStatus": newStatus } }
+		);
+
+		if (updateResult.modifiedCount === 0) {
+			throw new Error("Failed to update item status. Item or Order ID might be incorrect.");
+		}
+
+		const updatedOrder = await OrderModel.findById(orderId).lean();
+
+		if (!updatedOrder) {
+			throw new Error(`Order ID not found after update.`);
+		}
+
+		const newOverallStatus = determineOrderStatus(updatedOrder.items);
+
+		return {
+			success: true,
+			newItemStatus: newStatus,
+			newOverallStatus: newOverallStatus,
+		};
+	} catch (error) {
+		console.error("Error updating order item status:", error);
+		throw new Error(error.message || "Failed to update order item status in database.");
+	}
+};
+
+export { orderDetails, getAdminSingleOrderDetails, updateOrderItemStatus, generateInvoicePdf };

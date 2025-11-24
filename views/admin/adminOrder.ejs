@@ -59,13 +59,6 @@
                 <ul>
                   <li>Filter By</li>
                   <li class="date-filter"><i data-lucide="calendar-search"></i> <input type="text" name="orderDate" id="orderDate" class="custom-date-picker" placeholder="Select Order Date"> <div style="display: inline-block;"><i data-lucide="X"></i></div></li>
-                  <% 
-                     const allStatusesForFilter = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled", "Returned"];
-                   %>
-                   <li class="all" data-status=""><i data-lucide="chevrons-right"></i><b>All</b></li>
-                  <% allStatusesForFilter.forEach(status => { %>
-                  <li class="<%= status.toLowerCase() %>" data-status="<%= status %>"><i data-lucide="chevrons-right"></i><b><%= status %></b></li>
-                  <% }) %>
                 </ul>
               </button>
             </div>
@@ -96,7 +89,7 @@
                   <td data-label="Date"><%= new Date(order.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) %></td>
                   <td data-label="Amount">₹<%= order.totalAmount.toFixed(2) %></td>
                   <td data-label="Status" class="status-cell">
-                    <span class="status <%= order.orderStatus.toLowerCase() %>" id="status-display-<%= order.id %>">
+                    <span class="status <%= order.orderStatus %>" id="status-display-<%= order.id %>">
                       <span class="dot"></span>
                       <span><%= order.orderStatus %></span>
                     </span>
@@ -106,13 +99,6 @@
                     <a href="/admin/orders/<%= order.id %>" title="View Details">
                       <i data-lucide="eye"></i>
                     </a>
-                    <select class="status-select-in-table" data-order-id="<%= order.id %>" onchange="updateOrderStatus(this.value, this.getAttribute('data-order-id'), this)">
-                      <% allStatuses.forEach(status => { %>
-                      <option value="<%= status %>" <%= status === order.orderStatus ? 'selected' : '' %>>
-                        <%= status %>
-                      </option>
-                      <% }); %>
-                    </select>
                   </td>
                 </tr>
                 <% }) %>

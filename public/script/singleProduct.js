@@ -149,7 +149,9 @@ addToCartButton.addEventListener("click", async (event) => {
 			showConfirmButton: false,
 			timer: 1500,
 		});
-		fav.classList.toggle("fav");
+		if (fav.classList.contains("fav")) {
+			fav.classList.remove("fav");
+		}
 		return;
 	} catch (error) {
 		console.log(error);

@@ -29,9 +29,17 @@ import { isVerified } from "../middleware/authMiddleware.js";
 import {
 	getAdminOrders,
 	getAdminOrderDetailPage,
-	updateAdminOrderStatus,
+	updateAdminOrderItemStatus,
 	downloadOrderInvoice,
 } from "../controllers/admin/orderController.js";
+import {
+	addCoupon,
+	editCoupon,
+	getCouponAddPage,
+	getCouponEditPage,
+	getCouponPage,
+	removeCoupon,
+} from "../controllers/admin/couponController.js";
 
 const admin = Router();
 
@@ -41,7 +49,7 @@ admin.get("/customers", getCustomers);
 admin.get("/products", productListPage);
 admin.get("/orders", getAdminOrders);
 admin.get("/orders/:orderId", getAdminOrderDetailPage);
-admin.put("/orders/:orderId/status", updateAdminOrderStatus);
+admin.patch("/orders/:orderId/items/:itemId/status", updateAdminOrderItemStatus);
 
 admin.route("/products/action").get(getProductAdd).post(uploadMultipleVariantImages, addProduct);
 
@@ -63,7 +71,14 @@ admin
 	.delete(removeCategory);
 
 admin.route("/customers/:id").get(getSingleCustomer).patch(updateCustomerBlockStatus);
-admin.get('/orders/invoice/:orderId', downloadOrderInvoice);
+admin.get("/orders/invoice/:orderId", downloadOrderInvoice);
+
+admin.get("/coupons", getCouponPage);
+admin.get("/coupons/add", getCouponAddPage);
+admin.post("/coupons", addCoupon);
+admin.delete("/coupons/:couponId", removeCoupon);
+admin.get("/coupons/:couponId", getCouponEditPage);
+admin.patch("/coupons/:couponId", editCoupon);
 
 admin.use((req, res) => res.status(404).render("user/pagenotfound"));
 export default admin;

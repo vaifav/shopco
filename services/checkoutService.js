@@ -4,6 +4,15 @@ import VariantModel from "../models/variantModel.js";
 import CartModel from "../models/cartModel.js";
 import userModel from "../models/signupModel.js";
 import personalInfoModel from "../models/personalInfoModel.js";
+import WalletTransactionModel from "../models/walletTransactionModel.js";
+import { debitWallet } from "./walletService.js";
+
+const returnStockToInventory = async (items) => {
+	const updatePromises = items.map((item) => {
+		return VariantModel.updateOne({ _id: item.variantId }, { $inc: { stock: item.quantity } }).exec();
+	});
+	await Promise.all(updatePromises);
+};
 
 const createBuyNowSnapshot = async (variantId, size, color, quantity) => {
 	try {
@@ -33,6 +42,8 @@ const createBuyNowSnapshot = async (variantId, size, color, quantity) => {
 				size: size,
 				color: color,
 				imageUrl: variant.images[0],
+				itemStatus: "Pending",
+				itemPaymentStatus: "UNPAID",
 			},
 		];
 
@@ -97,6 +108,8 @@ const createCartSnapshot = async (userId) => {
 				size: rawItem.size,
 				color: variant.color,
 				imageUrl: variant.images[0],
+				itemStatus: "Pending",
+				itemPaymentStatus: "UNPAID",
 			});
 		}
 
@@ -113,7 +126,9 @@ const createCartSnapshot = async (userId) => {
 	}
 };
 
-const createNewOrder = async (userId, checkoutSnapshot, isFromCart) => {
+const createNewOrder = async (userId, checkoutSnapshot, isFromCart, paymentDetails = {}) => {
+	let transactionId = null;
+
 	try {
 		const stockUpdatePromises = [];
 
@@ -134,6 +149,25 @@ const createNewOrder = async (userId, checkoutSnapshot, isFromCart) => {
 
 		await Promise.all(stockUpdatePromises);
 
+		if (checkoutSnapshot.paymentMethod.method === "WALLET") {
+			try {
+				transactionId = await debitWallet(
+					userId,
+					checkoutSnapshot.totalAmount,
+					"ORDER",
+					new mongoose.Types.ObjectId()
+				);
+
+				checkoutSnapshot.cartItems.forEach((item) => {
+					item.itemPaymentStatus = "PAID";
+					item.itemStatus = "Processing";
+				});
+			} catch (walletError) {
+				await returnStockToInventory(checkoutSnapshot.cartItems);
+				throw new Error(`Wallet payment failed: ${walletError.message}`);
+			}
+		}
+
 		const newOrder = new OrderModel({
 			user: userId,
 			items: checkoutSnapshot.cartItems.map((item) => ({
@@ -145,36 +179,51 @@ const createNewOrder = async (userId, checkoutSnapshot, isFromCart) => {
 				size: item.size,
 				color: item.color,
 				imageUrl: item.imageUrl,
+				itemStatus: item.itemStatus,
+				itemPaymentStatus: item.itemPaymentStatus,
+				reason: null,
+				refundedAmount: 0,
 			})),
 			shippingAddress: checkoutSnapshot.shippingAddress,
 			paymentMethod: checkoutSnapshot.paymentMethod.method,
 			totalAmount: checkoutSnapshot.totalAmount,
-			orderStatus: "Pending",
+			razorpayOrderId: paymentDetails.razorPayOrderId || null,
+			razorpayPaymentId: paymentDetails.razorPayPaymentId || null,
+			walletTransactionId: transactionId,
 		});
 
 		await newOrder.save();
+
+		if (transactionId) {
+			await WalletTransactionModel.findOneAndUpdate(
+				{ externalTransactionId: transactionId },
+				{ $set: { referenceId: newOrder._id } }
+			);
+		}
 
 		if (isFromCart) {
 			await CartModel.findOneAndUpdate({ userId: userId }, { $set: { items: [] } }, { new: true });
 		}
 
 		if ((await OrderModel.countDocuments({ user: new mongoose.Types.ObjectId(userId) })) === 1) {
-			const user = await userModel.findByIdAndUpdate(userId, { isVisitors: false });
+			await userModel.findByIdAndUpdate(userId, { isVisitors: false });
 			const personalInfo = await personalInfoModel.findOne({ userId });
-			if (!personalInfo.phone) {
+
+			if (personalInfo && !personalInfo.phone) {
 				await personalInfoModel.findOneAndUpdate(
 					{ userId },
 					{ $set: { phone: checkoutSnapshot.shippingAddress.phone } }
 				);
 			}
 
-			if (!personalInfo.address) {
+			if (personalInfo && !personalInfo.address) {
 				await personalInfoModel.findOneAndUpdate(
 					{ userId },
 					{ $set: { address: new mongoose.Types.ObjectId(checkoutSnapshot.shippingAddress.addressId) } }
 				);
 			}
 		}
+
 		return newOrder;
 	} catch (error) {
 		throw new Error(error.message);

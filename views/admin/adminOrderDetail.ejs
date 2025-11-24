@@ -8,7 +8,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/partials.css">
-  <title>Order <%= `#${order._id.toString().slice(0,3).toUpperCase()}...${order._id.toString().slice(-4).toUpperCase()}` %></title>
+
+  <% 
+        const orderIdShort = `${order._id.toString().slice(0,3).toUpperCase()}...${order._id.toString().slice(-4).toUpperCase()}`;
+        const overallStatus = order.orderStatus || 'Unknown'; 
+        const statusClass = `status-${overallStatus.toLowerCase().replace(/ /g, '-')}`; 
+        const deliveryFee = 15.00; 
+        const subtotal = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const discountAmount = subtotal + deliveryFee - order.totalAmount; 
+        const address = order.shippingAddress;
+        const paymentText = order.paymentMethod === 'COD' ? 'Cash On Delivery' : order.paymentMethod.replace('_', ' ');
+        const paymentStatusClass = order.paymentMethod === 'COD' ? 'status-cod' : 'status-card-payment';
+        const orderDate = new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        const allStatuses = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled", "Returned"];
+    %>
+
+  <title>Order #<%= orderIdShort %></title>
+
   <style>
     @import url("/style/adminOrderDetails.css");
     @import url("/style/adminPartials.css");
@@ -19,30 +35,41 @@
   <%- include('./partials/header.ejs') %>
 
   <section class="order-detail-page wrapper">
+    <ol style="display: flex; gap: 1rem; margin-block: 1rem;">
+      <li><a href="/">Home &raquo;</a></li>
+      <li><a href="/admin/orders">Orders &raquo;</a></li>
+      <li>Order #<%= orderIdShort %></li>
+    </ol>
+
     <div class="container">
       <a href="/admin/orders" class="back-link">
-        <i data-lucide="arrow-left"></i> Back to My Orders
+        <i data-lucide="arrow-left"></i> Back to Orders List
       </a>
 
-      <% if (order) { %>
-      <h1 class="main-heading">Order <%= `#${order._id.toString().slice(0,3).toUpperCase()}...${order._id.toString().slice(-4).toUpperCase()}` %></h1>
+      <h1 class="main-heading">Order #<%= orderIdShort %></h1>
 
       <div class="status-action-bar card">
         <div class="status-group">
-          <span class="label">Current Status:</span>
-          <span class="order-status status-<%= order.orderStatus.toLowerCase() %>">
-            <b><%= order.orderStatus %></b>
+          <span class="label">Overall Order Status:</span>
+          <span class="order-status <%= statusClass %>">
+            <b><%= overallStatus %></b>
           </span>
         </div>
+
         <div class="action-buttons">
-          <button class="secondary-btn"><a href="/admin/orders/invoice/<%= order.id %>" title="Download Invoice">
+          <select class="order-status-select" title="Overall status is derived from item statuses.">
+            <option value="<%= overallStatus %>" selected><%= overallStatus %></option>
+          </select>
+
+          <button class="secondary-btn">
+            <a href="/admin/orders/invoice/<%= order._id %>" title="Download Invoice">
               Download Invoice
-            </a></button>
+            </a>
+          </button>
         </div>
       </div>
 
       <div class="order-detail-grid">
-
         <div class="items-list-box card">
           <h2><i data-lucide="package"></i> Order Items (<%= order.items.length %>)</h2>
 
@@ -51,10 +78,13 @@
               <tr>
                 <th class="col-product">Product</th>
                 <th class="col-qty">Qty</th>
-                <th class="col-price">Price</th>
+                <th class="col-status">Status</th>
+                <th class="col-price">Price (Unit)</th>
                 <th class="col-total">Total</th>
+                <th class="col-actions">Actions</th>
               </tr>
             </thead>
+
             <tbody>
               <% order.items.forEach(item => { %>
               <tr>
@@ -64,111 +94,125 @@
                       <img src="<%= item.imageUrl %>" alt="<%= item.name %>">
                     </div>
                     <div class="item-text-info">
-                      <a href="/products/<%= item.productId %>" class="item-name">
+                      <a href="/products/<%= item.productId %>/<%= item.variantId %>" class="item-name">
                         <%= item.name %>
                       </a>
                       <p class="variant">
-                        <%= item.color %> | Size: <%= item.size %>
+                        <%= item.color ? `${item.color} | ` : '' %>Size: <%= item.size ? item.size : 'N/A' %>
                       </p>
                     </div>
                   </div>
                 </td>
+
                 <td class="item-qty-cell">
                   <span class="desktop-qty"><%= item.quantity %></span>
                 </td>
+
+                <td class="item-status-cell">
+                  <% const itemStatusClass = `status-${item.itemStatus.toLowerCase()}`; %>
+                  <span class="item-status <%= itemStatusClass %>" title="<%= item.itemStatus === 'Returned' || item.itemStatus === 'Cancelled' ? `Reason: ${item.reason || 'Not specified'}` : '' %>">
+                    <b><%= item.itemStatus %></b>
+                  </span>
+                </td>
+
                 <td class="item-price-cell">
                   <span class="item-price-unit">
                     <i data-lucide="indian-rupee" class="rupee-icon sm-icon"></i>
                     <%= item.price.toFixed(2) %>
                   </span>
                 </td>
+
                 <td class="item-total-cell">
                   <span class="item-total">
                     <i data-lucide="indian-rupee" class="rupee-icon"></i>
                     <%= (item.price * item.quantity).toFixed(2) %>
                   </span>
                 </td>
+
+                <td class="item-actions-cell">
+
+                  <select name="newStatus" class="item-status-select" data-itemid="<%= item._id %>" data-orderid="<%= order._id %>">
+                    <% allStatuses.forEach(status => { %>
+                    <option value="<%= status %>" <%= item.itemStatus === status ? 'selected' : '' %>>
+                      <%= status %>
+                    </option>
+                    <% }) %>
+                  </select>
+
+                </td>
               </tr>
-              <% }); %>
+              <% }) %>
             </tbody>
           </table>
         </div>
 
         <div class="side-detail-column">
-
           <div class="shipping-info card">
             <h2><i data-lucide="map-pin"></i> Shipping Address</h2>
-            <p><b><%= order.shippingAddress.fullName %></b></p>
-            <p><%= order.shippingAddress.houseName %>, <%= order.shippingAddress.street %>, <%= order.shippingAddress.city %></p>
-            <p><%= order.shippingAddress.pin %></p>
-            <p>Phone: <%= order.shippingAddress.phone %></p>
+            <p><b><%= address.fullName %></b></p>
+            <p>
+              <%= address.houseName %>,
+              <%= address.street %>,
+              <%= address.city %>,
+              <%= address.state %>,
+              <%= address.country %>
+            </p>
+            <p>Pin: <%= address.pin %></p>
+            <p>Phone: <%= address.phone %></p>
             <p class="order-placed-date">
-              Order Placed: <b><%= new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></b>
+              Order Placed: <b><%= orderDate %></b>
             </p>
           </div>
 
           <div class="price-breakdown-box card">
             <h2><i data-lucide="receipt"></i> Price Summary</h2>
 
-            <% 
-                            let subtotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                            const deliveryFee = 15.00; 
-                        %>
-
             <div class="price-line">
               <span>Items Subtotal</span>
               <span class="value">
-                <i data-lucide="indian-rupee" class="rupee-icon"></i> <%= subtotal.toFixed(2) %>
+                <i data-lucide="indian-rupee" class="rupee-icon"></i>
+                <%= subtotal.toFixed(2) %>
               </span>
             </div>
 
             <div class="price-line">
               <span>Delivery Fee</span>
               <span class="value">
-                <i data-lucide="indian-rupee" class="rupee-icon"></i> <%= deliveryFee.toFixed(2) %>
+                <i data-lucide="indian-rupee" class="rupee-icon"></i>
+                <%= deliveryFee.toFixed(2) %>
               </span>
             </div>
 
-            <% if (order.discount && order.discount > 0) { %>
             <div class="price-line discount">
               <span>Discount Applied</span>
               <span class="value">
-                - <i data-lucide="indian-rupee" class="rupee-icon"></i> <%= order.discount.toFixed(2) %>
+                - <i data-lucide="indian-rupee" class="rupee-icon"></i>
+                <%= discountAmount.toFixed(2) %>
               </span>
             </div>
-            <% } %>
 
             <div class="final-total price-line">
               <span>TOTAL PAID</span>
               <span class="value final-value">
-                <i data-lucide="indian-rupee" class="rupee-icon"></i> <%= order.totalAmount.toFixed(2) %>
+                <i data-lucide="indian-rupee" class="rupee-icon"></i>
+                <%= order.totalAmount.toFixed(2) %>
               </span>
             </div>
 
             <div class="payment-info">
-              <p>Payment via <b><%= order.paymentMethod %></b></p>
-              <span class="payment-status status-<%= order.paymentMethod.toLowerCase() %>">
-                <%= order.paymentStatus %>
+              <p>Payment Method: <b><%= paymentText %></b></p>
+              <span class="payment-status <%= paymentStatusClass %>">
+                <%= order.paymentMethod === 'COD' ? 'Pending' : 'Paid' %>
               </span>
             </div>
           </div>
         </div>
-
       </div>
-      <% } else { %>
-      <div class="empty-state">
-        <h2>Order Not Found</h2>
-        <p>The order ID you requested does not exist or you do not have permission to view it.</p>
-        <a href="/admin/orders" class="primary-btn">Go to My Orders</a>
-      </div>
-      <% } %>
     </div>
   </section>
 
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
-  <script type="module">
-    lucide.createIcons();
-  </script>
+  <script type="module" src="/script/admin/adminOrderDetail.js"></script>
 </body>
 
 </html>
