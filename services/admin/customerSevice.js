@@ -3,6 +3,42 @@ import personalInfoModel from "../../models/personalInfoModel.js";
 import userModel from "../../models/signupModel.js";
 import OrderModel from "../../models/orderModel.js";
 
+const determineOrderStatus = (items) => {
+	if (!items || items.length === 0) return "Pending";
+
+	const statuses = items.map((item) => item.itemStatus);
+
+	const isClosed = statuses.every((s) => ["Cancelled", "Returned"].includes(s));
+	if (isClosed) {
+		if (statuses.every((s) => s === "Returned")) return "Completed (with Return)";
+		return "Closed";
+	}
+
+	const isPartialStatus = statuses.some((s) => s === "Cancelled" || s === "Returned");
+	const isDelivered = statuses.some((s) => s === "Delivered");
+	const isShipped = statuses.some((s) => s === "Shipped");
+	const isProcessing = statuses.some((s) => s === "Processing");
+	const isPending = statuses.some((s) => s === "Pending");
+
+	if (statuses.every((s) => s === "Delivered")) return "Completed";
+
+	if (isDelivered) {
+		return isPartialStatus ? "Partial Delivered" : "Delivered";
+	}
+	if (isShipped) {
+		return isPartialStatus ? "Partial Shipped" : "Shipped";
+	}
+	if (isProcessing) {
+		return isPartialStatus ? "Partial Processing" : "Processing";
+	}
+
+	if (isPending) {
+		return isPartialStatus ? "Partial Pending" : "Pending";
+	}
+
+	return "Pending";
+};
+
 async function customerDetails(page = 1, limit = 5, createdAt, fname, search = "", isBlocked = "") {
 	const data = {};
 	const query = {};
@@ -48,7 +84,11 @@ async function customerDetails(page = 1, limit = 5, createdAt, fname, search = "
 
 		const personalInfos = await personalInfoModel
 			.find(query)
-			.populate({ path: "userId", select: "isBlocked role email -_id", match: { role: "user" } })
+			.populate({
+				path: "userId",
+				select: "isBlocked isVisitors role email -_id",
+				match: { role: "user", isVisitors: false },
+			})
 			.sort(sortCriteria)
 			.skip(skip)
 			.limit(limit)
@@ -87,8 +127,8 @@ const singleCustomer = async (userId) => {
 			.findOne({ _id: new mongoose.Types.ObjectId(userId.trim()) })
 			.populate({
 				path: "userId",
-				select: "isBlocked role email -_id",
-				match: { role: "user" },
+				select: "isBlocked isVisitors role email -_id",
+				match: { role: "user", isVisitors: false },
 			})
 			.populate({
 				path: "address",
@@ -99,6 +139,11 @@ const singleCustomer = async (userId) => {
 		const orders = await OrderModel.find({
 			user: new mongoose.Types.ObjectId(userIdForOrder.userId),
 		});
+		orders.forEach((order) => {
+			order.orderStatus = determineOrderStatus(order.items);
+		});
+		console.log(orders);
+		
 
 		const data = {
 			id: personalInfo._id,
@@ -119,8 +164,6 @@ const singleCustomer = async (userId) => {
 			},
 			orders,
 		};
-
-		console.log(data.orders);
 
 		return data;
 	} catch (error) {

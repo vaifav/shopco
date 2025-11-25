@@ -10,6 +10,235 @@
   <link rel="stylesheet" href="/style/partials.css">
   <link rel="stylesheet" href="/style/cart.css">
   <title>Checkout</title>
+  <style>
+    .rupee-icon-small {
+      width: 14px;
+      height: 14px;
+    }
+
+    .rupee-icon-tiny {
+      width: 12px;
+      height: 12px;
+
+      position: relative;
+      top: 1px;
+      stroke-width: 3px;
+    }
+
+    .discounted-tag {
+      color: #28a745;
+      font-weight: 500;
+    }
+
+    .discounted-original-price {
+      text-decoration: line-through;
+      color: #777;
+      margin-right: 10px;
+    }
+
+    .final-price {
+      font-weight: 700;
+      color: #333;
+    }
+
+    .item-discount-applied {
+      font-size: 0.85em;
+      color: #dc3545;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .discount-line .summary-value {
+      color: #dc3545;
+    }
+
+    .discount-line .summary-value b {
+      color: #dc3545;
+    }
+
+    .promo-code-wrapper {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .applied-coupon-display {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px;
+      border: 1px dashed #28a745;
+      border-radius: 8px;
+      background-color: #f6ffed;
+      font-weight: 500;
+      color: #28a745;
+    }
+
+    .applied-coupon-display>div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .coupon-check-icon {
+      color: #28a745;
+      width: 18px;
+      height: 18px;
+    }
+
+    .applied-coupon-code {
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .remove-promo-btn {
+      background: none;
+      border: 1px solid #ff7262;
+      color: #ff7262;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .remove-promo-btn:hover {
+      background-color: #ff7262;
+      color: #fff;
+    }
+
+    .toggle-offers-btn {
+      width: 100%;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.2s ease;
+    }
+
+    .toggle-offers-btn:hover {
+      background-color: #ececec;
+    }
+
+    .dropdown-arrow {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-arrow.rotated {
+      transform: rotate(180deg);
+    }
+
+    .available-coupons-dropdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-in-out;
+      padding: 0 5px;
+    }
+
+    .available-coupons-dropdown-content.active {
+      max-height: 400px;
+      padding: 10px 5px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+    }
+
+    .available-coupons-heading {
+      font-size: 1em;
+      margin-bottom: 10px;
+      font-weight: 600;
+      padding-left: 5px;
+    }
+
+    .coupon-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .coupon-item {
+      padding: 10px;
+      border-bottom: 1px dashed #eee;
+      cursor: pointer;
+      font-size: 0.95em;
+      line-height: 1.4;
+      transition: background-color 0.2s;
+    }
+
+    .coupon-item:last-child {
+      border-bottom: none;
+    }
+
+    .coupon-item:hover {
+      background-color: #f9f9f9;
+    }
+
+    .coupon-code {
+      color: #28a745;
+      font-weight: 700;
+      margin-right: 5px;
+      text-transform: uppercase;
+    }
+
+    .min-purchase-amount {
+      font-size: 0.85em;
+      color: #6c757d;
+      font-weight: 500;
+    }
+
+    .no-coupons-available {
+      font-size: 0.9em;
+      color: #777;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .coupon-message-box {
+      min-height: 20px;
+    }
+
+    .success-message {
+      color: #28a745;
+      font-weight: 500;
+      font-size: 0.9em;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-weight: 500;
+      font-size: 0.9em;
+    }
+
+    .alert.alert-danger {
+      color: #dc3545;
+      padding: 10px;
+      border: 1px solid #dc3545;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      background-color: #f8d7da;
+      font-size: 0.9em;
+      font-weight: 500;
+    }
+
+    .summary-line {
+      margin-bottom: 1rem;
+    }
+  </style>
 </head>
 
 <body>
@@ -18,6 +247,11 @@
     <main>
       <div class="cart-header-actions">
         <h1 class="main-heading">Checkout</h1>
+        <% if (error) { %>
+        <div class="alert alert-danger">
+          <%= error %>
+        </div>
+        <% } %>
       </div>
 
       <section class="cart-page-layout">
@@ -31,11 +265,21 @@
               <ul>
                 <li class="item-variant">Size: <%= item.size.toUpperCase() %> </li>
                 <li class="item-variant">Color: <%= item.color %></li>
+                <li class="item-variant">Qty: <%= item.quantity %><% if (item.couponDiscountAmount && item.couponDiscountAmount > 0) { %> (<span class="discounted-tag">Discounted</span>)<% } %></li>
               </ul>
-              <p class="item-price"> <i data-lucide="indian-rupee"></i> <b><%= item.price %></b></p>
-            </div>
-            <div class="item-actions">
-              <p class="quantity-display">Qty: <%= item.quantity %></p>
+              <p class="item-price">
+                <span class="original-price <%= item.couponDiscountAmount && item.couponDiscountAmount > 0 ? 'discounted-original-price' : '' %>">
+                  <i data-lucide="indian-rupee" class="rupee-icon-small"></i> <%= (item.price * item.quantity).toFixed(2) %>
+                </span>
+                <% if (item.couponDiscountAmount && item.couponDiscountAmount > 0) { %>
+                <span class="final-price">
+                  <i data-lucide="indian-rupee" class="rupee-icon-small"></i> <%= item.finalPrice.toFixed(2) %>
+                </span>
+                <% } %>
+              </p>
+              <% if (item.couponDiscountAmount && item.couponDiscountAmount > 0) { %>
+              <p class="item-discount-applied">Discount: -<i data-lucide="indian-rupee" class="rupee-icon-small"></i> <%= item.couponDiscountAmount.toFixed(2) %></p>
+              <% } %>
             </div>
           </article>
           <% }) %>
@@ -45,40 +289,93 @@
           <h2 id="summary-heading" class="visually-hidden">Order Summary</h2>
 
           <% 
-                        const DELIVERY_FEE = 15;
-                        const subtotal = checkout.totalAmount - DELIVERY_FEE;
-                    %>
+            const DELIVERY_FEE = 15;
+            const totalBeforeDiscount = checkout.grossItemTotal || checkout.totalAmount || 0; 
+            const subtotalAfterDiscount = checkout.netItemTotal || (checkout.totalAmount - DELIVERY_FEE) || totalBeforeDiscount; 
+            const couponDiscount = totalBeforeDiscount - subtotalAfterDiscount; 
+            const finalTotal = checkout.finalTotalAmount || (subtotalAfterDiscount + DELIVERY_FEE);
+          %>
 
-          <div class="summary-line">
-            <span class="summary-label">Subtotal</span>
-            <span class="summary-value"><i data-lucide="indian-rupee"></i> <b><%= subtotal.toFixed(2) %></b></span>
-          </div>
-          <div class="summary-line">
-            <span class="summary-label">Delivery Fee</span>
-            <span class="summary-value"><i data-lucide="indian-rupee"></i> <b><%= DELIVERY_FEE.toFixed(2) %></b></span>
-          </div>
-
-          <hr class="summary-divider">
-          <div class="summary-line total-line">
-            <span class="summary-label">Total</span>
-            <span class="summary-value"><i data-lucide="indian-rupee"></i> <b><%= checkout.totalAmount.toFixed(2) %></b></span>
-          </div>
-
-          <div class="promo-code-section">
-            <div class="promo-input-group">
-              <i data-lucide="tag" class="lucide-icon promo-icon"></i>
-              <input type="text" placeholder="Add promo code" class="promo-input" aria-label="Promo code input">
+          <div id="price-summary">
+            <div class="summary-line">
+              <span class="summary-label">Total Price</span>
+              <span class="summary-value" id="gross-total"><i data-lucide="indian-rupee"></i> <b><%= totalBeforeDiscount.toFixed(2) %></b></span>
             </div>
-            <button type="button" class="apply-promo-btn">Apply</button>
+
+            <div class="summary-line discount-line">
+              <span class="summary-label">Discount Applied</span>
+              <span class="summary-value" id="discount-applied">-<i style="stroke: #dc3545;" data-lucide="indian-rupee"></i> <b><%= couponDiscount.toFixed(2) %></b></span>
+            </div>
+
+            <div class="summary-line">
+              <span class="summary-label">Subtotal</span>
+              <span class="summary-value" id="subtotal-net"><i data-lucide="indian-rupee"></i> <b><%= subtotalAfterDiscount.toFixed(2) %></b></span>
+            </div>
+
+            <div class="summary-line">
+              <span class="summary-label">Delivery Charge</span>
+              <span class="summary-value" id="delivery-charge"><i data-lucide="indian-rupee"></i> <b><%= DELIVERY_FEE.toFixed(2) %></b></span>
+            </div>
+
+            <hr class="summary-divider">
+            <div class="summary-line total-line">
+              <span class="summary-label">Total</span>
+              <span class="summary-value" id="total-payable"><i data-lucide="indian-rupee"></i> <b><%= finalTotal.toFixed(2) %></b></span>
+            </div>
           </div>
 
-          <button type="button" class="checkout-btn">
-            <a href="/checkout/address">Proceed to Address</a>
-            <i data-lucide="arrow-right" class="lucide-icon checkout-arrow"></i>
-          </button>
+          <div class="promo-code-section" id="coupon-management">
+            <% if (checkout.appliedCoupon) { %>
+            <div class="applied-coupon-display" id="applied-coupon-display">
+              <div>
+                <i data-lucide="check-circle" class="lucide-icon coupon-check-icon"></i>
+                <span class="applied-coupon-code"><%= checkout.appliedCoupon.code %></span> Applied
+              </div>
+              <button type="button" class="remove-promo-btn" onclick="removeCoupon()">Remove</button>
+            </div>
+            <% } else { %>
+            <div class="promo-input-group">
+              <i data-lucide="tag" class="lucide-icon promo-icon coupon-tag-icon"></i>
+              <input type="text" id="coupon-input" placeholder="Enter coupon code" class="promo-input" aria-label="Coupon code input">
+              <button type="button" id="apply-coupon-btn" class="apply-promo-btn" onclick="applyCoupon()">Apply</button>
+            </div>
+            <% } %>
+          </div>
+          <div id="coupon-message" class="coupon-message-box">
+            <% if (message) { %>
+            <span class="success-message"><%= message %></span>
+            <% } %>
+          </div>
+
+          <div class="available-coupons-list">
+            <h4 class="available-coupons-heading">Available Offers:</h4>
+            <ul class="coupon-list">
+              <% if (applicableCoupons && applicableCoupons.length > 0) { %>
+              <% applicableCoupons.forEach(coupon => { %>
+              <li class="coupon-item" onclick="document.getElementById('coupon-input').value = '<%= coupon.code %>'; applyCoupon();">
+                <strong class="coupon-code"><%= coupon.code %></strong>: <%= coupon.title %>
+                <% if (coupon.minPurchaseAmount > 0) { %>
+                <span class="min-purchase-amount">(Min Purchase: <i data-lucide="indian-rupee" class="rupee-icon-tiny"></i><%= coupon.minPurchaseAmount.toFixed(2) %>)</span>
+                <% } %>
+              </li>
+              <% }) %>
+              <% } else { %>
+              <p class="no-coupons-available">No active coupons available right now.</p>
+              <% } %>
+            </ul>
+          </div>
+
+
+          <div class="payment-buttons-section">
+            <a href="/checkout/address" class="checkout-btn">
+              Proceed to Address
+              <i data-lucide="arrow-right" class="lucide-icon checkout-arrow"></i>
+            </a>
+          </div>
+
         </section>
         <% } else {%>
-        <p style="text-align: center; width: 100dvw;">No Items selected for Checkout. Please go to your cart or product page.</p>
+        <p class="empty-checkout-message">No Items selected for Checkout. Please go to your cart or product page.</p>
         <% } %>
       </section>
     </main>
@@ -87,6 +384,64 @@
   <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
   <script>
     lucide.createIcons();
+
+    async function applyCoupon() {
+      const couponInput = document.getElementById('coupon-input');
+      const couponCode = couponInput ? couponInput.value.trim().toUpperCase() : '';
+      const messageDiv = document.getElementById('coupon-message');
+      messageDiv.innerHTML = '';
+
+      if (!couponCode) {
+        messageDiv.innerHTML = '<span class="error-message">Please enter a coupon code.</span>';
+        return;
+      }
+
+      try {
+        const response = await fetch('/checkout/applyCoupon', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            couponCode: couponCode
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          window.location.href = window.location.pathname + '?message=' + encodeURIComponent(data.message);
+        } else {
+          messageDiv.innerHTML = '<span class="error-message">' + data.message + '</span>';
+        }
+      } catch (error) {
+        messageDiv.innerHTML = '<span class="error-message">An unexpected error occurred. Check your network connection.</span>';
+      }
+    }
+
+    async function removeCoupon() {
+      const messageDiv = document.getElementById('coupon-message');
+      messageDiv.innerHTML = '';
+
+      try {
+        const response = await fetch('/checkout/removeCoupon', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          window.location.href = window.location.pathname + '?message=' + encodeURIComponent(data.message);
+        } else {
+          messageDiv.innerHTML = '<span class="error-message">' + data.message + '</span>';
+        }
+      } catch (error) {
+        messageDiv.innerHTML = '<span class="error-message">An unexpected error occurred. Check your network connection.</span>';
+      }
+    }
   </script>
 </body>
 

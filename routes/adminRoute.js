@@ -40,6 +40,7 @@ import {
 	getCouponPage,
 	removeCoupon,
 } from "../controllers/admin/couponController.js";
+import { generateReportPdf, getReportPage } from "../controllers/admin/reportController.js";
 
 const admin = Router();
 
@@ -79,6 +80,9 @@ admin.post("/coupons", addCoupon);
 admin.delete("/coupons/:couponId", removeCoupon);
 admin.get("/coupons/:couponId", getCouponEditPage);
 admin.patch("/coupons/:couponId", editCoupon);
+
+admin.get("/reports", getReportPage);
+admin.get("/reports/pdf", generateReportPdf);
 
 admin.use((req, res) => res.status(404).render("user/pagenotfound"));
 export default admin;

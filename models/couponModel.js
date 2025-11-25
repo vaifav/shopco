@@ -82,5 +82,13 @@ const couponSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
+couponSchema.pre(["find", "findOne", "findById"], function (next) {
+	this.model
+		.updateMany({ expiryDate: { $lte: new Date() }, isActive: true }, { $set: { isActive: false } })
+		.exec();
+
+	next();
+});
+
 const couponModel = mongoose.model("coupon", couponSchema);
 export default couponModel;

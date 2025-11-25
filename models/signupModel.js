@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
 		},
 		password: {
 			type: String,
-			minlength: [6, "Password must be at least 6 characters long"]
+			minlength: [6, "Password must be at least 6 characters long"],
 		},
 		googleId: {
 			type: String,
@@ -66,6 +66,7 @@ const userSchema = new mongoose.Schema(
 		changeEmailOtpExpires: {
 			type: Date,
 		},
+		refCode: { type: String, unique: true, sparse: true, uppercase: true },
 	},
 	{
 		timestamps: true,

@@ -11,9 +11,13 @@ import mongoose from "mongoose";
 const getCouponPage = async (req, res) => {
 	const page = parseInt(req.query.page) || 1;
 	const limit = parseInt(req.query.limit) || 5;
+	const search = req.query.search || "";
+	const isActive =
+		req.query.isActive === "true" || !req.query.isActive || req.query.isActive === "" ? true : false;
+	console.log(req.query);
 
 	try {
-		const data = await getCoupons(page, limit);
+		const data = await getCoupons(page, limit, search, isActive);
 		return res.render("admin/adminCoupons", data);
 	} catch (error) {
 		throw new Error(error.message);

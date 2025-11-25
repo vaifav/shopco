@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <title>Admin</title>
+  <style>
+    @import url("/style/adminPartials.css");
+    @import url("/style/admin.css");
+    @import url("/style/adminReport.css");
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/header.ejs') %>
+  <section class="nav wrapper">
+    <div class="container">
+      <nav id="admin-nav">
+        <ul>
+          <li data-url="/admin"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> <b>Dashboard</b></a></li>
+          <li data-url="/admin/orders"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
+          <li data-url="/admin/products"><a href="#products"><i data-lucide="package"></i> <b>Products</b></a></li>
+          <li data-url="/admin/categories"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
+          <li data-url="/admin/customers"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li class="active" data-url="/admin/reports"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
+          <li data-url="/admin/coupons"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
+          <li data-url="/admin/inbox"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
+          <li data-url="/admin/transactions"><a href="#transactions"><i data-lucide="credit-card"></i> <b>Transactions</b></a></li>
+          <li data-url="/admin/adminrole"><a href="#adminrole"><i data-lucide="shield"></i> <b>Admin Role</b></a></li>
+        </ul>
+      </nav>
+      <div id="admin-menu-chevron">
+        <i data-lucide="chevron-right"></i>
+      </div>
+      <div class="sections">
+        <section id="reports" class="show">
+          <header>
+            <h1>Sales Report 📈</h1>
+            <button type="button">Generate Report (PDF/Excel)</button>
+          </header>
+
+          <%
+      const totalRevenue = reportData.totalRevenue || 0;
+      const totalOrders = reportData.totalOrders || 0;
+      const overallDiscount = reportData.overallDiscount || 0;
+      const couponDeduction = reportData.couponDeduction || 0;
+      const netRevenue = reportData.netRevenue || 0;
+
+      const topProducts = reportData.topProducts || [];
+      const salesByCategory = reportData.salesByCategory || [];
+     %>
+
+          <section class="report-filters">
+            <div class="filter-buttons">
+              <button class="filter-btn active" data-range="daily">Daily</button>
+              <button class="filter-btn" data-range="weekly">Weekly</button>
+              <button class="filter-btn" data-range="monthly">Monthly</button>
+              <button class="filter-btn" data-range="yearly">Yearly</button>
+            </div>
+            <form class="date-range-form">
+              <label for="start-date">Custom Range:</label>
+              <input type="date" name="start-date" id="start-date">
+              <input type="date" name="end-date" id="end-date">
+              <button type="submit">Filter</button>
+            </form>
+          </section>
+
+          <section class="report-overview">
+            <article>
+              <div>
+                <h5>Overall Order Amount</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3>₹<%= totalRevenue.toFixed(2) %></h3>
+              <p>Gross Sales (Before Variant Discounts)</p>
+            </article>
+            <article>
+              <div>
+                <h5>Overall Sales Count</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3><%= totalOrders %></h3>
+              <p>Total Orders Placed</p>
+            </article>
+            <article class="discount-deduction">
+              <div>
+                <h5>Overall Discount</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3 class="negative-value">-₹<%= overallDiscount.toFixed(2) %></h3>
+              <p>Variant-level Price Reductions</p>
+            </article>
+            <article class="coupon-deduction">
+              <div>
+                <h5>Coupon Deduction</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3 class="negative-value">-₹<%= couponDeduction.toFixed(2) %></h3>
+              <p>Coupon Codes Applied</p>
+            </article>
+            <article class="net-revenue">
+              <div>
+                <h5>Net Sales Revenue</h5>
+                <a href=""><i data-lucide="more-vertical"></i></a>
+              </div>
+              <h3>₹<%= netRevenue.toFixed(2) %></h3>
+              <p>After all discounts</p>
+            </article>
+          </section>
+
+          <section class="top-selling-products">
+            <h2>Detailed Sales by Product</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Product Name</th>
+                  <th>Units Sold</th>
+                  <th>Gross Revenue</th>
+                  <th>Coupon Deduction</th>
+                  <th>Category</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% topProducts.forEach(product => { %>
+                <tr>
+                  <td data-label="Product Name"><%= product.name %></td>
+                  <td data-label="Units Sold"><%= product.unitsSold %></td>
+                  <td data-label="Gross Revenue">₹<%= product.grossRevenue.toFixed(2) %></td>
+                  <td data-label="Discount Given" class="negative-value">-₹<%= product.discount.toFixed(2) %></td>
+                  <td data-label="Category"><%= product.category %></td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="sales-by-category">
+            <h2>Sales Distribution By Category</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Total Sales</th>
+                  <th>Percentage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% salesByCategory.forEach(category => { %>
+                <tr>
+                  <td data-label="Category"><%= category.name %></td>
+                  <td data-label="Total Sales">₹<%= category.sales.toFixed(2) %></td>
+                  <td data-label="Percentage"><%= category.percentage.toFixed(2) %>%</td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </section>
+
+        </section>
+      </div>
+    </div>
+  </section>
+  <script src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.js"></script>
+  <script type="module" src="/script/admin/adminReports.js"></script>
+  <script src="/script/admin/adminNav.js"></script>
+</body>
+
+</html>

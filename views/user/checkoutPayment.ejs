@@ -25,7 +25,7 @@
               <input type="radio" id="WALLET" name="paymentMethod" value="WALLET">
               <label for="WALLET">Wallet</label>
             </div>
-            
+
             <div class="radio-option">
               <input type="radio" id="googlepay" name="paymentMethod" value="Google Pay">
               <label for="googlepay">Google Pay</label>
@@ -78,16 +78,17 @@
 
       <aside class="summary-area">
         <% 
-                    const DELIVERY_FEE = 15;
-                    const totalAmount = checkout.totalAmount; 
-                    const subtotal = totalAmount - DELIVERY_FEE; 
-                %>
+          const DELIVERY_FEE = 15;
+          const originalSubtotal = checkout.grossItemTotal; 
+          const totalDiscount = originalSubtotal - checkout.netItemTotal; 
+          const finalAmount = checkout.finalTotalAmount;
+    %>
 
         <h3 class="summary-heading">Order Total</h3>
         <div class="summary-item">
           <span class="label">Subtotal (<%= checkout.cartItems.length %> items)</span>
           <span class="value">
-            <i data-lucide="indian-rupee"></i> <b><%= subtotal.toFixed(2) %></b>
+            <i data-lucide="indian-rupee"></i> <b><%= originalSubtotal.toFixed(2) %></b>
           </span>
         </div>
         <div class="summary-item">
@@ -96,15 +97,17 @@
             <i data-lucide="indian-rupee"></i> <b><%= DELIVERY_FEE.toFixed(2) %></b>
           </span>
         </div>
-        <div class="summary-item discount">
-          <span class="label">Discount</span>
-          <span class="value">-<i data-lucide="indian-rupee"></i> <b>0.00</b></span>
+        <div class="summary-item discount <%= totalDiscount > 0 ? 'applied' : '' %>">
+          <span class="label">Discount
+            <%= checkout.appliedCoupon ? `(${checkout.appliedCoupon.code})` : '' %>
+          </span>
+          <span class="value">-<i data-lucide="indian-rupee"></i> <b><%= totalDiscount.toFixed(2) %></b></span>
         </div>
         <hr>
         <div class="summary-item total">
           <span class="label">Total</span>
           <span class="value">
-            <i data-lucide="indian-rupee"></i> <b><%= totalAmount.toFixed(2) %></b>
+            <i data-lucide="indian-rupee"></i> <b><%= finalAmount.toFixed(2) %></b>
           </span>
         </div>
       </aside>

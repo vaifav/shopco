@@ -1,0 +1,284 @@
+/* Styling for the Sales Report page */
+
+#reports header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+#reports header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0a102b;
+}
+
+#reports header button {
+  background: #0a102b;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+#reports header button:hover {
+  background: #5a607f;
+}
+
+/* Report Filters Section */
+.report-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #e9ecef;
+  border-radius: 8px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-buttons button {
+  padding: 0.5rem 1rem;
+  background: #ffffff;
+  border: 1px solid #ced4da;
+  color: #0a102b;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  font-weight: 500;
+}
+
+.filter-buttons button:hover,
+.filter-buttons button.active {
+  background: #0a102b;
+  color: white;
+  border-color: #0a102b;
+}
+
+.date-range-form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.date-range-form label {
+  font-weight: 500;
+  color: #0a102b;
+  white-space: nowrap;
+}
+
+.date-range-form input[type="date"] {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #000;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.date-range-form button {
+  background: #5a607f;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background 0.3s;
+  font-weight: 600;
+}
+
+.date-range-form button:hover {
+  background: #0a102b;
+}
+
+/* Report Overview Cards */
+.report-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.report-overview article {
+  background: #f4f6f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.report-overview article:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.report-overview article div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.report-overview article h5 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #5a607f;
+}
+
+.report-overview article h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0a102b;
+  margin-bottom: 0.5rem;
+}
+
+.report-overview article p {
+  font-size: 0.8rem;
+  color: #909090;
+}
+
+.report-overview article a svg {
+  width: 18px;
+  height: 18px;
+  stroke: #5a607f;
+}
+
+/* Specific styling for discount/coupon values (Negative) */
+.negative-value {
+    color: #dc3545 !important; /* Red color for negative values */
+}
+.report-overview .net-revenue h3 {
+    color: #198754; /* Green color for net revenue */
+}
+
+/* Tables Styling (Top Selling Products and Sales by Category) */
+.top-selling-products,
+.sales-by-category {
+  margin-bottom: 3rem;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.top-selling-products h2,
+.sales-by-category h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0a102b;
+  margin-bottom: 1rem;
+}
+
+.top-selling-products table,
+.sales-by-category table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.top-selling-products th,
+.sales-by-category th {
+  background: #f1f1f1;
+  color: #0a102b;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #ddd;
+}
+
+.top-selling-products td,
+.sales-by-category td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  color: #333;
+}
+
+.top-selling-products tbody tr:hover,
+.sales-by-category tbody tr:hover {
+  background: #f9f9f9;
+}
+
+
+/* Media Queries for Responsiveness */
+@media (max-width: 992px) {
+  .report-filters {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .date-range-form {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .date-range-form input[type="date"] {
+    flex-grow: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  #reports header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .date-range-form {
+    flex-wrap: wrap;
+  }
+
+  /* Table responsiveness - Hiding headers on small screens and using data-label */
+  .top-selling-products table,
+  .sales-by-category table {
+    border: 0;
+  }
+
+  .top-selling-products thead,
+  .sales-by-category thead {
+    display: none;
+  }
+
+  .top-selling-products tr,
+  .sales-by-category tr {
+    display: block;
+    margin-bottom: 0.625em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .top-selling-products td,
+  .sales-by-category td {
+    display: block;
+    text-align: right;
+    font-size: 0.8em;
+    border-bottom: 1px dotted #ccc;
+  }
+
+  .top-selling-products td:before,
+  .sales-by-category td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #5a607f;
+  }
+
+  .top-selling-products td:last-child,
+  .sales-by-category td:last-child {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 480px) {
+    .report-overview {
+        grid-template-columns: 1fr;
+    }
+    .date-range-form {
+      gap: 0.5rem;
+    }
+    .date-range-form label {
+      width: 100%;
+    }
+}

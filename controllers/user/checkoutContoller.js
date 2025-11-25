@@ -3,25 +3,37 @@ import {
 	createBuyNowSnapshot,
 	createCartSnapshot,
 	createNewOrder,
+	applyCouponToSnapshot,
+	getApplicableCouponsForSnapshot,
+	refcodeValidation,
 } from "../../services/checkoutService.js";
 
 import razorPay from "../../config/razorPay.js";
 import crypto from "crypto";
+import { creditWallet } from "../../services/walletService.js";
+import userModel from "../../models/signupModel.js";
 
 const getCheckOutPage = async (req, res) => {
 	if (!req.session.checkout || req.session.checkout.cartItems.length === 0) {
 		return res.redirect("/cart");
 	}
 
+	const userId = req.session.user.userId;
 	const checkoutData = req.session.checkout;
+	const errorMessage = req.query.error || null;
+	const successMessage = req.query.message || null;
 
 	try {
+		const applicableCoupons = await getApplicableCouponsForSnapshot(checkoutData.cartItems, userId);
+
 		return res.render("user/checkout", {
 			checkout: checkoutData,
+			error: errorMessage,
+			message: successMessage,
+			applicableCoupons: applicableCoupons,
 		});
 	} catch (error) {
-		console.log(error);
-		return res.status(500).render("user/pagenotfound", { error });
+		return res.status(500).render("user/pagenotfound", { error: error.message });
 	}
 };
 
@@ -41,7 +53,6 @@ const getCheckOutAddressPage = async (req, res) => {
 			checkout: checkoutData,
 		});
 	} catch (error) {
-		console.log(error);
 		return res.status(500).render("user/pagenotfound", { error });
 	}
 };
@@ -61,7 +72,6 @@ const getCheckoutPaymentPage = async (req, res) => {
 			checkout: checkoutData,
 		});
 	} catch (error) {
-		console.log(error);
 		return res.status(500).render("user/pagenotfound", { error });
 	}
 };
@@ -75,8 +85,6 @@ const getCheckoutSummaryPage = async (req, res) => {
 		!checkoutData.shippingAddress ||
 		!checkoutData.paymentMethod
 	) {
-		console.log("Checkout session incomplete.....");
-
 		if (!checkoutData || checkoutData.cartItems.length === 0) return res.redirect("/cart");
 		if (!checkoutData.shippingAddress) return res.redirect("/checkout/address");
 		if (!checkoutData.paymentMethod) return res.redirect("/checkout/payment");
@@ -88,7 +96,6 @@ const getCheckoutSummaryPage = async (req, res) => {
 			razorpayKeyId: process.env.RAZORPAY_KEY,
 		});
 	} catch (error) {
-		console.log("Error rendering checkout summary page:", error.message);
 		return res.status(500).render("user/pagenotfound", { error });
 	}
 };
@@ -99,15 +106,15 @@ const startCartCheckout = async (req, res) => {
 	try {
 		const snapshotData = await createCartSnapshot(userId);
 
-		req.session.checkout.cartItems = snapshotData.cartItems;
-		req.session.checkout.totalAmount = snapshotData.totalAmount;
-		req.session.checkout.isFromCart = true;
-		req.session.checkout.shippingAddress = null;
-		req.session.checkout.paymentMethod = null;
+		req.session.checkout = {
+			...snapshotData,
+			isFromCart: true,
+			shippingAddress: null,
+			paymentMethod: null,
+		};
 
 		return res.redirect("/checkout");
 	} catch (error) {
-		console.log(error.message);
 		return res.status(500).redirect(`/cart?error=${encodeURIComponent(error.message)}`);
 	}
 };
@@ -119,15 +126,15 @@ const buyNowAndStartCheckout = async (req, res) => {
 	try {
 		const snapshotData = await createBuyNowSnapshot(variantId, size, color, quantity);
 
-		req.session.checkout.cartItems = snapshotData.cartItems;
-		req.session.checkout.totalAmount = snapshotData.totalAmount;
-		req.session.checkout.isFromCart = false;
-		req.session.checkout.shippingAddress = null;
-		req.session.checkout.paymentMethod = null;
+		req.session.checkout = {
+			...snapshotData,
+			isFromCart: false,
+			shippingAddress: null,
+			paymentMethod: null,
+		};
 
 		return res.redirect("/checkout");
 	} catch (error) {
-		console.log(error);
 		return res
 			.status(500)
 			.redirect(
@@ -169,7 +176,6 @@ const saveShippingAddressSnapshot = async (req, res) => {
 
 		return res.redirect("/checkout/payment");
 	} catch (error) {
-		console.log("Error saving address snapshot:", error.message);
 		return res.status(400).redirect("/checkout/address");
 	}
 };
@@ -194,8 +200,71 @@ const savePaymentMethodAndRedirect = async (req, res) => {
 
 		return res.redirect("/checkout/summary");
 	} catch (error) {
-		console.error("Error saving payment method:", error.message);
 		return res.status(500).redirect("/checkout/payment");
+	}
+};
+
+const applyCoupon = async (req, res) => {
+	const { couponCode } = req.body;
+	const userId = req.session.user.userId;
+	const checkoutSnapshot = req.session.checkout;
+
+	if (!checkoutSnapshot || checkoutSnapshot.cartItems.length === 0) {
+		return res.status(400).json({ success: false, message: "Cart is empty or session expired." });
+	}
+
+	if (couponCode.startsWith("REFCODE_")) {
+		const response = await refcodeValidation(req.session.user.userId, req.session, couponCode);
+		return res.json(response);
+	}
+
+	try {
+		const result = await applyCouponToSnapshot(checkoutSnapshot.cartItems, couponCode, userId);
+
+		req.session.checkout = {
+			...checkoutSnapshot,
+			cartItems: result.updatedItems,
+			totalAmount: result.netItemTotal,
+			finalTotalAmount: result.finalTotalAmount,
+			netItemTotal: result.netItemTotal,
+			appliedCoupon: result.appliedCoupon,
+		};
+
+		return res
+			.status(200)
+			.json({ success: true, message: "Coupon applied successfully! Your total has been updated." });
+	} catch (error) {
+		return res.status(400).json({ success: false, message: error.message });
+	}
+};
+
+const removeCoupon = async (req, res) => {
+	const userId = req.session.user.userId;
+	const checkoutSnapshot = req.session.checkout;
+
+	if (!checkoutSnapshot || checkoutSnapshot.cartItems.length === 0) {
+		return res.status(400).json({ success: false, message: "Cart is empty or session expired." });
+	}
+
+	try {
+		let freshSnapshot;
+		if (checkoutSnapshot.isFromCart) {
+			freshSnapshot = await createCartSnapshot(userId);
+		} else {
+			const item = checkoutSnapshot.cartItems[0];
+			freshSnapshot = await createBuyNowSnapshot(item.variantId, item.size, item.color, item.quantity);
+		}
+
+		req.session.checkout = {
+			...checkoutSnapshot,
+			...freshSnapshot,
+		};
+
+		return res
+			.status(200)
+			.json({ success: true, message: "Coupon removed. Total reset successfully." });
+	} catch (error) {
+		return res.status(400).json({ success: false, message: error.message });
 	}
 };
 
@@ -204,11 +273,11 @@ const createRazorpayOrder = async (req, res) => {
 	const userId = req.session.user.userId;
 
 	try {
-		if (!checkout || !checkout.totalAmount || checkout.totalAmount <= 0) {
+		if (!checkout || !checkout.finalTotalAmount || checkout.finalTotalAmount <= 0) {
 			return res.status(400).json({ success: false, message: "Invalid checkout amount." });
 		}
 
-		const totalAmountInPaise = Math.round(checkout.totalAmount * 100);
+		const totalAmountInPaise = Math.round(checkout.finalTotalAmount * 100);
 
 		const options = {
 			amount: totalAmountInPaise,
@@ -230,7 +299,6 @@ const createRazorpayOrder = async (req, res) => {
 			order: razorpayOrder,
 		});
 	} catch (error) {
-		console.error("Error creating Razorpay order:", error);
 		return res.status(500).json({ success: false, message: "Failed to initiate online payment." });
 	}
 };
@@ -288,7 +356,6 @@ const verifyRazorpayPaymentAndPlaceOrder = async (req, res) => {
 			orderId: newOrder._id,
 		});
 	} catch (error) {
-		console.error("Payment Verification/Order Placement Error:", error.message);
 		return res.status(500).json({
 			success: false,
 			message: "Order placement failed after payment verification.",
@@ -300,6 +367,7 @@ const verifyRazorpayPaymentAndPlaceOrder = async (req, res) => {
 const placeOrder = async (req, res) => {
 	const checkout = req.session.checkout;
 	const userId = req.session.user.userId;
+	const refCode = req.session.refCode;
 	const isFromCart = checkout.isFromCart === true;
 
 	try {
@@ -309,11 +377,17 @@ const placeOrder = async (req, res) => {
 			!checkout.paymentMethod ||
 			checkout.cartItems.length === 0
 		) {
-			console.log("Incomplete checkout session......");
 			return res.redirect("/cart");
 		}
 
 		const newOrder = await createNewOrder(userId, checkout, isFromCart);
+		if (refCode) {
+			const user = await userModel.findOne({ refCode });
+			if (!user) throw new Error("user not found");
+
+			await creditWallet(userId, 20, "BONUS", newOrder._id);
+			await creditWallet(user._id, 20, "BONUS", user._id);
+		}
 
 		req.session.order = {};
 		req.session.order.id = newOrder._id;
@@ -321,7 +395,6 @@ const placeOrder = async (req, res) => {
 		res.redirect(`/order/success`);
 		return;
 	} catch (error) {
-		console.log(error);
 		return res.status(500).redirect(`/checkout/summary?error=${encodeURIComponent(error.message)}`);
 	}
 };
@@ -342,6 +415,8 @@ const placeWalletOrder = async (req, res) => {
 			throw new Error("Invalid or incomplete checkout session for Wallet payment.");
 		}
 
+		checkout.paymentMethod.method = "WALLET";
+
 		const newOrder = await createNewOrder(userId, checkout, isFromCart);
 
 		req.session.order = {
@@ -355,7 +430,6 @@ const placeWalletOrder = async (req, res) => {
 			orderId: newOrder._id,
 		});
 	} catch (error) {
-		console.error("Wallet Order Placement Error:", error.message);
 		return res.status(500).json({
 			success: false,
 			message: error.message || "Failed to place order using Wallet.",
@@ -372,6 +446,8 @@ export {
 	buyNowAndStartCheckout,
 	saveShippingAddressSnapshot,
 	savePaymentMethodAndRedirect,
+	applyCoupon,
+	removeCoupon,
 	placeOrder,
 	createRazorpayOrder,
 	verifyRazorpayPaymentAndPlaceOrder,
