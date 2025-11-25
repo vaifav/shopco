@@ -143,7 +143,16 @@ const updateItemStatus = async (orderId, itemId, newStatus, reason = null) => {
 
 				await returnStockToInventory([item]);
 				item.reason = "Item Cancellation";
-				refundAmount = isOnlinePayment ? item.price * item.quantity : 0;
+				if (isOnlinePayment) {
+					if (item.couponDiscountAmount && item.couponDiscountAmount > 0) {
+						refundAmount = (item.price - item.couponDiscountAmount) * item.quantity;
+					} else {
+						refundAmount = item.price * item.quantity;
+					}
+				} else {
+					refundAmount = 0;
+				}
+
 				break;
 
 			case "Returned":
@@ -212,8 +221,18 @@ const updateOrderStatus = async (orderId, newStatus) => {
 		let totalRefundAmount = 0;
 
 		itemsToCancel.forEach((item) => {
-			const itemRefund = isOnlinePayment ? item.price * item.quantity : 0;
+			// const itemRefund = isOnlinePayment ? item.price * item.quantity : 0;
 
+			let itemRefund = 0;
+			if (isOnlinePayment) {
+				if (item.couponDiscountAmount && item.couponDiscountAmount > 0) {
+					itemRefund = (item.price - item.couponDiscountAmount) * item.quantity;
+				} else {
+					itemRefund = item.price * item.quantity;
+				}
+			} else {
+				itemRefund = 0;
+			}
 			item.itemStatus = "Cancelled";
 			item.reason = "Full Order Cancellation";
 			item.refundedAmount = itemRefund;

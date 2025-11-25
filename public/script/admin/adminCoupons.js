@@ -68,7 +68,7 @@ if (couponTable) {
 
 		if (editButton) {
 			const couponId = editButton.getAttribute("data-id");
-			window.location.href = `/admin/coupons/${couponId}`
+			window.location.href = `/admin/coupons/${couponId}`;
 		}
 	});
 }
@@ -98,4 +98,38 @@ document.querySelectorAll(".pagination .pagination-btn").forEach((btn) => {
 			limit,
 		});
 	});
+});
+
+const search = document.querySelector(".coupons-search");
+const searchClear = document.querySelector(".adn-clear-label");
+search.addEventListener("submit", (e) => {
+	e.preventDefault();
+	const value = search.querySelector("input").value.toString();
+	addOrUpdateQueryParams({ search: value });
+});
+searchClear.addEventListener("click", () => {
+	addOrUpdateQueryParams({ search: "" });
+});
+
+const filterButton = document.querySelector("#coupons .active-block-filter");
+const filterDropdown = filterButton ? filterButton.querySelector("ul") : null;
+const filterListItems = filterDropdown ? filterDropdown.querySelectorAll("li") : [];
+
+filterButton.addEventListener("click", (event) => {
+	event.preventDefault();
+	filterDropdown.classList.toggle("activate-ul");
+});
+
+filterListItems.forEach((item) => {
+	item.addEventListener("click", (event) => {
+		event.stopPropagation();
+		const isActive = item.getAttribute("data-isactive");
+		addOrUpdateQueryParams({ isActive });
+	});
+});
+
+document.addEventListener("click", (event) => {
+	if (!filterButton.contains(event.target) && filterDropdown.classList.contains("activate-ul")) {
+		filterDropdown.classList.remove("activate-ul");
+	}
 });

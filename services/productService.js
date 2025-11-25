@@ -306,7 +306,7 @@ const getSingleProduct = async (_id, varId, userId) => {
 		data.isInWishList = false;
 		if (userId) {
 			const wishlist = await wishlistModel.findOne({ userId });
-			data.isInWishList = wishlist.items.includes(data.product.vrId) ? true : false;
+			data.isInWishList = wishlist?.items?.includes(data.product.vrId) ? true : false;
 		}
 
 		return data;

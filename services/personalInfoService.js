@@ -145,4 +145,16 @@ const updatePersonalInfo = async (data, userId, file = "") => {
 	}
 };
 
-export { getPersonalInfo, createPersonalInfo, updatePersonalInfo };
+const getRefCode = async (userId) => {
+	try {
+		if (!userId) throw new Error("userId required");
+		const user = await userModel.findOne({ _id: userId });
+		if (!user) throw new Error("User Not found....");
+		
+		return user.refCode;
+	} catch (error) {
+		throw new Error(error.message);
+	}
+};
+
+export { getPersonalInfo, createPersonalInfo, updatePersonalInfo, getRefCode };

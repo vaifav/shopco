@@ -10,6 +10,7 @@ import {
 	addPersonalInfo,
 	editPersonlInfo,
 	getPersonalInfoPage,
+	getRefCodeForUser,
 } from "../controllers/user/personalInfoController.js";
 import { upload } from "../middleware/multerMiddleware.js";
 import {
@@ -38,6 +39,8 @@ import {
 	createRazorpayOrder,
 	verifyRazorpayPaymentAndPlaceOrder,
 	placeWalletOrder,
+	removeCoupon,
+	applyCoupon,
 } from "../controllers/user/checkoutContoller.js";
 import initializeCheckout from "../middleware/checkoutMiddleware.js";
 import {
@@ -141,4 +144,8 @@ user.delete("/wishlist/:id", ...authVerified, removeFromWishlist);
 user.delete("/wishlist", ...authVerified, removeCompleteWishList);
 
 user.get("/mywallet", ...authVerified, getWalletPage);
+user.post("/checkout/removeCoupon", ...authVerified, removeCoupon);
+user.post("/checkout/applyCoupon", ...authVerified, applyCoupon);
+
+user.get("/refcode", getRefCodeForUser);
 export default user;

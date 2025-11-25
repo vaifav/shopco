@@ -108,9 +108,9 @@
                   </span>
                 </td>
                 <td class="item-total-cell">
-                  <span class="item-total">
-                    <i data-lucide="indian-rupee" class="rupee-icon"></i>
-                    <%= (item.price * item.quantity).toFixed(2) %>
+                  <span class="item-total" title="<%= item.couponDiscountAmount && item.couponDiscountAmount > 0 ? 'Discount Applied' : 'Total' %>">
+                    <i data-lucide="indian-rupee" class="rupee-icon" ></i>
+                    <%= (item.price - item.couponDiscountAmount).toFixed(2) * item.quantity  %>
                   </span>
                 </td>
                 <td class="item-actions-cell">

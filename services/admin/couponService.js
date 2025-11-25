@@ -165,9 +165,14 @@ const validateCouponUpdate = async (data, currentCouponId) => {
 	}
 };
 
-const getCoupons = async (page = 1, limit = 5, search = "", isActive = "") => {
+const getCoupons = async (page = 1, limit = 5, search = "", isActive = true) => {
 	const data = {};
-	const query = { isDeleted: false };
+	const query = { isDeleted: false, isActive: isActive };
+
+	if (search && search.trim() !== "") {
+		const searchRegex = new RegExp(search, "i");
+		query.$or = [{ code: { $regex: searchRegex } }];
+	}
 	try {
 		const total = await couponModel.countDocuments(query);
 		const totalPages = Math.ceil(total / limit);
@@ -175,7 +180,7 @@ const getCoupons = async (page = 1, limit = 5, search = "", isActive = "") => {
 		if (page > totalPages) page = totalPages || 1;
 		let skip = (page - 1) * limit;
 
-		const coupons = await couponModel.find(query).skip(skip).limit(limit);
+		const coupons = await couponModel.find(query).skip(skip).limit(limit).sort({ createdAt: -1 });
 
 		data.page = page;
 		data.limit = limit;
@@ -275,7 +280,7 @@ const updateCoupon = async (couponId, updateData) => {
 			categoryRestrictionList: categoryRestrictions,
 		};
 		console.log(finalUpdateData);
-		
+
 		const updatedCoupon = await couponModel.findByIdAndUpdate(couponId, finalUpdateData, {
 			new: true,
 			runValidators: true,

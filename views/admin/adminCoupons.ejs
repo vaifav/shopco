@@ -27,7 +27,7 @@
           <li data-url="/admin/orders"><a href="#orders"><i data-lucide="shopping-bag"></i> <b>Orders</b></a></li>
           <li data-url="/admin/products"><a href="#coupons"><i data-lucide="package"></i> <b>Products</b></a></li>
           <li data-url="/admin/categories"><a href="#categories"><i data-lucide="grid"></i> <b>Categories</b></a></li>
-          <li data-url="/admin/customers"><a href="#customers"><i data-lucide="users"></i> <b>Customers</b></a></li>
+          <li data-url="/admin/coupons"><a href="#coupons"><i data-lucide="users"></i> <b>coupons</b></a></li>
           <li data-url="/admin/reports"><a href="#reports"><i data-lucide="bar-chart-2"></i> <b>Reports</b></a></li>
           <li class="active" data-url="/admin/coupons"><a href="#coupons"><i data-lucide="ticket"></i> <b>Coupons</b></a></li>
           <li data-url="/admin/inbox"><a href="#inbox"><i data-lucide="inbox"></i> <b>Inbox</b></a></li>
@@ -44,7 +44,21 @@
             <h1>Coupons</h1>
             <button type="button" class="nav-add-coupon"><i data-lucide="plus"></i>Add Coupon</button>
           </header>
-
+          <section class="admin-search coupons-search">
+            <form>
+              <input type="text" name="adn-search" id="adn-search" placeholder="search">
+              <label for="adn-search" class="adn-clear-label"><i data-lucide="X"></i></label>
+            </form>
+            <div class="search-container">
+              <button class="active-block-filter"><i data-lucide="list-filter"></i>
+                <ul>
+                  <li>Filter By</li>
+                  <li data-isactive="true">Active Coupons</li>
+                  <li data-isactive="false">Inctive Coupons</li>
+                </ul>
+              </button>
+            </div>
+          </section>
           <% if (coupons && coupons.length !== 0) { %>
           <table class="coupon-list-table">
             <thead>

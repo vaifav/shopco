@@ -1,11 +1,21 @@
 import { getAddress, getSingleAddress } from "../../services/addressService.js";
-import { getPersonalInfo } from "../../services/personalInfoService.js";
+import { getPersonalInfo, getRefCode } from "../../services/personalInfoService.js";
 import { createPersonalInfo, updatePersonalInfo } from "../../services/personalInfoService.js";
 import { uploadSingleImage } from "../../services/cloudinaryService.js";
 import { checkChangedPassword } from "../../services/forgotPasswordService.js";
 
 const getChangePasswordPage = async (req, res) => {
 	return res.render("user/changePassword", { error: null, usermail: req.session.user.email });
+};
+
+const getRefCodeForUser = async (req, res) => {
+	try {
+		const refcode = await getRefCode(req.session.user.userId);
+		if (!refcode) return res.status(200).json({});
+		return res.status(200).json({ refcode });
+	} catch (error) {
+		throw new Error(error.message);
+	}
 };
 
 const changePassword = async (req, res) => {
@@ -114,6 +124,11 @@ const getPersonalInfoPage = async (req, res) => {
 	}
 };
 
-
-
-export {getPersonalInfoPage, addPersonalInfo, editPersonlInfo, getChangePasswordPage, changePassword };
+export {
+	getPersonalInfoPage,
+	addPersonalInfo,
+	editPersonlInfo,
+	getChangePasswordPage,
+	changePassword,
+	getRefCodeForUser,
+};

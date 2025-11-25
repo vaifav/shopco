@@ -300,3 +300,74 @@
 #coupons .status-cell.expired {
 	color: #ff7262;
 }
+
+#coupons .coupons-search {
+	margin-bottom: 2rem;
+}
+
+#coupons .coupons-search .search-container {
+	position: relative;
+	z-index: 10;
+}
+
+#coupons .coupons-search .search-container button.active-block-details,
+#coupons .coupons-search .search-container button.active-block-filter {
+	position: relative;
+	z-index: 100;
+}
+
+#coupons .coupons-search .search-container ul {
+	display: none;
+}
+
+#coupons .coupons-search .search-container ul li {
+	border-radius: 0;
+	font-weight: 300;
+	cursor: pointer;
+	background: transparent;
+	text-wrap: nowrap;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-weight: 700;
+}
+
+#coupons .coupons-search .search-container button.active-block-filter ul li {
+	padding-block: 0;
+	margin-bottom: 0.5rem;
+}
+
+#coupons .coupons-search .search-container button.active-block-filter ul li:first-child {
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+#coupons .coupons-search .search-container button.active-block-filter ul.activate-ul {
+	background-color: #f9fafb;
+	padding-block: 1rem;
+	border-radius: 5px;
+	border: 1px solid #d1d5db;
+	position: absolute;
+	top: 100%;
+	right: 0;
+	z-index: 1000;
+	flex-direction: column;
+	justify-content: start;
+	align-items: start;
+	display: flex;
+}
+
+#coupons .coupons-search .search-container button.active-block-details ul.activate-ul {
+	background-color: #f9fafb;
+	padding-block: 1rem;
+	border-radius: 5px;
+	border: 1px solid #d1d5db;
+	position: absolute;
+	top: 100%;
+	right: 0;
+	z-index: 1000;
+	flex-direction: column;
+	justify-content: start;
+	align-items: start;
+	display: flex;
+}

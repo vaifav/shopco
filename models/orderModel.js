@@ -30,7 +30,7 @@ const OrderItemSchema = new mongoose.Schema(
 			default: "UNPAID",
 			enum: ["PAID", "UNPAID", "REFUND_PENDING", "REFUNDED", "FAILED", "REFUND_FAILED"],
 		},
-
+		couponDiscountAmount: { type: Number, default: 0, min: 0 },
 		reason: { type: String },
 		refundedAmount: { type: Number, default: 0 },
 		refundTransactionId: { type: String, default: null },
@@ -69,7 +69,7 @@ const orderSchema = new mongoose.Schema(
 		paymentMethod: {
 			type: String,
 			required: true,
-			enum: ["COD", "CARD", "PAYPAL", "GOOGLE_PAY", "RAZOR_PAY","WALLET"],
+			enum: ["COD", "CARD", "PAYPAL", "GOOGLE_PAY", "RAZOR_PAY", "WALLET"],
 		},
 		razorpayOrderId: {
 			type: String,
